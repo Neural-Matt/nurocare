@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ── Fonts ── */
+    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-display: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+
+    /* ── Color tokens ── */
+    --color-primary:     #0A2540;
+    --color-primary-light: #e8eef5;
+    --color-primary-hover: #0d3980;
+
+    --color-accent:      #14B8A6;
+    --color-accent-light: #e6f8f6;
+    --color-accent-hover: #0f9b8c;
+
+    --color-warning:     #F97316;
+    --color-warning-light: #fff4ed;
+    --color-warning-hover: #ea6100;
+
+    --color-surface:     #F5F7FA;
+    --color-surface-alt: #edf0f5;
+
+    --color-text-primary:   #0f172a;
+    --color-text-secondary: #475569;
+    --color-text-muted:     #94a3b8;
+    --color-text-inverse:   #ffffff;
+
+    --color-border:      rgba(10,37,64,0.10);
+    --color-border-strong: rgba(10,37,64,0.18);
+
+    /* ── Shadows ── */
+    --shadow-xs:   0 1px 2px rgba(10,37,64,0.05);
+    --shadow-sm:   0 1px 4px rgba(10,37,64,0.06), 0 0 0 1px rgba(10,37,64,0.04);
+    --shadow-md:   0 4px 12px rgba(10,37,64,0.08), 0 0 0 1px rgba(10,37,64,0.04);
+    --shadow-lg:   0 6px 24px rgba(10,37,64,0.10), 0 0 0 1px rgba(10,37,64,0.05);
+    --shadow-xl:   0 12px 40px rgba(10,37,64,0.14), 0 0 0 1px rgba(10,37,64,0.06);
+    --shadow-teal: 0 4px 14px rgba(20,184,166,0.30);
+
+    /* ── Spacing scale (mirrors Tailwind for JS use) ── */
+    --spacing-xs:  0.25rem;  /* 4px  */
+    --spacing-sm:  0.5rem;   /* 8px  */
+    --spacing-md:  1rem;     /* 16px */
+    --spacing-lg:  1.5rem;   /* 24px */
+    --spacing-xl:  2rem;     /* 32px */
+    --spacing-2xl: 3rem;     /* 48px */
+
+    /* ── Radius ── */
+    --radius-sm:  0.5rem;   /* 8px  */
+    --radius-md:  0.75rem;  /* 12px */
+    --radius-lg:  1rem;     /* 16px — rounded-2xl */
+    --radius-xl:  1.5rem;   /* 24px — rounded-3xl */
+    --radius-full: 9999px;
+
+    /* ── Typography ── */
+    --text-xs:   0.75rem;   /* 12px */
+    --text-sm:   0.875rem;  /* 14px */
+    --text-base: 1rem;      /* 16px */
+    --text-lg:   1.125rem;  /* 18px */
+    --text-xl:   1.25rem;   /* 20px */
+    --text-2xl:  1.5rem;    /* 24px */
+    --text-3xl:  1.875rem;  /* 30px */
+    --text-4xl:  2.25rem;   /* 36px */
+    --text-5xl:  3rem;      /* 48px */
+
+    --leading-tight:  1.25;
+    --leading-snug:   1.375;
+    --leading-normal: 1.5;
+    --leading-relaxed:1.625;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface-50 text-slate-900 font-sans antialiased;
+  }
+
+  * {
+    @apply box-border;
+  }
+}
+
+@layer utilities {
+  .safe-area-pb {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .page-scroll {
+    @apply overflow-y-auto overscroll-y-contain;
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+  }
+}
+
+/* ── Landing page animations ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+  50%       { box-shadow: 0 0 0 20px rgba(37, 99, 235, 0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes blob {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25%       { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50%       { border-radius: 50% 60% 30% 60% / 30% 60% 40% 70%; }
+  75%       { border-radius: 60% 40% 60% 30% / 70% 40% 50% 50%; }
+}
+
+.animate-fade-up   { animation: fade-up  0.7s ease both; }
+.animate-fade-in   { animation: fade-in  0.5s ease both; }
+.animate-float     { animation: float   5s ease-in-out infinite; }
+.animate-blob      { animation: blob    8s ease-in-out infinite; }
+.animate-pulse-glow{ animation: pulse-glow 2.5s ease-in-out infinite; }
+.animate-shimmer   {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* staggered children */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
+
+/* ── Modal/slide animations (existing) ── */
+@keyframes slide-in-from-bottom-4 {
+  from { transform: translateY(1rem); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.animate-in              { animation-fill-mode: both; }
+.slide-in-from-bottom-4  { animation-name: slide-in-from-bottom-4; }
+
+/* ── Additional animations ── */
+@keyframes scale-in {
+  from { transform: scale(0.94); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+@keyframes slide-up {
+  from { transform: translateY(12px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes spring-in {
+  0%   { transform: scale(0.90); opacity: 0; }
+  60%  { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+.animate-scale-in  { animation: scale-in  0.2s ease both; }
+.animate-slide-up  { animation: slide-up  0.3s ease both; }
+.animate-spring-in { animation: spring-in 0.35s ease both; }
+
+/* Scrollbar hide utility */
+.scrollbar-none { scrollbar-width: none; -ms-overflow-style: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }

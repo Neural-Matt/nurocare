@@ -1,0 +1,18 @@
+{
+  "name": "NuroCare",
+  "short_name": "NuroCare",
+  "description": "Affordable, digital-first health insurance for every family.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F7FA",
+  "theme_color": "#0A2540",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
