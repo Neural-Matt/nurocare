@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/client';
+const supabase = createClient();
 import { FamilyMember } from '@/types';
 import { useAuth } from './useAuth';
 import { MOCK_FAMILY_MEMBERS } from '@/lib/mock-data';
