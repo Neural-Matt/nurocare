@@ -175,7 +175,7 @@ export function FeaturesSection() {
                 className={`flex flex-col ${f.reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-10 lg:gap-16`}
               >
                 {/* Text side */}
-                <div className={`flex-1 animate-fade-up stagger-${(i % 3) + 1}`}>
+                <div className={`flex-1`}>
                   <div className="flex items-center gap-3 mb-5">
                     <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${f.color} flex items-center justify-center shadow-lg`}>
                       <Icon size={22} className="text-white" />

@@ -60,7 +60,7 @@ export function HowItWorksSection() {
             return (
               <div
                 key={step.number}
-                className={`group relative ${step.cardClass} border rounded-2xl p-7 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 animate-fade-up stagger-${i + 1}`}
+                className={`group relative ${step.cardClass} border rounded-2xl p-7 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300`}
               >
                 {/* Step number */}
                 <span className="absolute top-5 right-5 font-display font-black text-5xl text-slate-200 select-none leading-none">
