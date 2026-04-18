@@ -86,7 +86,7 @@ export function PricingSection() {
           {plans.map((plan, i) => (
             <div
               key={plan.id}
-              className={`relative bg-white rounded-3xl border-2 ${plan.color} p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 animate-fade-up stagger-${i + 1}`}
+              className={`relative bg-white rounded-3xl border-2 ${plan.color} p-8 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300`}
             >
               {/* Popular badge */}
               {plan.popular && (

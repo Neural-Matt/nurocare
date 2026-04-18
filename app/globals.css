@@ -132,8 +132,8 @@
   75%       { border-radius: 60% 40% 60% 30% / 70% 40% 50% 50%; }
 }
 
-.animate-fade-up   { animation: fade-up  0.7s ease both; }
-.animate-fade-in   { animation: fade-in  0.5s ease both; }
+.animate-fade-up   { animation: fade-up  0.7s ease forwards; }
+.animate-fade-in   { animation: fade-in  0.5s ease forwards; }
 .animate-float     { animation: float   5s ease-in-out infinite; }
 .animate-blob      { animation: blob    8s ease-in-out infinite; }
 .animate-pulse-glow{ animation: pulse-glow 2.5s ease-in-out infinite; }

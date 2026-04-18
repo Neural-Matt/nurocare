@@ -78,7 +78,7 @@ export function TrustSection() {
           {testimonials.map((t, i) => (
             <div
               key={t.name}
-              className={`bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 animate-fade-up stagger-${i + 1}`}
+              className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
             >
               <div className="flex gap-1 mb-4">
                 {Array(t.rating).fill(0).map((_, j) => (
