@@ -1,6 +1,6 @@
 'use client';
 
-import { Shield, ClipboardList, Video, Pill } from 'lucide-react';
+import { Shield, ClipboardList, Video, Pill, Search } from 'lucide-react';
 
 const features = [
   {
@@ -23,7 +23,7 @@ const features = [
         </div>
         <div className="mb-4">
           <p className="text-primary-300 text-xs mb-1">Policy Number</p>
-          <p className="text-white font-mono font-bold tracking-widest">NH-2026-00042</p>
+          <p className="text-white font-mono font-bold tracking-widest">NC-2026-00042</p>
         </div>
         <div className="flex justify-between text-primary-100 text-sm">
           <span>ZMW 350 / month</span>
@@ -123,7 +123,7 @@ const features = [
     visual: (
       <div className="w-full space-y-3">
         <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 flex items-center gap-3 shadow-sm">
-          <span className="text-slate-400 text-sm">🔍</span>
+          <Search className="w-4 h-4 text-slate-400 shrink-0" />
           <span className="text-slate-400 text-sm">Search medications…</span>
         </div>
         {[

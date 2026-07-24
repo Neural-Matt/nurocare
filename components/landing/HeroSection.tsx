@@ -139,7 +139,7 @@ export function HeroSection() {
                     <div className="grid grid-cols-2 gap-2">
                       <div className="bg-white/10 rounded-lg p-2">
                         <p className="text-white/40 text-[8px] mb-0.5">Policy No.</p>
-                        <p className="text-white text-[9px] font-mono font-semibold">NH-2026-042</p>
+                        <p className="text-white text-[9px] font-mono font-semibold">NC-2026-042</p>
                       </div>
                       <div className="bg-white/10 rounded-lg p-2">
                         <p className="text-white/40 text-[8px] mb-0.5">Premium</p>

@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { HTMLAttributes, ReactNode } from 'react';
 
-type CardVariant = 'default' | 'elevated' | 'flat' | 'outline' | 'navy' | 'teal' | 'glass' | 'gradient-subtle';
+type CardVariant = 'default' | 'navy' | 'teal' | 'gradient-subtle';
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   /** Visual style */
@@ -18,18 +18,10 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 const cardVariants: Record<CardVariant, string> = {
   // Clean white card — default
   default:  'bg-white border border-slate-100/80 shadow-card',
-  // Lifted — more shadow, premium feel
-  elevated: 'bg-white border border-slate-100 shadow-lg',
-  // No shadow, subtle border only
-  flat:     'bg-white border border-slate-200',
-  // Border-only (transparent bg)
-  outline:  'bg-transparent border-2 border-primary-100',
   // Dark navy card — for highlight/featured blocks
   navy:     'bg-primary-800 border-none text-white',
   // Teal-tinted surface
   teal:     'bg-accent-50 border border-accent-100',
-  // Glassmorphism effect
-  glass:    'bg-white/70 backdrop-blur-md border border-white/50 shadow-lg',
   // Subtle gradient background
   'gradient-subtle': 'bg-gradient-subtle border border-accent-100/50 shadow-card',
 };
@@ -53,8 +45,7 @@ export function Card({
     xl:   'p-8',
   };
 
-  const dividerColor =
-    variant === 'navy' ? 'border-white/10' : variant === 'glass' ? 'border-white/20' : 'border-slate-100';
+  const dividerColor = variant === 'navy' ? 'border-white/10' : 'border-slate-100';
 
   return (
     <div

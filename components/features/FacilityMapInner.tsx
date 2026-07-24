@@ -77,8 +77,8 @@ export default function FacilityMapInner({ facilities }: FacilityMapProps) {
               ">
                 <span style="
                   transform: rotate(45deg);
-                  color: white; font-size: 13px; font-weight: 700; line-height: 1;
-                ">${facility.type === 'hospital' ? '🏥' : facility.type === 'clinic' ? '🩺' : '💊'}</span>
+                  width: 8px; height: 8px; border-radius: 50%; background: white;
+                "></span>
               </div>
               <div style="
                 width: 2px; height: 8px; background: ${color}; opacity: 0.6;
@@ -141,9 +141,7 @@ export default function FacilityMapInner({ facilities }: FacilityMapProps) {
                 border:2.5px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.25);
                 display:flex;align-items:center;justify-content:center;
               ">
-                <span style="transform:rotate(45deg);color:white;font-size:13px;font-weight:700;">
-                  ${facility.type === 'hospital' ? '🏥' : facility.type === 'clinic' ? '🩺' : '💊'}
-                </span>
+                <span style="transform:rotate(45deg);width:8px;height:8px;border-radius:50%;background:white;"></span>
               </div>
               <div style="width:2px;height:8px;background:${color};opacity:0.6;"></div>
             </div>

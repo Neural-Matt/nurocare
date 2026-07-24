@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Facility, FacilityType } from '@/types';
 import { cn } from '@/lib/utils';
-import { MapPin, Phone, Clock, ChevronRight, Building2, Pill, Stethoscope, Star } from 'lucide-react';
+import { MapPin, Phone, Clock, ChevronRight, Building2, Pill, Stethoscope, Star, ShieldCheck } from 'lucide-react';
 
 // ── Type config ──────────────────────────────────────────────────────────────
 
@@ -77,12 +77,13 @@ export function FacilityCard({ facility, compact = false, className }: FacilityC
         </div>
         <div className="flex items-center gap-3 mt-2">
           <span className={cn(
-            'text-[11px] font-semibold px-2 py-0.5 rounded-full',
+            'inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full',
             facility.covered
               ? 'bg-accent-50 text-accent-700'
               : 'bg-slate-100 text-slate-500',
           )}>
-            {facility.covered ? '✓ Covered' : 'Not Covered'}
+            {facility.covered && <ShieldCheck className="w-3 h-3" />}
+            {facility.covered ? 'Covered' : 'Not Covered'}
           </span>
           <span className={cn(
             'text-[11px] font-semibold px-2 py-0.5 rounded-full',
@@ -139,7 +140,8 @@ export function FacilityCard({ facility, compact = false, className }: FacilityC
                   ? 'bg-accent-50 text-accent-700'
                   : 'bg-slate-100 text-slate-500',
               )}>
-                {facility.covered ? '✓ Covered' : 'Not Covered'}
+                {facility.covered && <ShieldCheck className="w-3 h-3" />}
+                {facility.covered ? 'Covered' : 'Not Covered'}
               </span>
               {/* Open/Closed badge */}
               <span className={cn(

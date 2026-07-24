@@ -40,7 +40,7 @@ export const MOCK_SUBSCRIPTION: Subscription = {
   status: 'active',
   start_date: new Date('2026-01-01').toISOString(),
   end_date: new Date('2027-01-01').toISOString(),
-  policy_number: 'NH-2026-00042',
+  policy_number: 'NC-2026-00042',
   created_at: new Date('2026-01-01').toISOString(),
   plan: MOCK_PLAN,
 };

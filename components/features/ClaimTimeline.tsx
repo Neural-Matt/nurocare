@@ -5,6 +5,7 @@ import {
   ClipboardList,
   Search,
   CheckCircle2,
+  Check,
   XCircle,
   Banknote,
   Clock,
@@ -182,8 +183,9 @@ export function ClaimTimeline({ claim }: { claim: Claim }) {
                   </span>
                 )}
                 {nodeState === 'done' && (
-                  <span className="text-[10px] font-semibold text-accent-600 bg-accent-50 border border-accent-100 px-2 py-0.5 rounded-full">
-                    ✓ Done
+                  <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-accent-600 bg-accent-50 border border-accent-100 px-2 py-0.5 rounded-full">
+                    <Check className="w-2.5 h-2.5 stroke-[3]" />
+                    Done
                   </span>
                 )}
               </div>

@@ -28,7 +28,7 @@ export function formatRelativeTime(date: string): string {
 
 /** Generate a policy number */
 export function generatePolicyNumber(): string {
-  const prefix = 'NH';
+  const prefix = 'NC';
   const year = new Date().getFullYear();
   const random = Math.floor(Math.random() * 100000).toString().padStart(5, '0');
   return `${prefix}-${year}-${random}`;

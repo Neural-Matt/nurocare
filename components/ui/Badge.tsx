@@ -31,12 +31,13 @@ export function Badge({ variant = 'neutral', children, className }: BadgeProps) 
   );
 }
 
-/** Map claim status to badge variant */
+/** Map claim status to badge variant — each status gets a distinct variant
+ *  so e.g. "Approved" and "Paid" never render as the same color. */
 export function claimStatusBadge(status: ClaimStatus) {
   const map: Record<ClaimStatus, { variant: BadgeVariant; label: string }> = {
-    submitted: { variant: 'info', label: 'Submitted' },
+    submitted: { variant: 'neutral', label: 'Submitted' },
     reviewing: { variant: 'warning', label: 'Under Review' },
-    approved: { variant: 'success', label: 'Approved' },
+    approved: { variant: 'info', label: 'Approved' },
     rejected: { variant: 'error', label: 'Rejected' },
     paid: { variant: 'success', label: 'Paid' },
   };

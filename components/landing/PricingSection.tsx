@@ -175,7 +175,7 @@ export function PricingSection() {
             14-day free trial for all new members • No credit card required
           </p>
           <p className="text-slate-400 text-xs">
-            Regulated by PIA • Trusted by 2,500+ families across Africa
+            Regulated by PIA • Trusted by 2,500+ families across Zambia
           </p>
         </div>
       </div>

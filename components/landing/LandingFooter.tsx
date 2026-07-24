@@ -8,6 +8,13 @@ const links = {
   Support:  ['Help Center', 'Contact', 'Status', 'Privacy'],
 };
 
+const SOCIAL_LINKS = [
+  { abbr: 'X',  label: 'X (Twitter)' },
+  { abbr: 'FB', label: 'Facebook' },
+  { abbr: 'IG', label: 'Instagram' },
+  { abbr: 'LI', label: 'LinkedIn' },
+];
+
 export function LandingFooter() {
   return (
     <footer className="bg-slate-950 text-white px-5 sm:px-8 pt-16 pb-10">
@@ -17,7 +24,7 @@ export function LandingFooter() {
           <div className="col-span-2 sm:col-span-1">
             <Link href="/" className="flex items-center gap-2.5 mb-4">
               <div className="w-8 h-8 rounded-xl bg-primary-800 flex items-center justify-center shadow-md">
-                <span className="text-white font-display font-bold text-xs">NH</span>
+                <span className="text-white font-display font-bold text-xs">NC</span>
               </div>
               <span className="font-display font-bold text-lg text-white">NuroCare</span>
             </Link>
@@ -26,12 +33,13 @@ export function LandingFooter() {
             </p>
             {/* Social icons */}
             <div className="flex gap-3 mt-6">
-              {['X', 'FB', 'IG', 'LI'].map((s) => (
+              {SOCIAL_LINKS.map(({ abbr, label }) => (
                 <button
-                  key={s}
+                  key={abbr}
+                  aria-label={label}
                   className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-xs font-semibold transition-colors"
                 >
-                  {s}
+                  {abbr}
                 </button>
               ))}
             </div>

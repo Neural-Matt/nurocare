@@ -5,6 +5,7 @@ import { Play } from 'lucide-react';
 
 export function VideoSection() {
   const [playing, setPlaying] = useState(false);
+  const videoId = process.env.NEXT_PUBLIC_DEMO_VIDEO_ID;
 
   return (
     <section className="bg-white py-20 sm:py-28 px-5 sm:px-8">
@@ -19,19 +20,35 @@ export function VideoSection() {
 
         {/* Video container */}
         <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-100 aspect-video bg-gradient-to-br from-slate-800 to-slate-900">
-          {!playing ? (
+          {playing && videoId ? (
+            <iframe
+              src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+              title="NuroCare overview"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
+          ) : (
             <>
               {/* Thumbnail overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-primary-900/80 via-slate-900/70 to-accent-900/60 flex flex-col items-center justify-center gap-4">
                 <div className="w-12 h-1 bg-white/20 rounded-full mb-2" />
-                <button
-                  onClick={() => setPlaying(true)}
-                  className="group w-20 h-20 rounded-full bg-white/15 border-2 border-white/40 backdrop-blur-sm flex items-center justify-center hover:bg-white/25 hover:scale-105 active:scale-95 transition-all duration-300 animate-pulse-glow"
-                  aria-label="Play video"
-                >
-                  <Play size={32} className="text-white fill-white ml-1" />
-                </button>
-                <p className="text-white/70 text-sm font-medium">Watch 90-sec overview</p>
+                {videoId ? (
+                  <button
+                    onClick={() => setPlaying(true)}
+                    className="group w-20 h-20 rounded-full bg-white/15 border-2 border-white/40 backdrop-blur-sm flex items-center justify-center hover:bg-white/25 hover:scale-105 active:scale-95 transition-all duration-300 animate-pulse-glow"
+                    aria-label="Play video"
+                  >
+                    <Play size={32} className="text-white fill-white ml-1" />
+                  </button>
+                ) : (
+                  <div className="w-20 h-20 rounded-full bg-white/10 border-2 border-white/20 flex items-center justify-center">
+                    <Play size={32} className="text-white/40 ml-1" />
+                  </div>
+                )}
+                <p className="text-white/70 text-sm font-medium">
+                  {videoId ? 'Watch 90-sec overview' : 'Demo video coming soon'}
+                </p>
               </div>
               {/* Background grid art */}
               <div
@@ -42,14 +59,6 @@ export function VideoSection() {
                 }}
               />
             </>
-          ) : (
-            <iframe
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
-              title="NuroCare overview"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              className="absolute inset-0 w-full h-full"
-            />
           )}
         </div>
       </div>
