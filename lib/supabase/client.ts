@@ -12,6 +12,12 @@ export const hasSupabaseEnv = Boolean(
   process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
+// Mock mode is opt-in only — it must never turn on just because env vars
+// happen to be missing, or a misconfigured production deploy (e.g. a
+// forgotten Vercel env var) would silently fall back to a fake logged-in
+// admin session instead of failing loudly.
+export const IS_MOCK_MODE = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true';
+
 const mockDatabase = {
   profiles: [MOCK_PROFILE],
   claims: [...MOCK_CLAIMS],
@@ -128,8 +134,16 @@ function createMockSupabaseClient() {
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createClient() {
-  if (!hasSupabaseEnv) {
+  if (IS_MOCK_MODE) {
     return createMockSupabaseClient();
+  }
+
+  if (!hasSupabaseEnv) {
+    throw new Error(
+      'Supabase is not configured: set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY ' +
+        'in the environment, or set NEXT_PUBLIC_MOCK_AUTH=true for local mock mode. ' +
+        'Refusing to silently fall back to mock data in an unconfigured environment.'
+    );
   }
 
   return createBrowserClient(
