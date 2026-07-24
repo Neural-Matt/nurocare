@@ -1,13 +1,14 @@
 import { cn } from '@/lib/utils';
 import { HTMLAttributes, ReactNode } from 'react';
 
-type CardVariant = 'default' | 'elevated' | 'flat' | 'outline' | 'navy' | 'teal';
+type CardVariant = 'default' | 'elevated' | 'flat' | 'outline' | 'navy' | 'teal' | 'glass' | 'gradient-subtle';
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   /** Visual style */
   variant?: CardVariant;
   padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   hover?: boolean;
+  interactive?: boolean;
   /** Optional header rendered above the card body with a subtle divider */
   header?: ReactNode;
   /** Optional footer rendered below the card body with a subtle divider */
@@ -17,8 +18,8 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 const cardVariants: Record<CardVariant, string> = {
   // Clean white card — default
   default:  'bg-white border border-slate-100/80 shadow-card',
-  // Lifted — more shadow
-  elevated: 'bg-white border border-slate-100 shadow-md',
+  // Lifted — more shadow, premium feel
+  elevated: 'bg-white border border-slate-100 shadow-lg',
   // No shadow, subtle border only
   flat:     'bg-white border border-slate-200',
   // Border-only (transparent bg)
@@ -27,12 +28,17 @@ const cardVariants: Record<CardVariant, string> = {
   navy:     'bg-primary-800 border-none text-white',
   // Teal-tinted surface
   teal:     'bg-accent-50 border border-accent-100',
+  // Glassmorphism effect
+  glass:    'bg-white/70 backdrop-blur-md border border-white/50 shadow-lg',
+  // Subtle gradient background
+  'gradient-subtle': 'bg-gradient-subtle border border-accent-100/50 shadow-card',
 };
 
 export function Card({
   variant = 'default',
   padding = 'md',
   hover,
+  interactive = false,
   header,
   footer,
   className,
@@ -48,14 +54,15 @@ export function Card({
   };
 
   const dividerColor =
-    variant === 'navy' ? 'border-white/10' : 'border-slate-100';
+    variant === 'navy' ? 'border-white/10' : variant === 'glass' ? 'border-white/20' : 'border-slate-100';
 
   return (
     <div
       className={cn(
-        'rounded-2xl overflow-hidden',
+        'rounded-2xl overflow-hidden transition-all duration-200',
         cardVariants[variant],
-        hover && 'transition-all duration-200 hover:shadow-card-hover hover:-translate-y-0.5 cursor-pointer',
+        hover && 'hover:shadow-card-hover hover:border-accent-200 hover:-translate-y-0.5',
+        interactive && 'cursor-pointer',
         !header && !footer && paddings[padding],
         className
       )}

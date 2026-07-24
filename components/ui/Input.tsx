@@ -69,12 +69,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               'w-full rounded-xl border bg-white text-slate-900 placeholder:text-slate-400',
               'transition-all duration-150',
               // Focus: teal glow
-              'focus:outline-none focus:ring-2',
+              'focus:outline-none focus:ring-2 focus:ring-offset-1',
               error
                 ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
                 : success
                   ? 'border-accent-500 focus:border-accent-500 focus:ring-accent-500/20'
-                  : 'border-slate-200 focus:border-accent-500 focus:ring-accent-500/20',
+                  : 'border-slate-200 focus:border-accent-500 focus:ring-accent-500/20 hover:border-slate-300',
               sizeStyles[size],
               leftIcon  && leftPad[size],
               rightIcon && rightPad[size],

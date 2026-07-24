@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createClient } from '@/lib/supabase/client';
+import { createClient, hasSupabaseEnv } from '@/lib/supabase/client';
 const supabase = createClient();
 import { Subscription, Plan } from '@/types';
 import { useAuth } from './useAuth';
@@ -10,7 +10,7 @@ import { generatePolicyNumber } from '@/lib/utils';
 import { addYears } from 'date-fns';
 import toast from 'react-hot-toast';
 
-const IS_MOCK = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true';
+const IS_MOCK = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true' || !hasSupabaseEnv;
 
 export function useSubscriptions() {
   const { user } = useAuth();

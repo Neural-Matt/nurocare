@@ -152,44 +152,57 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="bg-slate-50 py-20 sm:py-28 px-5 sm:px-8 overflow-hidden">
-      <div className="max-w-6xl mx-auto">
+    <section id="features" className="relative bg-white py-20 sm:py-28 px-5 sm:px-8 overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute top-20 right-10 w-72 h-72 rounded-full bg-accent-500/5 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-20 left-20 w-96 h-96 rounded-full bg-primary-800/5 blur-3xl pointer-events-none" />
+      
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
-        <div className="text-center mb-20">
-          <p className="text-primary-600 font-semibold text-sm uppercase tracking-widest mb-3">Everything you need</p>
-          <h2 className="font-display font-extrabold text-4xl sm:text-5xl text-slate-900 leading-tight">
-            Built for real life
+        <div className="text-center mb-20 animate-fade-up">
+          <p className="text-accent-600 font-semibold text-sm uppercase tracking-widest mb-3 inline-flex items-center gap-2 bg-accent-50 px-3 py-1 rounded-full">
+            <span className="w-2 h-2 rounded-full bg-accent-500"></span> Core Features
+          </p>
+          <h2 className="font-display font-extrabold text-4xl sm:text-5xl text-primary-800 leading-tight mb-4">
+            Everything you need for smarter healthcare
           </h2>
-          <p className="text-slate-500 text-lg mt-4 max-w-xl mx-auto">
-            Every feature designed to make healthcare simpler, faster, and more human.
+          <p className="text-slate-600 text-lg max-w-2xl mx-auto">
+            Every feature designed with one goal: make healthcare simple, accessible, and human.
           </p>
         </div>
 
         {/* Feature rows */}
-        <div className="space-y-24">
+        <div className="space-y-28">
           {features.map((f, i) => {
             const Icon = f.icon;
             return (
               <div
                 key={f.title}
-                className={`flex flex-col ${f.reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-10 lg:gap-16`}
+                className={`flex flex-col ${f.reverse ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center gap-10 lg:gap-16 animate-fade-up`}
+                style={{ animationDelay: `${i * 100}ms` }}
               >
                 {/* Text side */}
-                <div className={`flex-1`}>
+                <div className="flex-1">
                   <div className="flex items-center gap-3 mb-5">
-                    <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${f.color} flex items-center justify-center shadow-lg`}>
-                      <Icon size={22} className="text-white" />
+                    <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${f.color} flex items-center justify-center shadow-lg shadow-primary-800/20`}>
+                      <Icon size={24} className="text-white" strokeWidth={1.5} />
                     </div>
-                    <span className={`px-3 py-1 rounded-full ${f.bg} border ${f.borderColor} text-xs font-bold text-slate-600`}>
+                    <span className={`px-3 py-1 rounded-full ${f.bg} border ${f.borderColor} text-xs font-bold text-primary-800`}>
                       {f.badge}
                     </span>
                   </div>
-                  <h3 className="font-display font-extrabold text-3xl sm:text-4xl text-slate-900 mb-4">{f.title}</h3>
-                  <p className="text-slate-500 text-lg leading-relaxed">{f.description}</p>
+                  <h3 className="font-display font-bold text-3xl sm:text-4xl text-primary-800 mb-4 leading-tight">
+                    {f.title}
+                  </h3>
+                  <p className="text-slate-600 text-lg leading-relaxed">{f.description}</p>
                 </div>
 
                 {/* Visual side */}
-                <div className="flex-1 w-full max-w-md">{f.visual}</div>
+                <div className="flex-1 w-full max-w-md animate-glow-in">
+                  <div className="rounded-2xl overflow-hidden shadow-2xl shadow-primary-800/10">
+                    {f.visual}
+                  </div>
+                </div>
               </div>
             );
           })}

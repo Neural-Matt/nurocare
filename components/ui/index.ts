@@ -23,6 +23,13 @@ export { Skeleton } from './Skeleton';
 
 export { EmptyState } from './EmptyState';
 
+// Specialized cards & displays
+export { StatCard } from './StatCard';
+
+export { HealthInsightCard } from './HealthInsightCard';
+
+export { ProgressRing } from './ProgressRing';
+
 // Typography
 export {
   Heading,

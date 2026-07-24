@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { AppNotification } from '@/types';
 import { MOCK_NOTIFICATIONS } from '@/lib/mock-data';
 
-const IS_MOCK = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true';
+const IS_MOCK = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true' || !process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export function useNotifications() {
   const [notifications, setNotifications] = useState<AppNotification[]>([]);

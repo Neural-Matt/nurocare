@@ -3,7 +3,7 @@ import { ButtonHTMLAttributes, forwardRef, ReactNode } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Visual style of the button */
-  variant?: 'primary' | 'gradient' | 'teal' | 'orange' | 'outline' | 'outline-teal' | 'ghost' | 'danger';
+  variant?: 'primary' | 'gradient' | 'teal' | 'orange' | 'outline' | 'outline-teal' | 'ghost' | 'danger' | 'secondary' | 'elevated';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   loading?: boolean;
   fullWidth?: boolean;
@@ -21,7 +21,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const variants = {
       // Deep navy — primary actions
       primary:
-        'bg-primary-800 text-white hover:bg-primary-700 focus-visible:ring-primary-800 shadow-sm',
+        'bg-primary-800 text-white hover:bg-primary-700 focus-visible:ring-primary-800 shadow-sm hover:shadow-md transition-shadow',
       // Gradient blue→teal — hero CTAs
       gradient:
         'bg-gradient-to-r from-primary-800 via-primary-700 to-accent-500 text-white ' +
@@ -30,22 +30,28 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         'transition-shadow',
       // Teal — secondary/positive actions
       teal:
-        'bg-accent-500 text-white hover:bg-accent-600 focus-visible:ring-accent-500 shadow-sm',
+        'bg-accent-500 text-white hover:bg-accent-600 focus-visible:ring-accent-500 shadow-sm hover:shadow-accent-glow transition-shadow',
       // Orange — CTAs and highlights
       orange:
-        'bg-warning-500 text-white hover:bg-warning-600 focus-visible:ring-warning-500 shadow-sm',
+        'bg-warning-500 text-white hover:bg-warning-600 focus-visible:ring-warning-500 shadow-sm hover:shadow-md transition-shadow',
       // Outline navy
       outline:
-        'border-2 border-primary-800 text-primary-800 hover:bg-primary-50 focus-visible:ring-primary-800',
+        'border-2 border-primary-800 text-primary-800 hover:bg-primary-50 focus-visible:ring-primary-800 transition-colors',
       // Outline teal
       'outline-teal':
-        'border-2 border-accent-500 text-accent-600 hover:bg-accent-50 focus-visible:ring-accent-500',
-      // Ghost
+        'border-2 border-accent-500 text-accent-600 hover:bg-accent-50 focus-visible:ring-accent-500 transition-colors',
+      // Ghost — minimal
       ghost:
-        'text-slate-600 hover:bg-slate-100 focus-visible:ring-slate-400',
+        'text-slate-600 hover:bg-slate-100 focus-visible:ring-slate-400 transition-colors',
       // Danger
       danger:
-        'bg-red-500 text-white hover:bg-red-600 focus-visible:ring-red-400',
+        'bg-red-500 text-white hover:bg-red-600 focus-visible:ring-red-400 shadow-sm hover:shadow-md transition-shadow',
+      // Secondary — muted
+      secondary:
+        'bg-slate-100 text-slate-700 hover:bg-slate-200 focus-visible:ring-slate-400 transition-colors',
+      // Elevated — with depth
+      elevated:
+        'bg-white border border-slate-100 text-primary-800 shadow-md hover:shadow-lg hover:border-accent-200 transition-all duration-200',
     };
 
     const sizes = {
