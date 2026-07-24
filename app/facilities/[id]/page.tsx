@@ -5,7 +5,8 @@ import dynamic from 'next/dynamic';
 import { AppShell } from '@/components/layout/AppShell';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { getFacilityById, MOCK_FACILITIES } from '@/lib/mock-facilities';
+import { ListSkeleton } from '@/components/ui/Skeleton';
+import { useFacilities } from '@/hooks/useFacilities';
 import { FACILITY_TYPE_CONFIG } from '@/components/features/FacilityCard';
 import {
   MapPin,
@@ -50,7 +51,17 @@ function StarRow({ rating }: { rating: number }) {
 
 export default function FacilityDetailPage() {
   const params = useParams();
-  const facility = getFacilityById(params.id as string);
+  const { facilities, loading } = useFacilities();
+
+  if (loading) {
+    return (
+      <AppShell title="Loading…">
+        <ListSkeleton count={3} />
+      </AppShell>
+    );
+  }
+
+  const facility = facilities.find((f) => f.id === (params.id as string));
 
   if (!facility) notFound();
 
@@ -60,7 +71,7 @@ export default function FacilityDetailPage() {
   const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${facility.lat},${facility.lng}&destination_place_name=${encodeURIComponent(facility.name)}`;
 
   // Show 3 other facilities nearby for discovery
-  const nearby = MOCK_FACILITIES.filter((f) => f.id !== facility.id).slice(0, 3);
+  const nearby = facilities.filter((f) => f.id !== facility.id).slice(0, 3);
 
   return (
     <AppShell title={facility.name}>

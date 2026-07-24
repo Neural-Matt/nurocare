@@ -5,8 +5,9 @@ import { AppShell } from '@/components/layout/AppShell';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { ListSkeleton } from '@/components/ui/Skeleton';
 import { cn } from '@/lib/utils';
-import { MOCK_DOCTORS } from '@/lib/mock-data';
+import { useDoctors } from '@/hooks/useDoctors';
 import { Doctor, DoctorSpecialty, DoctorAvailability } from '@/types';
 import {
   MessageCircle,
@@ -141,14 +142,15 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default function TelemedicinePage() {
+  const { doctors, loading } = useDoctors();
   const [filter, setFilter] = useState<string>('all');
 
   const filtered =
     filter === 'all'
-      ? MOCK_DOCTORS
-      : MOCK_DOCTORS.filter((d) => d.specialty === filter);
+      ? doctors
+      : doctors.filter((d) => d.specialty === filter);
 
-  const availableCount = MOCK_DOCTORS.filter((d) => d.availability === 'available').length;
+  const availableCount = doctors.filter((d) => d.availability === 'available').length;
 
   return (
     <AppShell title="See a Doctor">
@@ -221,14 +223,20 @@ export default function TelemedicinePage() {
 
         {/* Doctor list */}
         <div className="space-y-3">
-          {filtered.map((doc) => (
-            <DoctorCard key={doc.id} doctor={doc} />
-          ))}
-          {filtered.length === 0 && (
-            <div className="text-center py-10 text-slate-400">
-              <Stethoscope className="w-8 h-8 mx-auto opacity-30 mb-2" />
-              <p className="text-sm font-medium">No doctors in this specialty right now</p>
-            </div>
+          {loading ? (
+            <ListSkeleton count={3} />
+          ) : (
+            <>
+              {filtered.map((doc) => (
+                <DoctorCard key={doc.id} doctor={doc} />
+              ))}
+              {filtered.length === 0 && (
+                <div className="text-center py-10 text-slate-400">
+                  <Stethoscope className="w-8 h-8 mx-auto opacity-30 mb-2" />
+                  <p className="text-sm font-medium">No doctors in this specialty right now</p>
+                </div>
+              )}
+            </>
           )}
         </div>
 

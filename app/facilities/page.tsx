@@ -6,7 +6,8 @@ import { useSearchParams } from 'next/navigation';
 import { AppShell } from '@/components/layout/AppShell';
 import { FacilityCard, FACILITY_TYPE_CONFIG } from '@/components/features/FacilityCard';
 import { Input } from '@/components/ui/Input';
-import { MOCK_FACILITIES } from '@/lib/mock-facilities';
+import { ListSkeleton } from '@/components/ui/Skeleton';
+import { useFacilities } from '@/hooks/useFacilities';
 import { FacilityType } from '@/types';
 import {
   Search, Map, List, SlidersHorizontal,
@@ -41,6 +42,7 @@ function FacilitiesPage() {
   const searchParams = useSearchParams();
   const initialType = (searchParams.get('type') as FacilityType | null) ?? 'all';
 
+  const { facilities, loading } = useFacilities();
   const [query, setQuery]             = useState('');
   const [typeFilter, setTypeFilter]   = useState<FacilityType | 'all'>(initialType);
   const [coveredOnly, setCoveredOnly] = useState(false);
@@ -53,7 +55,7 @@ function FacilitiesPage() {
   }, [searchParams]);
 
   const filtered = useMemo(() => {
-    return MOCK_FACILITIES.filter((f) => {
+    return facilities.filter((f) => {
       const matchesSearch =
         !query.trim() ||
         f.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -65,7 +67,7 @@ function FacilitiesPage() {
 
       return matchesSearch && matchesType && matchesCovered;
     });
-  }, [query, typeFilter, coveredOnly]);
+  }, [facilities, query, typeFilter, coveredOnly]);
 
   return (
     <AppShell title="Find Facilities">
@@ -161,22 +163,27 @@ function FacilitiesPage() {
       </div>
 
       {/* ── Result count ── */}
-      <p className="text-[12px] text-slate-400 mb-3 font-medium">
-        {filtered.length} facilit{filtered.length !== 1 ? 'ies' : 'y'} found
-        {query && ` for "${query}"`}
-        {typeFilter !== 'all' && ` · ${FACILITY_TYPE_CONFIG[typeFilter].label}s`}
-        {coveredOnly && ' · Covered only'}
-      </p>
+      {!loading && (
+        <p className="text-[12px] text-slate-400 mb-3 font-medium">
+          {filtered.length} facilit{filtered.length !== 1 ? 'ies' : 'y'} found
+          {query && ` for "${query}"`}
+          {typeFilter !== 'all' && ` · ${FACILITY_TYPE_CONFIG[typeFilter].label}s`}
+          {coveredOnly && ' · Covered only'}
+        </p>
+      )}
+
+      {/* ── Loading state ── */}
+      {loading && <ListSkeleton count={5} />}
 
       {/* ── Map view ── */}
-      {view === 'map' && (
+      {!loading && view === 'map' && (
         <div className="h-[calc(100vh-320px)] min-h-[360px] rounded-2xl overflow-hidden border border-slate-100 shadow-card">
           <FacilityMap facilities={filtered} />
         </div>
       )}
 
       {/* ── List view ── */}
-      {view === 'list' && (
+      {!loading && view === 'list' && (
         <>
           {filtered.length === 0 ? (
             <div className="bg-white rounded-2xl shadow-card border border-slate-100 overflow-hidden">

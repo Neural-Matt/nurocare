@@ -8,22 +8,26 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
-import { MOCK_DRUGS } from '@/lib/mock-drugs';
+import { ListSkeleton } from '@/components/ui/Skeleton';
+import { useDrugs } from '@/hooks/useDrugs';
 import { Drug } from '@/types';
 import { Search, Pill, AlertTriangle, Stethoscope, Info, MapPin, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-// Derive unique categories
-const ALL_CATEGORIES = ['All', ...Array.from(new Set(MOCK_DRUGS.map((d) => d.category))).sort()];
-
 export default function DrugsPage() {
   const router = useRouter();
+  const { drugs, loading } = useDrugs();
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('All');
   const [selected, setSelected] = useState<Drug | null>(null);
 
+  const categories = useMemo(
+    () => ['All', ...Array.from(new Set(drugs.map((d) => d.category))).sort()],
+    [drugs]
+  );
+
   const results = useMemo(() => {
-    return MOCK_DRUGS.filter((d) => {
+    return drugs.filter((d) => {
       const matchesQuery = !query.trim() ||
         d.name.toLowerCase().includes(query.toLowerCase()) ||
         d.generic_name.toLowerCase().includes(query.toLowerCase()) ||
@@ -31,7 +35,7 @@ export default function DrugsPage() {
       const matchesCat = category === 'All' || d.category === category;
       return matchesQuery && matchesCat;
     });
-  }, [query, category]);
+  }, [drugs, query, category]);
 
   return (
     <AppShell title="Drug Reference">
@@ -52,7 +56,7 @@ export default function DrugsPage() {
 
       {/* Category filter pills */}
       <div className="flex gap-2 overflow-x-auto pb-1 mb-4 scrollbar-none">
-        {ALL_CATEGORIES.map((cat) => (
+        {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setCategory(cat)}
@@ -75,7 +79,9 @@ export default function DrugsPage() {
       </p>
 
       {/* Results */}
-      {results.length === 0 ? (
+      {loading ? (
+        <ListSkeleton count={5} />
+      ) : results.length === 0 ? (
         <Card className="flex flex-col items-center py-10 text-center gap-2">
           <Pill className="w-10 h-10 text-slate-200" />
           <p className="font-medium text-slate-500">No matches found</p>

@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/Badge';
 import { formatCurrency } from '@/lib/utils';
 import {
   Check,
+  CheckCircle2,
   ChevronRight,
   Stethoscope,
   Pill,
@@ -39,8 +40,10 @@ function featureIcon(text: string): typeof Stethoscope {
   return Check as typeof Stethoscope;
 }
 
-// Which plan ID is "most popular"
-const POPULAR_PLAN_ID = 'plan-standard';
+// Which plan is "most popular" — keyed by name, not id: real plan rows get
+// a database-generated uuid, so an id-based key would only ever match the
+// old hardcoded mock data and silently stop working once wired to Supabase.
+const POPULAR_PLAN_NAME = 'Standard Health';
 
 // Colour scheme per plan
 const PLAN_THEMES: Record<string, {
@@ -51,7 +54,7 @@ const PLAN_THEMES: Record<string, {
   iconColor: string;
   borderHighlight: string;
 }> = {
-  'plan-basic': {
+  'Basic Care': {
     header: 'from-primary-900 to-primary-800',
     glow: 'bg-accent-500/15',
     priceColor: 'text-accent-400',
@@ -59,7 +62,7 @@ const PLAN_THEMES: Record<string, {
     iconColor: 'text-primary-700',
     borderHighlight: 'border-primary-100',
   },
-  'plan-standard': {
+  'Standard Health': {
     header: 'from-accent-700 to-accent-600',
     glow: 'bg-white/10',
     priceColor: 'text-white',
@@ -67,7 +70,7 @@ const PLAN_THEMES: Record<string, {
     iconColor: 'text-accent-700',
     borderHighlight: 'border-accent-200',
   },
-  'plan-premium': {
+  'Premium Plus': {
     header: 'from-warning-600 to-warning-500',
     glow: 'bg-primary-900/20',
     priceColor: 'text-white',
@@ -77,7 +80,7 @@ const PLAN_THEMES: Record<string, {
   },
 };
 
-const DEFAULT_THEME = PLAN_THEMES['plan-basic'];
+const DEFAULT_THEME = PLAN_THEMES['Basic Care'];
 
 interface PlanCardProps {
   plan: Plan;
@@ -87,8 +90,8 @@ interface PlanCardProps {
 }
 
 export function PlanCard({ plan, isActive, onSelect, onViewDetails }: PlanCardProps) {
-  const isPopular = plan.id === POPULAR_PLAN_ID;
-  const theme = PLAN_THEMES[plan.id] ?? DEFAULT_THEME;
+  const isPopular = plan.name === POPULAR_PLAN_NAME;
+  const theme = PLAN_THEMES[plan.name] ?? DEFAULT_THEME;
 
   return (
     <div
@@ -180,8 +183,9 @@ export function PlanCard({ plan, isActive, onSelect, onViewDetails }: PlanCardPr
             fullWidth
             size="lg"
             disabled={isActive}
+            leadingIcon={isActive ? <CheckCircle2 className="w-4 h-4" /> : undefined}
           >
-            {isActive ? '✓ Your Current Plan' : 'Get This Plan'}
+            {isActive ? 'Your Current Plan' : 'Get This Plan'}
           </Button>
           <button
             onClick={() => onViewDetails(plan)}

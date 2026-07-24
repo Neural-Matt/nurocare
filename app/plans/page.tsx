@@ -5,7 +5,7 @@ import { AppShell } from '@/components/layout/AppShell';
 import { PlanCard } from '@/components/features/PlanCard';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
-import { PLANS } from '@/lib/mock-plans';
+import { usePlans } from '@/hooks/usePlans';
 import { useSubscriptions } from '@/hooks/useSubscriptions';
 import { Plan } from '@/types';
 import { formatCurrency } from '@/lib/utils';
@@ -25,7 +25,9 @@ const TRUST_PILLS = [
 ];
 
 export default function PlansPage() {
-  const { activeSubscription, subscribeToPlan, loading } = useSubscriptions();
+  const { plans, loading: plansLoading } = usePlans();
+  const { activeSubscription, subscribeToPlan, loading: subscriptionsLoading } = useSubscriptions();
+  const loading = plansLoading || subscriptionsLoading;
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [detailPlan, setDetailPlan]     = useState<Plan | null>(null);
   const [subscribing, setSubscribing]   = useState(false);
@@ -102,7 +104,7 @@ export default function PlansPage() {
         </div>
       ) : (
         <div className="space-y-6 pt-3">
-          {PLANS.map((plan, index) => (
+          {plans.map((plan, index) => (
             <div
               key={plan.id}
               className="animate-fade-up"
