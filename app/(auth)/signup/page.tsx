@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Mail, Lock, CheckCircle2, Heart } from 'lucide-react';
+import { LogoMark } from '@/components/ui/Logo';
 
 export default function SignUpPage() {
   const { signUp } = useAuth();
@@ -45,11 +46,11 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 flex flex-col">
+    <div className="min-h-screen bg-neutral-50 flex flex-col">
       {/* Brand bar */}
       <div className="bg-primary-800 px-5 py-4 flex items-center gap-2.5">
-        <div className="w-7 h-7 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center">
-          <span className="text-white text-[10px] font-bold tracking-tight">NC</span>
+        <div className="w-7 h-7 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center p-[5px]">
+          <LogoMark className="text-white" />
         </div>
         <span className="text-white font-display font-bold text-base">NuroCare</span>
       </div>
@@ -65,14 +66,14 @@ export default function SignUpPage() {
 
       {/* Form card */}
       <div className="flex-1 -mt-6 px-5 pb-10">
-        <div className="bg-white rounded-3xl shadow-card-hover border border-slate-100 p-6 max-w-sm mx-auto">
+        <div className="bg-white rounded-3xl shadow-card-hover border border-neutral-100 p-6 max-w-sm md:max-w-md mx-auto">
           {success ? (
             <div className="text-center py-6">
               <div className="w-14 h-14 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle2 className="w-7 h-7 text-accent-600" />
               </div>
-              <p className="font-display font-bold text-slate-900 text-lg">Account created!</p>
-              <p className="text-sm text-slate-500 mt-1">Redirecting you…</p>
+              <p className="font-display font-bold text-neutral-900 text-lg">Account created!</p>
+              <p className="text-sm text-neutral-500 mt-1">Redirecting you…</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -116,7 +117,7 @@ export default function SignUpPage() {
             </form>
           )}
 
-          <p className="text-center text-sm text-slate-500 mt-5">
+          <p className="text-center text-sm text-neutral-500 mt-5">
             Already have an account?{' '}
             <Link href="/login" className="text-accent-600 font-semibold hover:text-accent-700">
               Sign in
@@ -124,7 +125,7 @@ export default function SignUpPage() {
           </p>
         </div>
 
-        <p className="text-center text-xs text-slate-400 mt-5">
+        <p className="text-center text-xs text-neutral-400 mt-5 max-w-sm md:max-w-md mx-auto">
           Regulated by the Pensions and Insurance Authority
         </p>
       </div>

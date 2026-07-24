@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Users, ChevronDown, Check, X } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Users, ChevronDown, Check } from 'lucide-react';
 import { cn, getInitials } from '@/lib/utils';
 import { useFamilyMembers } from '@/hooks/useFamilyMembers';
 import { useFamilyContext } from '@/hooks/useFamilyContext';
 import { useAuth } from '@/hooks/useAuth';
-import { FamilyMember } from '@/types';
+import { springs } from '@/components/ui/motion';
 
 export function FamilyMemberSwitcher() {
   const { profile } = useAuth();
@@ -25,18 +26,18 @@ export function FamilyMemberSwitcher() {
       <button
         onClick={() => setOpen((o) => !o)}
         className={cn(
-          'flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-150',
+          'flex items-center gap-2 px-3 py-1.5 rounded-full border transition-colors duration-150',
           'text-xs font-semibold',
           open
             ? 'bg-primary-800 border-primary-800 text-white'
-            : 'bg-white border-slate-200 text-slate-700 hover:border-primary-300',
+            : 'bg-white border-neutral-200 text-neutral-700 hover:border-primary-300',
         )}
         aria-expanded={open}
         aria-haspopup="listbox"
       >
         {/* Mini avatar */}
         <div className={cn(
-          'w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black shrink-0',
+          'w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold shrink-0',
           isOwner
             ? 'bg-primary-100 text-primary-800'
             : activeMember?.gender === 'female'
@@ -50,52 +51,60 @@ export function FamilyMemberSwitcher() {
       </button>
 
       {/* Dropdown */}
-      {open && (
-        <>
-          {/* Backdrop */}
-          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} aria-hidden="true" />
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* Backdrop */}
+            <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} aria-hidden="true" />
 
-          <div className="absolute left-0 top-full mt-2 z-50 bg-white rounded-2xl shadow-xl border border-slate-100 w-56 overflow-hidden animate-fade-up">
-            {/* Account holder option */}
-            <SwitcherRow
-              label={profile?.full_name ?? 'Me (Account Holder)'}
-              sublabel="Account holder"
-              color="bg-primary-800"
-              initials={profile?.full_name ? getInitials(profile.full_name) : 'Me'}
-              active={isOwner}
-              onClick={() => { setActiveMember(null); setOpen(false); }}
-            />
+            <motion.div
+              initial={{ opacity: 0, y: -6, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -6, scale: 0.98 }}
+              transition={springs.snappy}
+              className="absolute left-0 top-full mt-2 z-50 bg-white rounded-2xl shadow-elevated border border-neutral-150 w-56 overflow-hidden"
+            >
+              {/* Account holder option */}
+              <SwitcherRow
+                label={profile?.full_name ?? 'Me (Account Holder)'}
+                sublabel="Account holder"
+                color="bg-primary-800"
+                initials={profile?.full_name ? getInitials(profile.full_name) : 'Me'}
+                active={isOwner}
+                onClick={() => { setActiveMember(null); setOpen(false); }}
+              />
 
-            {members.length > 0 && (
-              <div className="border-t border-slate-50 pt-1 pb-1">
-                {members.map((m) => (
-                  <SwitcherRow
-                    key={m.id}
-                    label={m.name}
-                    sublabel={m.relationship}
-                    color={m.gender === 'female' ? 'bg-gradient-to-br from-pink-400 to-rose-500' : 'bg-gradient-to-br from-blue-500 to-primary-700'}
-                    initials={getInitials(m.name)}
-                    active={activeMember?.id === m.id}
-                    onClick={() => { setActiveMember(m); setOpen(false); }}
-                  />
-                ))}
+              {members.length > 0 && (
+                <div className="border-t border-neutral-100 pt-1 pb-1">
+                  {members.map((m) => (
+                    <SwitcherRow
+                      key={m.id}
+                      label={m.name}
+                      sublabel={m.relationship}
+                      color={m.gender === 'female' ? 'bg-rose-500' : 'bg-blue-600'}
+                      initials={getInitials(m.name)}
+                      active={activeMember?.id === m.id}
+                      onClick={() => { setActiveMember(m); setOpen(false); }}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Manage link */}
+              <div className="border-t border-neutral-150 px-3 py-2">
+                <Link
+                  href="/family"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2 text-xs font-semibold text-accent-600 hover:text-accent-700 transition-colors"
+                >
+                  <Users className="w-3.5 h-3.5" />
+                  Manage family members
+                </Link>
               </div>
-            )}
-
-            {/* Manage link */}
-            <div className="border-t border-slate-100 px-3 py-2">
-              <Link
-                href="/family"
-                onClick={() => setOpen(false)}
-                className="flex items-center gap-2 text-xs font-semibold text-accent-600 hover:text-accent-700 transition-colors"
-              >
-                <Users className="w-3.5 h-3.5" />
-                Manage family members
-              </Link>
-            </div>
-          </div>
-        </>
-      )}
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -115,19 +124,19 @@ function SwitcherRow({
       onClick={onClick}
       className={cn(
         'w-full flex items-center gap-3 px-3 py-2.5 text-left transition-colors',
-        active ? 'bg-primary-50' : 'hover:bg-slate-50',
+        active ? 'bg-primary-50' : 'hover:bg-neutral-50',
       )}
       role="option"
       aria-selected={active}
     >
-      <div className={cn('w-8 h-8 rounded-xl flex items-center justify-center text-white text-xs font-black shrink-0', color)}>
+      <div className={cn('w-8 h-8 rounded-xl flex items-center justify-center text-white text-xs font-bold shrink-0', color)}>
         {initials}
       </div>
       <div className="flex-1 min-w-0">
-        <p className={cn('text-[13px] font-semibold truncate', active ? 'text-primary-800' : 'text-slate-800')}>
+        <p className={cn('text-[13px] font-semibold truncate', active ? 'text-primary-800' : 'text-neutral-800')}>
           {label}
         </p>
-        <p className="text-[11px] text-slate-400 capitalize">{sublabel}</p>
+        <p className="text-[11px] text-neutral-400 capitalize">{sublabel}</p>
       </div>
       {active && <Check className="w-3.5 h-3.5 text-accent-500 shrink-0" />}
     </button>

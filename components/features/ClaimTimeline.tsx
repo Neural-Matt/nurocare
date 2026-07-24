@@ -99,29 +99,29 @@ export function ClaimTimeline({ claim }: { claim: Claim }) {
           done: 'bg-accent-500 border-accent-500 text-white',
           current:
             stageStatus === 'rejected'
-              ? 'bg-red-500 border-red-400 text-white shadow-lg shadow-red-100 ring-4 ring-red-50'
-              : 'bg-primary-800 border-primary-800 text-white shadow-lg shadow-primary-100 ring-4 ring-primary-50',
-          pending: 'bg-white border-slate-200 text-slate-300',
-          unreachable: 'bg-slate-50 border-slate-150 text-slate-200',
+              ? 'bg-red-500 border-red-400 text-white ring-4 ring-red-50'
+              : 'bg-primary-800 border-primary-800 text-white ring-4 ring-primary-50',
+          pending: 'bg-white border-neutral-200 text-neutral-300',
+          unreachable: 'bg-neutral-50 border-neutral-150 text-neutral-200',
         };
 
         const connectorFilled = index < currentIndex && !(isRejected && index >= 2);
 
         const labelColor = cn(
           'font-display font-semibold text-sm leading-tight',
-          nodeState === 'done' && 'text-slate-700',
+          nodeState === 'done' && 'text-neutral-700',
           nodeState === 'current' && stageStatus === 'rejected' && 'text-red-600',
-          nodeState === 'current' && stageStatus !== 'rejected' && 'text-slate-900',
-          nodeState === 'pending' && 'text-slate-400',
-          nodeState === 'unreachable' && 'text-slate-300',
+          nodeState === 'current' && stageStatus !== 'rejected' && 'text-neutral-900',
+          nodeState === 'pending' && 'text-neutral-400',
+          nodeState === 'unreachable' && 'text-neutral-300',
         );
 
         const descColor = cn(
           'text-xs leading-snug mt-0.5',
-          nodeState === 'done' && 'text-slate-500',
-          nodeState === 'current' && 'text-slate-600',
-          nodeState === 'pending' && 'text-slate-300',
-          nodeState === 'unreachable' && 'text-slate-200',
+          nodeState === 'done' && 'text-neutral-500',
+          nodeState === 'current' && 'text-neutral-600',
+          nodeState === 'pending' && 'text-neutral-300',
+          nodeState === 'unreachable' && 'text-neutral-200',
         );
 
         return (
@@ -131,7 +131,7 @@ export function ClaimTimeline({ claim }: { claim: Claim }) {
               <div
                 className={cn(
                   'absolute left-[19px] w-0.5 transition-colors duration-500',
-                  connectorFilled ? 'bg-accent-300' : 'bg-slate-100',
+                  connectorFilled ? 'bg-accent-300' : 'bg-neutral-150',
                 )}
                 style={{ top: '40px', bottom: 0 }}
               />
@@ -197,7 +197,7 @@ export function ClaimTimeline({ claim }: { claim: Claim }) {
                 <div
                   className={cn(
                     'flex items-center gap-1 mt-1.5',
-                    nodeState === 'current' ? 'text-slate-400' : 'text-slate-300',
+                    nodeState === 'current' ? 'text-neutral-400' : 'text-neutral-300',
                   )}
                 >
                   <Clock className="w-3 h-3 shrink-0" />

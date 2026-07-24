@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Mail, Lock, Eye, EyeOff, ShieldCheck } from 'lucide-react';
+import { LogoMark } from '@/components/ui/Logo';
 
 export default function LoginPage() {
   const { signIn } = useAuth();
@@ -32,11 +33,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-50 flex flex-col">
+    <div className="min-h-screen bg-neutral-50 flex flex-col">
       {/* Top brand bar */}
       <div className="bg-primary-800 px-5 py-4 flex items-center gap-2.5">
-        <div className="w-7 h-7 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center">
-          <span className="text-white text-[10px] font-bold tracking-tight">NC</span>
+        <div className="w-7 h-7 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center p-[5px]">
+          <LogoMark className="text-white" />
         </div>
         <span className="text-white font-display font-bold text-base">NuroCare</span>
       </div>
@@ -52,7 +53,7 @@ export default function LoginPage() {
 
       {/* Form card floating over hero */}
       <div className="flex-1 -mt-6 px-5 pb-10">
-        <div className="bg-white rounded-3xl shadow-card-hover border border-slate-100 p-6 max-w-sm mx-auto">
+        <div className="bg-white rounded-3xl shadow-card-hover border border-neutral-100 p-6 max-w-sm md:max-w-md mx-auto">
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
               label="Email address"
@@ -97,7 +98,7 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <p className="text-center text-sm text-slate-500 mt-5">
+          <p className="text-center text-sm text-neutral-500 mt-5">
             Don&apos;t have an account?{' '}
             <Link href="/signup" className="text-accent-600 font-semibold hover:text-accent-700">
               Sign up free
@@ -105,7 +106,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <p className="text-center text-xs text-slate-400 mt-5">
+        <p className="text-center text-xs text-neutral-400 mt-5 max-w-sm md:max-w-md mx-auto">
           Regulated by the Pensions and Insurance Authority
         </p>
       </div>

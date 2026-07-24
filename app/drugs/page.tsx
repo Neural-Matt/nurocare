@@ -39,6 +39,7 @@ export default function DrugsPage() {
 
   return (
     <AppShell title="Drug Reference">
+      <div className="max-w-lg md:max-w-5xl mx-auto">
       {/* Search bar */}
       <div className="mb-4">
         <Input
@@ -47,8 +48,8 @@ export default function DrugsPage() {
           onChange={(e) => setQuery(e.target.value)}
           leftIcon={<Search className="w-4 h-4" />}
           rightIcon={query ? (
-            <button onClick={() => setQuery('')} className="p-0.5 rounded-full hover:bg-slate-100">
-              <X className="w-3.5 h-3.5 text-slate-400" />
+            <button onClick={() => setQuery('')} className="p-0.5 rounded-full hover:bg-neutral-100">
+              <X className="w-3.5 h-3.5 text-neutral-400" />
             </button>
           ) : undefined}
         />
@@ -64,7 +65,7 @@ export default function DrugsPage() {
               'whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-semibold border shrink-0 transition-all duration-150',
               category === cat
                 ? 'bg-primary-800 text-white border-primary-800 shadow-sm'
-                : 'bg-white text-slate-500 border-slate-200 hover:border-primary-300 hover:text-primary-700',
+                : 'bg-white text-neutral-500 border-neutral-200 hover:border-primary-300 hover:text-primary-700',
             )}
           >
             {cat}
@@ -72,7 +73,7 @@ export default function DrugsPage() {
         ))}
       </div>
 
-      <p className="text-xs text-slate-400 mb-4">
+      <p className="text-xs text-neutral-400 mb-4">
         {results.length} result{results.length !== 1 ? 's' : ''}
         {query && ` for "${query}"`}
         {category !== 'All' && ` in ${category}`}
@@ -83,12 +84,12 @@ export default function DrugsPage() {
         <ListSkeleton count={5} />
       ) : results.length === 0 ? (
         <Card className="flex flex-col items-center py-10 text-center gap-2">
-          <Pill className="w-10 h-10 text-slate-200" />
-          <p className="font-medium text-slate-500">No matches found</p>
-          <p className="text-xs text-slate-400">Try searching by drug name, generic name, or category</p>
+          <Pill className="w-10 h-10 text-neutral-200" />
+          <p className="font-medium text-neutral-500">No matches found</p>
+          <p className="text-xs text-neutral-400">Try searching by drug name, generic name, or category</p>
         </Card>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-3">
           {results.map((drug) => (
             <Card key={drug.id} hover onClick={() => setSelected(drug)} className="flex items-start gap-3">
               <div className="w-10 h-10 rounded-full bg-primary-50 flex items-center justify-center flex-shrink-0">
@@ -96,19 +97,20 @@ export default function DrugsPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <p className="font-semibold text-slate-900 text-sm">{drug.name}</p>
+                  <p className="font-semibold text-neutral-900 text-sm">{drug.name}</p>
                   {drug.prescription_required && (
                     <Badge variant="warning" className="text-[10px]">Rx Only</Badge>
                   )}
                 </div>
-                <p className="text-xs text-slate-400 mt-0.5">{drug.generic_name}</p>
-                <p className="text-xs text-slate-500 mt-1 line-clamp-2">{drug.usage}</p>
+                <p className="text-xs text-neutral-400 mt-0.5">{drug.generic_name}</p>
+                <p className="text-xs text-neutral-500 mt-1 line-clamp-2">{drug.usage}</p>
               </div>
               <Badge variant="neutral" className="flex-shrink-0 text-[10px]">{drug.category}</Badge>
             </Card>
           ))}
         </div>
       )}
+      </div>
 
       {/* Drug Detail Modal */}
       <Modal open={!!selected} onClose={() => setSelected(null)} title={selected?.name}>
@@ -120,7 +122,7 @@ export default function DrugsPage() {
                 <Pill className="w-6 h-6 text-primary-600" />
               </div>
               <div>
-                <p className="text-sm text-slate-500">{selected.generic_name}</p>
+                <p className="text-sm text-neutral-500">{selected.generic_name}</p>
                 <div className="flex gap-2 mt-1 flex-wrap">
                   <Badge variant="neutral">{selected.category}</Badge>
                   {selected.prescription_required ? (
@@ -138,7 +140,7 @@ export default function DrugsPage() {
                 <Stethoscope className="w-3.5 h-3.5" />
                 USAGE
               </div>
-              <p className="text-sm text-slate-700">{selected.usage}</p>
+              <p className="text-sm text-neutral-700">{selected.usage}</p>
             </div>
 
             {/* Dosage */}
@@ -147,7 +149,7 @@ export default function DrugsPage() {
                 <Info className="w-3.5 h-3.5" />
                 DOSAGE
               </div>
-              <p className="text-sm text-slate-700">{selected.dosage}</p>
+              <p className="text-sm text-neutral-700">{selected.dosage}</p>
             </div>
 
             {/* Side effects */}
@@ -168,7 +170,7 @@ export default function DrugsPage() {
               </div>
             </div>
 
-            <p className="text-xs text-slate-400 text-center">
+            <p className="text-xs text-neutral-400 text-center">
               This information is for reference only. Always consult a healthcare provider.
             </p>
 

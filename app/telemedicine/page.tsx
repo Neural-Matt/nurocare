@@ -38,7 +38,7 @@ const SPECIALTY_CONFIG: Record<DoctorSpecialty, { label: string; icon: React.Ele
 const AVAILABILITY_CONFIG: Record<DoctorAvailability, { label: string; color: string; dot: string }> = {
   available: { label: 'Available now', color: 'text-emerald-700', dot: 'bg-emerald-500' },
   busy:      { label: 'Busy',          color: 'text-warning-700', dot: 'bg-warning-500' },
-  offline:   { label: 'Offline',       color: 'text-slate-500',   dot: 'bg-slate-400'   },
+  offline:   { label: 'Offline',       color: 'text-neutral-500',   dot: 'bg-neutral-400'   },
 };
 
 const ALL_SPECIALTIES = ['all', ...Object.keys(SPECIALTY_CONFIG)] as const;
@@ -74,8 +74,8 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
               <div>
                 <p className="font-bold text-primary-800 text-sm leading-tight">{doctor.name}</p>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <SpecIcon className="w-3 h-3 text-slate-400" />
-                  <p className="text-xs text-slate-500">{specialty.label}</p>
+                  <SpecIcon className="w-3 h-3 text-neutral-400" />
+                  <p className="text-xs text-neutral-500">{specialty.label}</p>
                 </div>
               </div>
               {/* Availability badge */}
@@ -86,10 +86,10 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
             </div>
 
             {/* Meta row */}
-            <div className="flex items-center gap-3 mt-2 text-[11px] text-slate-400">
+            <div className="flex items-center gap-3 mt-2 text-[11px] text-neutral-400">
               <div className="flex items-center gap-1">
                 <Star className="w-3 h-3 fill-warning-400 text-warning-400" />
-                <span className="font-semibold text-slate-600">{doctor.rating}</span>
+                <span className="font-semibold text-neutral-600">{doctor.rating}</span>
               </div>
               <span>{doctor.experience_years} yrs exp</span>
               <span>{doctor.consult_count.toLocaleString()} consults</span>
@@ -100,17 +100,17 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
         {/* Languages */}
         <div className="flex flex-wrap gap-1.5 mt-3">
           {doctor.languages.map((lang) => (
-            <span key={lang} className="text-[10px] font-semibold bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">
+            <span key={lang} className="text-[10px] font-semibold bg-neutral-100 text-neutral-500 px-2 py-0.5 rounded-full">
               {lang}
             </span>
           ))}
         </div>
 
         {/* Qualifications */}
-        <p className="text-[11px] text-slate-400 mt-1.5">{doctor.qualifications}</p>
+        <p className="text-[11px] text-neutral-400 mt-1.5">{doctor.qualifications}</p>
 
         {doctor.next_available && (
-          <div className="flex items-center gap-1.5 mt-2.5 text-[11px] text-slate-500">
+          <div className="flex items-center gap-1.5 mt-2.5 text-[11px] text-neutral-500">
             <Clock className="w-3 h-3" />
             <span>Next available: <span className="font-semibold">{doctor.next_available}</span></span>
           </div>
@@ -118,7 +118,7 @@ function DoctorCard({ doctor }: { doctor: Doctor }) {
       </div>
 
       {/* Action footer */}
-      <div className="border-t border-slate-100 px-4 py-3">
+      <div className="border-t border-neutral-100 px-4 py-3">
         <a href={buildWhatsAppUrl(doctor)} target="_blank" rel="noopener noreferrer">
           <Button
             variant={doctor.availability === 'available' ? 'teal' : 'outline'}
@@ -154,7 +154,7 @@ export default function TelemedicinePage() {
 
   return (
     <AppShell title="See a Doctor">
-      <div className="space-y-5 pb-4">
+      <div className="space-y-5 pb-4 max-w-lg md:max-w-5xl mx-auto">
 
         {/* Hero banner */}
         <div className="relative overflow-hidden rounded-2xl bg-primary-800 p-5 text-white">
@@ -177,7 +177,7 @@ export default function TelemedicinePage() {
 
         {/* How it works */}
         <Card padding="lg">
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">How it works</p>
+          <p className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-3">How it works</p>
           <div className="space-y-3">
             {[
               { step: '1', label: 'Choose a doctor', sub: 'Filter by specialty or pick the first available' },
@@ -190,7 +190,7 @@ export default function TelemedicinePage() {
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-primary-800">{label}</p>
-                  <p className="text-xs text-slate-400">{sub}</p>
+                  <p className="text-xs text-neutral-400">{sub}</p>
                 </div>
               </div>
             ))}
@@ -199,7 +199,7 @@ export default function TelemedicinePage() {
 
         {/* Specialty filter */}
         <div>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Our Doctors</p>
+          <p className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-3">Our Doctors</p>
           <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none -mx-4 px-4">
             {ALL_SPECIALTIES.map((s) => {
               const label = s === 'all' ? 'All' : SPECIALTY_CONFIG[s as DoctorSpecialty].label;
@@ -211,7 +211,7 @@ export default function TelemedicinePage() {
                     'shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all',
                     filter === s
                       ? 'bg-primary-800 border-primary-800 text-white'
-                      : 'bg-white border-slate-200 text-slate-600 hover:border-primary-800 hover:text-primary-800',
+                      : 'bg-white border-neutral-200 text-neutral-600 hover:border-primary-800 hover:text-primary-800',
                   )}
                 >
                   {label}
@@ -222,7 +222,7 @@ export default function TelemedicinePage() {
         </div>
 
         {/* Doctor list */}
-        <div className="space-y-3">
+        <div className="space-y-3 md:space-y-0 md:grid md:grid-cols-2 md:gap-3">
           {loading ? (
             <ListSkeleton count={3} />
           ) : (
@@ -231,7 +231,7 @@ export default function TelemedicinePage() {
                 <DoctorCard key={doc.id} doctor={doc} />
               ))}
               {filtered.length === 0 && (
-                <div className="text-center py-10 text-slate-400">
+                <div className="text-center py-10 text-neutral-400">
                   <Stethoscope className="w-8 h-8 mx-auto opacity-30 mb-2" />
                   <p className="text-sm font-medium">No doctors in this specialty right now</p>
                 </div>

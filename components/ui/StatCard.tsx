@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
+import { IconChip } from './IconChip';
 
 interface StatCardProps {
   label: string;
@@ -14,12 +15,13 @@ interface StatCardProps {
   className?: string;
 }
 
-const variantStyles = {
-  default: 'bg-white border-slate-100 text-slate-900',
-  accent: 'bg-accent-50 border-accent-100 text-accent-900',
-  warning: 'bg-warning-50 border-warning-100 text-warning-900',
-  success: 'bg-emerald-50 border-emerald-100 text-emerald-900',
-};
+// Card surface is always flat neutral — only the icon chip carries color.
+const iconColor = {
+  default: 'neutral',
+  accent: 'accent',
+  warning: 'warning',
+  success: 'success',
+} as const;
 
 const sizeStyles = {
   sm: 'p-3',
@@ -39,6 +41,12 @@ const labelSizes = {
   lg: 'text-sm',
 };
 
+const iconChipSizes = {
+  sm: 'sm',
+  md: 'md',
+  lg: 'lg',
+} as const;
+
 export function StatCard({
   label,
   value,
@@ -51,19 +59,18 @@ export function StatCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border shadow-card transition-all duration-200 hover:shadow-card-hover hover:border-accent-200',
-        variantStyles[variant],
+        'rounded-2xl border border-neutral-150 bg-white shadow-card transition-shadow duration-200 hover:shadow-card-hover',
         sizeStyles[size],
         className
       )}
     >
       <div className="flex items-start justify-between gap-3 mb-2">
         <div className="flex-1 min-w-0">
-          <p className={cn('font-medium text-slate-500 uppercase tracking-wide', labelSizes[size])}>
+          <p className={cn('font-medium text-neutral-500 uppercase tracking-wide', labelSizes[size])}>
             {label}
           </p>
           <div className="flex items-end gap-2 mt-1.5">
-            <p className={cn('font-display font-bold', valueSizes[size])}>
+            <p className={cn('font-display font-bold text-neutral-900', valueSizes[size])}>
               {value}
             </p>
             {trend && (
@@ -78,17 +85,7 @@ export function StatCard({
             )}
           </div>
         </div>
-        {icon && (
-          <div className={cn(
-            'p-2 rounded-xl shrink-0',
-            variant === 'default' && 'bg-slate-100 text-slate-600',
-            variant === 'accent' && 'bg-accent-200 text-accent-700',
-            variant === 'warning' && 'bg-warning-200 text-warning-700',
-            variant === 'success' && 'bg-emerald-200 text-emerald-700',
-          )}>
-            {icon}
-          </div>
-        )}
+        {icon && <IconChip icon={icon} color={iconColor[variant]} size={iconChipSizes[size]} />}
       </div>
     </div>
   );

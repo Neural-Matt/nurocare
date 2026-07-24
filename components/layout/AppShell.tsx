@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { Header } from '@/components/layout/Header';
 import { BottomNav } from '@/components/layout/BottomNav';
+import { Sidebar } from '@/components/layout/Sidebar';
 import { WhatsAppButton } from '@/components/features/WhatsAppButton';
+import { LogoBadge } from '@/components/ui/Logo';
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -24,11 +26,9 @@ export function AppShell({ children, title }: AppShellProps) {
 
   if (loading || !user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface-50">
+      <div className="min-h-screen flex items-center justify-center bg-neutral-50">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 bg-primary-800 rounded-2xl flex items-center justify-center shadow-lg">
-            <span className="text-white font-display font-bold text-sm">NC</span>
-          </div>
+          <LogoBadge size="lg" className="rounded-2xl shadow-sm" />
           <div className="flex gap-1.5">
             {[0, 1, 2].map((i) => (
               <div
@@ -44,11 +44,14 @@ export function AppShell({ children, title }: AppShellProps) {
   }
 
   return (
-    <div className="min-h-screen bg-surface-50">
-      <Header title={title} />
-      <main className="max-w-lg mx-auto px-4 pt-20 pb-24 scroll-smooth">
-        {children}
-      </main>
+    <div className="min-h-screen bg-neutral-50">
+      <Sidebar />
+      <div className="md:pl-20 lg:pl-60">
+        <Header title={title} />
+        <main className="px-4 md:px-8 pt-20 md:pt-8 pb-24 md:pb-12 scroll-smooth">
+          {children}
+        </main>
+      </div>
       <WhatsAppButton />
       <BottomNav />
     </div>

@@ -30,6 +30,15 @@ export { HealthInsightCard } from './HealthInsightCard';
 
 export { ProgressRing } from './ProgressRing';
 
+export { DonutChart } from './DonutChart';
+
+export { IconChip } from './IconChip';
+
+export { LogoMark, LogoBadge } from './Logo';
+
+// Motion primitives
+export { Stagger, Reveal, RevealOnScroll, fadeUp, fadeIn, springs, tapScale, hoverLift } from './motion';
+
 // Typography
 export {
   Heading,

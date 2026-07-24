@@ -7,6 +7,7 @@ import { FeaturesSection } from '@/components/landing/FeaturesSection';
 import { EmotionalSection } from '@/components/landing/EmotionalSection';
 import { VideoSection } from '@/components/landing/VideoSection';
 import { PricingSection } from '@/components/landing/PricingSection';
+import { FAQSection } from '@/components/landing/FAQSection';
 import { CtaSection } from '@/components/landing/CtaSection';
 import { LandingFooter } from '@/components/landing/LandingFooter';
 
@@ -23,6 +24,7 @@ export default function LandingPage() {
         <EmotionalSection />
         <VideoSection />
         <PricingSection />
+        <FAQSection />
         <CtaSection />
       </main>
       <LandingFooter />

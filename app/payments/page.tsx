@@ -2,6 +2,8 @@
 
 import { AppShell } from '@/components/layout/AppShell';
 import { Card } from '@/components/ui/Card';
+import { IconChip } from '@/components/ui/IconChip';
+import { Badge } from '@/components/ui/Badge';
 import { usePayments } from '@/hooks/usePayments';
 import { useSubscriptions } from '@/hooks/useSubscriptions';
 import { PaymentRecord, PaymentStatus, PaymentMethod } from '@/types';
@@ -18,20 +20,19 @@ import {
 const STATUS_CONFIG: Record<PaymentStatus, {
   label: string;
   icon: typeof CheckCircle2;
-  bg: string;
-  text: string;
+  chip: 'success' | 'error' | 'warning' | 'neutral';
   border: string;
 }> = {
-  success:  { label: 'Paid',      icon: CheckCircle2, bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200' },
-  failed:   { label: 'Failed',    icon: XCircle,      bg: 'bg-red-50',     text: 'text-red-600',     border: 'border-red-200'     },
-  pending:  { label: 'Pending',   icon: Clock,        bg: 'bg-warning-50', text: 'text-warning-600', border: 'border-warning-200' },
-  refunded: { label: 'Refunded',  icon: RefreshCw,    bg: 'bg-slate-50',   text: 'text-slate-500',   border: 'border-slate-200'   },
+  success:  { label: 'Paid',      icon: CheckCircle2, chip: 'success', border: 'border-emerald-200' },
+  failed:   { label: 'Failed',    icon: XCircle,      chip: 'error',   border: 'border-red-200'     },
+  pending:  { label: 'Pending',   icon: Clock,        chip: 'warning', border: 'border-warning-200' },
+  refunded: { label: 'Refunded',  icon: RefreshCw,    chip: 'neutral', border: 'border-neutral-200'   },
 };
 
 const METHOD_CONFIG: Record<PaymentMethod, { label: string; icon: typeof Smartphone; color: string }> = {
   mtn_momo:     { label: 'MTN MoMo',    icon: Smartphone,  color: 'text-yellow-600' },
   airtel_money: { label: 'Airtel Money',icon: Smartphone,  color: 'text-red-500'    },
-  card:         { label: 'Card',        icon: CreditCard,  color: 'text-slate-600'  },
+  card:         { label: 'Card',        icon: CreditCard,  color: 'text-neutral-600'  },
   bank:         { label: 'Bank',        icon: Building2,   color: 'text-primary-700'},
 };
 
@@ -48,35 +49,29 @@ function PaymentRow({ payment }: { payment: PaymentRecord }) {
       'bg-white rounded-2xl border shadow-card p-4 flex items-center gap-4',
       st.border,
     )}>
-      {/* Status icon */}
-      <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center shrink-0', st.bg)}>
-        <StIcon className={cn('w-5 h-5', st.text)} />
-      </div>
+      <IconChip icon={<StIcon className="w-5 h-5" />} color={st.chip} size="lg" />
 
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <p className="font-semibold text-slate-900 text-[14px] leading-tight truncate">{payment.description}</p>
+        <p className="font-semibold text-neutral-900 text-[14px] leading-tight truncate">{payment.description}</p>
         <div className="flex items-center gap-2 mt-1 flex-wrap">
-          <span className="flex items-center gap-1 text-[11px] text-slate-400 font-medium">
+          <span className="flex items-center gap-1 text-[11px] text-neutral-400 font-medium">
             <MtIcon className={cn('w-3 h-3', mt.color)} />
             {mt.label}
           </span>
-          <span className="text-slate-200 text-[10px]">·</span>
-          <span className="text-[11px] text-slate-400">{formatDate(payment.created_at)}</span>
+          <span className="text-neutral-200 text-[10px]">·</span>
+          <span className="text-[11px] text-neutral-400">{formatDate(payment.created_at)}</span>
         </div>
       </div>
 
       {/* Amount + status */}
       <div className="flex flex-col items-end gap-1 shrink-0">
-        <p className={cn('font-bold text-[15px]', payment.status === 'failed' ? 'text-red-500 line-through' : 'text-slate-900')}>
+        <p className={cn('font-bold text-[15px]', payment.status === 'failed' ? 'text-red-500 line-through' : 'text-neutral-900')}>
           {formatCurrency(payment.amount)}
         </p>
-        <span className={cn(
-          'text-[10px] font-semibold px-2 py-0.5 rounded-full',
-          st.bg, st.text,
-        )}>
+        <Badge variant={st.chip === 'error' ? 'error' : st.chip === 'success' ? 'success' : st.chip === 'warning' ? 'warning' : 'neutral'}>
           {st.label}
-        </span>
+        </Badge>
       </div>
     </div>
   );
@@ -170,10 +165,11 @@ export default function PaymentsPage() {
 
   return (
     <AppShell title="Payments">
+      <div className="max-w-lg md:max-w-5xl mx-auto">
       {/* Page header */}
       <div className="mb-6">
         <h1 className="font-display font-bold text-xl text-primary-800">Payments</h1>
-        <p className="text-slate-400 text-xs font-medium mt-0.5">
+        <p className="text-neutral-400 text-xs font-medium mt-0.5">
           Subscription billing & history
         </p>
       </div>
@@ -184,15 +180,15 @@ export default function PaymentsPage() {
       {/* Stats */}
       {!loading && payments.length > 0 && (
         <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-card p-4">
-            <p className="text-[11px] text-slate-400 uppercase tracking-wide font-medium mb-1">Total paid</p>
+          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4">
+            <p className="text-[11px] text-neutral-400 uppercase tracking-wide font-medium mb-1">Total paid</p>
             <p className="font-display font-bold text-sm text-primary-800">{formatCurrency(totalPaid)}</p>
           </div>
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-card p-4">
+          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4">
             <p className="text-[11px] text-emerald-600 uppercase tracking-wide font-medium mb-1">Success</p>
             <p className="font-display font-bold text-sm text-emerald-700">{successCount}</p>
           </div>
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-card p-4">
+          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4">
             <p className="text-[11px] text-red-500 uppercase tracking-wide font-medium mb-1">Failed</p>
             <p className="font-display font-bold text-sm text-red-600">{failedCount}</p>
           </div>
@@ -201,33 +197,33 @@ export default function PaymentsPage() {
 
       {/* Payment list */}
       <div className="mb-4">
-        <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Transaction History</h2>
+        <h2 className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-3">Transaction History</h2>
 
         {loading ? (
           <div className="space-y-3">
             {[0, 1, 2].map((i) => (
-              <div key={i} className="bg-white rounded-2xl border border-slate-100 shadow-card p-4 animate-pulse">
+              <div key={i} className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4 animate-pulse">
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 shrink-0" />
+                  <div className="w-10 h-10 rounded-xl bg-neutral-100 shrink-0" />
                   <div className="flex-1 space-y-2">
-                    <div className="h-3.5 bg-slate-100 rounded w-3/4" />
-                    <div className="h-3 bg-slate-100 rounded w-1/2" />
+                    <div className="h-3.5 bg-neutral-100 rounded w-3/4" />
+                    <div className="h-3 bg-neutral-100 rounded w-1/2" />
                   </div>
-                  <div className="w-16 h-5 bg-slate-100 rounded" />
+                  <div className="w-16 h-5 bg-neutral-100 rounded" />
                 </div>
               </div>
             ))}
           </div>
         ) : payments.length === 0 ? (
           <Card padding="none" className="overflow-hidden">
-            <div className="h-1.5 w-full bg-gradient-to-r from-accent-400 to-primary-600" />
+            <div className="h-1.5 w-full bg-accent-500" />
             <div className="flex flex-col items-center py-12 text-center gap-3 px-6">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 flex items-center justify-center">
-                <CreditCard className="w-7 h-7 text-slate-300" />
+              <div className="w-16 h-16 rounded-2xl bg-neutral-100 border border-neutral-200 flex items-center justify-center">
+                <CreditCard className="w-7 h-7 text-neutral-300" />
               </div>
               <div>
-                <p className="font-display font-bold text-slate-700 mb-1">No payments yet</p>
-                <p className="text-sm text-slate-400 max-w-[200px] mx-auto leading-snug">
+                <p className="font-display font-bold text-neutral-700 mb-1">No payments yet</p>
+                <p className="text-sm text-neutral-400 max-w-[200px] mx-auto leading-snug">
                   Your billing history will appear here once you have a plan.
                 </p>
               </div>
@@ -256,6 +252,7 @@ export default function PaymentsPage() {
           </div>
         </div>
       )}
+      </div>
     </AppShell>
   );
 }

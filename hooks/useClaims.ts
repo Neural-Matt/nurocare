@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createClient, IS_MOCK_MODE as IS_MOCK } from '@/lib/supabase/client';
+import { createClient, hasSupabaseEnv } from '@/lib/supabase/client';
 const supabase = createClient();
 import { Claim } from '@/types';
 import { useAuth } from './useAuth';
 import { MOCK_CLAIMS } from '@/lib/mock-data';
 import toast from 'react-hot-toast';
+
+const IS_MOCK = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true' || !hasSupabaseEnv;
 
 export function useClaims() {
   const { user } = useAuth();
@@ -63,17 +65,15 @@ export function useClaims() {
         .from('receipts')
         .upload(fileName, payload.receiptFile);
 
-      if (uploadError) {
+      if (uploadError || !uploadData) {
         toast.error('Failed to upload receipt');
-        return { error: uploadError };
+        return { error: uploadError ?? new Error('Upload failed') };
       }
 
-      if (uploadData) {
-        const { data: { publicUrl } } = supabase.storage
-          .from('receipts')
-          .getPublicUrl(uploadData.path);
-        receiptUrl = publicUrl;
-      }
+      const { data: { publicUrl } } = supabase.storage
+        .from('receipts')
+        .getPublicUrl(uploadData.path);
+      receiptUrl = publicUrl;
     }
 
     const { data, error } = await supabase

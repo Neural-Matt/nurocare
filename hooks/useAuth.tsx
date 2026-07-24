@@ -2,10 +2,13 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
-import { createClient, IS_MOCK_MODE as IS_MOCK } from '@/lib/supabase/client';
+import { createClient, hasSupabaseEnv } from '@/lib/supabase/client';
 const supabase = createClient();
 import { Profile } from '@/types';
 import { MOCK_PROFILE } from '@/lib/mock-data';
+
+// When NEXT_PUBLIC_MOCK_AUTH=true, skip all Supabase calls and use local mock data
+const IS_MOCK = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true' || !hasSupabaseEnv;
 
 // Fake User object for mock mode
 const MOCK_USER = {

@@ -52,13 +52,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label htmlFor={inputId} className="text-[13px] font-semibold text-slate-700">
+          <label htmlFor={inputId} className="text-[13px] font-semibold text-neutral-700">
             {label}
           </label>
         )}
         <div className="relative">
           {leftIcon && (
-            <div className={cn('absolute text-slate-400', iconSize[size])}>
+            <div className={cn('absolute text-neutral-400', iconSize[size])}>
               {leftIcon}
             </div>
           )}
@@ -66,15 +66,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             className={cn(
-              'w-full rounded-xl border bg-white text-slate-900 placeholder:text-slate-400',
-              'transition-all duration-150',
-              // Focus: teal glow
+              'w-full rounded-xl border bg-white text-neutral-900 placeholder:text-neutral-400',
+              'transition-colors duration-150',
               'focus:outline-none focus:ring-2 focus:ring-offset-1',
               error
                 ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
                 : success
                   ? 'border-accent-500 focus:border-accent-500 focus:ring-accent-500/20'
-                  : 'border-slate-200 focus:border-accent-500 focus:ring-accent-500/20 hover:border-slate-300',
+                  : 'border-neutral-200 focus:border-accent-500 focus:ring-accent-500/20 hover:border-neutral-300',
               sizeStyles[size],
               leftIcon  && leftPad[size],
               rightIcon && rightPad[size],
@@ -83,13 +82,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
           {rightIcon && (
-            <div className={cn('absolute text-slate-400', iconSizeRight[size])}>
+            <div className={cn('absolute text-neutral-400', iconSizeRight[size])}>
               {rightIcon}
             </div>
           )}
         </div>
         {error && <p className="text-xs text-red-500">{error}</p>}
-        {hint && !error && <p className="text-xs text-slate-400">{hint}</p>}
+        {hint && !error && <p className="text-xs text-neutral-400">{hint}</p>}
       </div>
     );
   }

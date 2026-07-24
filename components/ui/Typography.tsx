@@ -18,31 +18,28 @@ interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'div';
   size?: HeadingSize;
   color?: HeadingColor;
-  /** Render the teal-to-warning gradient text */
-  gradient?: boolean;
 }
 
 const headingSizes: Record<HeadingSize, string> = {
-  hero: 'text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.07] tracking-tight',
-  h1:   'text-3xl sm:text-4xl font-extrabold leading-tight tracking-tight',
-  h2:   'text-2xl sm:text-3xl font-bold leading-tight tracking-tight',
-  h3:   'text-xl sm:text-2xl font-bold leading-snug',
+  hero: 'text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-[-0.02em]',
+  h1:   'text-3xl sm:text-4xl font-bold leading-tight tracking-[-0.02em]',
+  h2:   'text-2xl sm:text-3xl font-bold leading-tight tracking-[-0.015em]',
+  h3:   'text-xl sm:text-2xl font-semibold leading-snug tracking-[-0.01em]',
   h4:   'text-base sm:text-lg font-semibold leading-snug',
 };
 
 const headingColors: Record<HeadingColor, string> = {
-  default: 'text-slate-900',
+  default: 'text-neutral-900',
   primary: 'text-primary-800',
   accent:  'text-accent-600',
   inverse: 'text-white',
-  muted:   'text-slate-500',
+  muted:   'text-neutral-500',
 };
 
 export function Heading({
   as: Tag = 'h2',
   size = 'h2',
   color = 'default',
-  gradient = false,
   className,
   children,
   ...props
@@ -52,9 +49,7 @@ export function Heading({
       className={cn(
         'font-display',
         headingSizes[size],
-        gradient
-          ? 'text-gradient bg-gradient-to-r from-accent-400 via-accent-300 to-warning-400'
-          : headingColors[color],
+        headingColors[color],
         className
       )}
       {...props}
@@ -85,9 +80,9 @@ const textSizes: Record<TextSize, string> = {
 };
 
 const textColors: Record<TextColor, string> = {
-  default:   'text-slate-900',
-  secondary: 'text-slate-600',
-  muted:     'text-slate-400',
+  default:   'text-neutral-900',
+  secondary: 'text-neutral-600',
+  muted:     'text-neutral-400',
   primary:   'text-primary-800',
   accent:    'text-accent-600',
   inverse:   'text-white',
@@ -144,8 +139,8 @@ interface CaptionProps extends HTMLAttributes<HTMLElement> {
 }
 
 const captionColors: Record<NonNullable<CaptionProps['color']>, string> = {
-  default: 'text-slate-500',
-  muted:   'text-slate-400',
+  default: 'text-neutral-500',
+  muted:   'text-neutral-400',
   primary: 'text-primary-800',
   accent:  'text-accent-600',
   error:   'text-red-500',
@@ -186,7 +181,7 @@ export function Label({ htmlFor, required, className, children, ...props }: Labe
   return (
     <label
       htmlFor={htmlFor}
-      className={cn('font-sans text-sm font-medium text-slate-700 leading-none', className)}
+      className={cn('font-sans text-sm font-medium text-neutral-700 leading-none', className)}
       {...props}
     >
       {children}

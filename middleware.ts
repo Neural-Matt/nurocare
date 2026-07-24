@@ -12,6 +12,7 @@ const PROTECTED_PREFIXES = [
   '/family',
   '/profile',
   '/admin',
+  '/notifications',
 ];
 const AUTH_PREFIXES = ['/login', '/signup'];
 

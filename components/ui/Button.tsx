@@ -1,9 +1,17 @@
-import { cn } from '@/lib/utils';
-import { ButtonHTMLAttributes, forwardRef, ReactNode } from 'react';
+'use client';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
+import { ButtonHTMLAttributes, forwardRef, ReactNode } from 'react';
+import { springs } from './motion';
+
+type ConflictingHandlers =
+  | 'onDrag' | 'onDragStart' | 'onDragEnd'
+  | 'onAnimationStart' | 'onAnimationEnd' | 'onAnimationIteration';
+
+interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, ConflictingHandlers> {
   /** Visual style of the button */
-  variant?: 'primary' | 'gradient' | 'teal' | 'outline' | 'ghost' | 'danger';
+  variant?: 'primary' | 'teal' | 'outline' | 'ghost' | 'danger';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   loading?: boolean;
   fullWidth?: boolean;
@@ -16,30 +24,24 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = 'primary', size = 'md', loading, fullWidth, leadingIcon, trailingIcon, className, children, disabled, ...props }, ref) => {
     const base =
-      'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed select-none';
+      'inline-flex items-center justify-center font-semibold rounded-xl transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none';
 
     const variants = {
       // Deep navy — primary actions
       primary:
-        'bg-primary-800 text-white hover:bg-primary-700 focus-visible:ring-primary-800 shadow-sm hover:shadow-md transition-shadow',
-      // Gradient blue→teal — hero CTAs
-      gradient:
-        'bg-gradient-to-r from-primary-800 via-primary-700 to-accent-500 text-white ' +
-        'hover:from-primary-700 hover:via-primary-600 hover:to-accent-400 ' +
-        'focus-visible:ring-accent-500 shadow-md hover:shadow-lg hover:shadow-accent-500/25 ' +
-        'transition-shadow',
-      // Teal — secondary/positive actions
+        'bg-primary-800 text-white hover:bg-primary-700 focus-visible:ring-primary-800',
+      // Solid teal — secondary/positive actions
       teal:
-        'bg-accent-500 text-white hover:bg-accent-600 focus-visible:ring-accent-500 shadow-sm hover:shadow-accent-glow transition-shadow',
+        'bg-accent-500 text-white hover:bg-accent-600 focus-visible:ring-accent-500',
       // Outline navy
       outline:
-        'border-2 border-primary-800 text-primary-800 hover:bg-primary-50 focus-visible:ring-primary-800 transition-colors',
+        'border border-neutral-300 text-primary-800 hover:bg-neutral-50 focus-visible:ring-primary-800',
       // Ghost — minimal
       ghost:
-        'text-slate-600 hover:bg-slate-100 focus-visible:ring-slate-400 transition-colors',
+        'text-neutral-600 hover:bg-neutral-100 focus-visible:ring-neutral-400',
       // Danger
       danger:
-        'bg-red-500 text-white hover:bg-red-600 focus-visible:ring-red-400 shadow-sm hover:shadow-md transition-shadow',
+        'bg-red-500 text-white hover:bg-red-600 focus-visible:ring-red-400',
     };
 
     const sizes = {
@@ -50,9 +52,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     return (
-      <button
+      <motion.button
         ref={ref}
         disabled={disabled || loading}
+        whileTap={disabled || loading ? undefined : { scale: 0.96 }}
+        transition={springs.snappy}
         className={cn(base, variants[variant], sizes[size], fullWidth && 'w-full', className)}
         {...props}
       >
@@ -71,7 +75,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             {trailingIcon && <span className="shrink-0">{trailingIcon}</span>}
           </>
         )}
-      </button>
+      </motion.button>
     );
   }
 );

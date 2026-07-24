@@ -56,7 +56,7 @@ export function ProgressRing({
             cy={config.size / 2}
             r={radius}
             fill="none"
-            className="stroke-slate-100"
+            className="stroke-neutral-150"
             strokeWidth={config.strokeWidth}
           />
           {/* Progress circle */}
@@ -81,7 +81,7 @@ export function ProgressRing({
           </div>
         )}
       </div>
-      <p className="text-xs font-medium text-slate-600 text-center max-w-20">
+      <p className="text-xs font-medium text-neutral-600 text-center max-w-20">
         {label}
       </p>
     </div>

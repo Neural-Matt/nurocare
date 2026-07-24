@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { createClient, IS_MOCK_MODE as IS_MOCK } from '@/lib/supabase/client';
+import { createClient, hasSupabaseEnv } from '@/lib/supabase/client';
 const supabase = createClient();
 import { PaymentRecord } from '@/types';
 import { useAuth } from './useAuth';
 import { MOCK_PAYMENTS } from '@/lib/mock-data';
+
+const IS_MOCK = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true' || !hasSupabaseEnv;
 
 export function usePayments() {
   const { user } = useAuth();

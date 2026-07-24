@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
+import { IconChip } from '@/components/ui/IconChip';
 import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase/client';
 const supabase = createClient();
@@ -69,19 +70,20 @@ export default function ProfilePage() {
 
   return (
     <AppShell title="Profile">
+      <div className="max-w-lg md:max-w-2xl mx-auto">
       {/* Avatar + name */}
       <Card className="flex flex-col items-center pt-8 pb-6 mb-5">
-        {/* Initials avatar with gradient ring */}
+        {/* Initials avatar with ring */}
         <div className="relative mb-4">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary-700 to-accent-500 flex items-center justify-center shadow-md">
+          <div className="w-20 h-20 rounded-full bg-primary-800 flex items-center justify-center shadow-md">
             <span className="text-white text-2xl font-black tracking-tight">
               {profile?.full_name ? getInitials(profile.full_name) : '?'}
             </span>
           </div>
           <div className="absolute inset-0 rounded-full ring-4 ring-white" />
         </div>
-        <p className="font-display font-bold text-slate-900 text-xl">{profile?.full_name ?? 'Set your name'}</p>
-        <p className="text-sm text-slate-400 mt-0.5">{user?.email}</p>
+        <p className="font-display font-bold text-neutral-900 text-xl">{profile?.full_name ?? 'Set your name'}</p>
+        <p className="text-sm text-neutral-400 mt-0.5">{user?.email}</p>
         <div className="flex flex-wrap justify-center gap-2 mt-3">
           <Badge variant={profile?.role === 'admin' ? 'warning' : 'info'}>
             <Shield className="w-3 h-3" />
@@ -96,7 +98,7 @@ export default function ProfilePage() {
       {/* Profile details */}
       <Card className="mb-4">
         <div className="flex items-center justify-between mb-4">
-          <p className="text-[13px] font-bold text-slate-400 uppercase tracking-widest">Personal info</p>
+          <p className="text-[13px] font-bold text-neutral-400 uppercase tracking-widest">Personal info</p>
           {!editing ? (
             <button
               onClick={() => setEditing(true)}
@@ -108,7 +110,7 @@ export default function ProfilePage() {
           ) : (
             <button
               onClick={() => setEditing(false)}
-              className="flex items-center gap-1 text-xs font-semibold text-slate-400 hover:text-slate-600 transition-colors"
+              className="flex items-center gap-1 text-xs font-semibold text-neutral-400 hover:text-neutral-600 transition-colors"
             >
               <X className="w-3.5 h-3.5" />
               Cancel
@@ -150,7 +152,7 @@ export default function ProfilePage() {
               placeholder="+260 97 123 4567"
             />
             <div className="flex gap-3 pt-2">
-              <Button variant="gradient" fullWidth loading={loading} onClick={handleSave}>
+              <Button variant="primary" fullWidth loading={loading} onClick={handleSave}>
                 Save changes
               </Button>
             </div>
@@ -164,9 +166,9 @@ export default function ProfilePage() {
               { label: 'Gender', value: profile?.gender ? profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1) : null },
               { label: 'Phone', value: profile?.phone },
             ].map(({ label, value }) => (
-              <div key={label} className="flex justify-between items-center py-2 border-b border-slate-50 last:border-0">
-                <p className="text-sm text-slate-500">{label}</p>
-                <p className="text-sm font-medium text-slate-800">{value ?? '—'}</p>
+              <div key={label} className="flex justify-between items-center py-2 border-b border-neutral-50 last:border-0">
+                <p className="text-sm text-neutral-500">{label}</p>
+                <p className="text-sm font-medium text-neutral-800">{value ?? '—'}</p>
               </div>
             ))}
           </div>
@@ -176,26 +178,28 @@ export default function ProfilePage() {
       {/* Quick links */}
       <Card padding="none" className="mb-4 overflow-hidden">
         <div className="px-5 pt-4 pb-2">
-          <p className="text-[13px] font-bold text-slate-400 uppercase tracking-widest">Account</p>
+          <p className="text-[13px] font-bold text-neutral-400 uppercase tracking-widest">Account</p>
         </div>
         {[
-          { label: 'My Family', sub: 'Manage covered family members', icon: Users, color: 'text-rose-500 bg-rose-50', href: '/family' },
-          { label: 'Payment History', sub: 'View invoices and receipts', icon: CreditCard, color: 'text-warning-600 bg-warning-50', href: '/payments' },
-          { label: 'See a Doctor', sub: 'WhatsApp teleconsultation', icon: MessageCircle, color: 'text-accent-600 bg-accent-50', href: '/telemedicine' },
+          { label: 'My Family', sub: 'Manage covered family members', icon: Users, color: 'bg-rose-50 text-rose-500', href: '/family' },
+          { label: 'Payment History', sub: 'View invoices and receipts', icon: CreditCard, color: undefined, href: '/payments' },
+          { label: 'See a Doctor', sub: 'WhatsApp teleconsultation', icon: MessageCircle, color: undefined, href: '/telemedicine' },
         ].map(({ label, sub, icon: Icon, color, href }) => (
           <button
             key={href}
             onClick={() => router.push(href)}
-            className="w-full flex items-center gap-3.5 px-5 py-3.5 border-t border-slate-50 hover:bg-slate-50 transition-colors text-left"
+            className="w-full flex items-center gap-3.5 px-5 py-3.5 border-t border-neutral-50 hover:bg-neutral-50 transition-colors text-left"
           >
-            <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
-              <Icon className="w-4.5 h-4.5" />
-            </div>
+            <IconChip
+              icon={<Icon className="w-4 h-4" />}
+              color={href === '/payments' ? 'warning' : href === '/telemedicine' ? 'accent' : 'neutral'}
+              className={color}
+            />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-primary-800">{label}</p>
-              <p className="text-[11px] text-slate-400">{sub}</p>
+              <p className="text-[11px] text-neutral-400">{sub}</p>
             </div>
-            <ChevronRight className="w-4 h-4 text-slate-300 shrink-0" />
+            <ChevronRight className="w-4 h-4 text-neutral-300 shrink-0" />
           </button>
         ))}
       </Card>
@@ -208,6 +212,7 @@ export default function ProfilePage() {
         <LogOut className="w-4 h-4" />
         Sign out
       </button>
+      </div>
     </AppShell>
   );
 }

@@ -12,7 +12,26 @@ module.exports = {
         display: ['var(--font-display)', 'var(--font-sans)', 'system-ui', 'sans-serif'],
       },
       colors: {
-        // Primary: NuroCare deep navy — #0A2540
+        // Neutral scale — Apple-style off-white → near-black.
+        // This is the primary surface/text/border scale for the whole app;
+        // `slate` remains available but new work should use this.
+        neutral: {
+          25:  '#FBFBFC',
+          50:  '#F5F5F7',
+          100: '#F0F0F2',
+          150: '#E8E8EB',
+          200: '#E2E2E5',
+          300: '#D1D1D6',
+          400: '#AEAEB2',
+          500: '#8E8E93',
+          600: '#636366',
+          700: '#48484A',
+          800: '#3A3A3C',
+          900: '#1D1D1F',
+          950: '#0F0F10',
+        },
+        // Primary: NuroCare deep navy — #0A2540. Sparing accent: primary
+        // actions, active nav states, one or two featured surfaces.
         primary: {
           50:  '#e8eef5',
           100: '#c6d4e8',
@@ -25,7 +44,8 @@ module.exports = {
           800: '#0A2540',  // ← brand primary
           900: '#061525',
         },
-        // Accent: NuroCare teal — #14B8A6
+        // Accent: NuroCare teal — #14B8A6. Sparing accent: icon chips,
+        // secondary CTAs, focus rings, positive/active state.
         accent: {
           50:  '#e6f8f6',
           100: '#b3edea',
@@ -38,7 +58,8 @@ module.exports = {
           800: '#075f58',
           900: '#03403e',
         },
-        // Warning / CTA: NuroCare orange — #F97316
+        // Warning: NuroCare orange — #F97316. Status-only (rejected claim,
+        // policy expiring). Never decorative or used as a CTA color.
         warning: {
           50:  '#fff4ed',
           100: '#fee9d6',
@@ -51,31 +72,22 @@ module.exports = {
           800: '#9e4000',
           900: '#783100',
         },
-        // Surface/background — #F5F7FA
-        surface: {
-          50:  '#F5F7FA',  // ← brand background
-          100: '#edf0f5',
-          200: '#dde3ed',
-        },
       },
       borderRadius: {
         '2xl': '1rem',
         '3xl': '1.5rem',
       },
       boxShadow: {
-        card:       '0 1px 4px rgba(10,37,64,0.06), 0 0 0 1px rgba(10,37,64,0.04)',
-        'card-hover':'0 8px 24px rgba(10,37,64,0.12), 0 0 0 1px rgba(10,37,64,0.05)',
-        'nav':      '0 -1px 0 rgba(10,37,64,0.06)',
-        'glow':     '0 0 20px rgba(20,184,166,0.15)',
-        'glow-sm':  '0 0 12px rgba(20,184,166,0.1)',
-        'inset-sm': 'inset 0 1px 2px rgba(10,37,64,0.04)',
-        'elevated': '0 12px 32px rgba(10,37,64,0.15)',
+        // Flat, barely-there depth — no color tint, no glow.
+        card:        '0 1px 2px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.04)',
+        'card-hover':'0 4px 16px rgba(0,0,0,0.08)',
+        'nav':       '0 -1px 0 rgba(0,0,0,0.06)',
+        'inset-sm':  'inset 0 1px 2px rgba(0,0,0,0.04)',
+        'elevated':  '0 24px 48px -12px rgba(0,0,0,0.18)',
       },
       backgroundImage: {
-        'gradient-subtle': 'linear-gradient(135deg, rgba(20,184,166,0.05) 0%, rgba(10,37,64,0.02) 100%)',
-        'gradient-accent-teal': 'linear-gradient(135deg, #14B8A6 0%, #0d9b87 100%)',
+        // Rare, single-use only — not a default card/button treatment.
         'gradient-primary-accent': 'linear-gradient(135deg, #0A2540 0%, #14B8A6 100%)',
-        'gradient-warm': 'linear-gradient(135deg, #F97316 0%, #ea6100 100%)',
       },
     },
   },

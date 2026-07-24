@@ -27,7 +27,7 @@ export function WhatsAppButton({
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"
-      className="fixed bottom-24 right-4 z-40 flex items-center gap-2.5 bg-[#25D366] text-white px-4 py-3 rounded-full shadow-lg hover:bg-[#1ebe59] active:scale-95 transition-all duration-200"
+      className="fixed bottom-24 md:bottom-6 right-4 md:right-6 z-40 flex items-center gap-2.5 bg-[#25D366] text-white px-4 py-3 rounded-full shadow-elevated hover:bg-[#1ebe59] active:scale-95 transition-colors duration-200"
     >
       <MessageCircle className="w-5 h-5 fill-white" />
       <span className="text-sm font-semibold hidden sm:block">Need Help?</span>

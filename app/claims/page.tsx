@@ -40,17 +40,18 @@ export default function ClaimsPage() {
 
   return (
     <AppShell title="My Claims">
+      <div className="max-w-lg md:max-w-5xl mx-auto">
       {/* ── Header ── */}
       <div className="flex items-center justify-between mb-5">
         <div>
           <h1 className="font-display font-bold text-xl text-primary-800">My Claims</h1>
-          <p className="text-slate-400 text-xs font-medium mt-0.5">
+          <p className="text-neutral-400 text-xs font-medium mt-0.5">
             {loading ? '...' : `${claims.length} total claim${claims.length !== 1 ? 's' : ''}`}
           </p>
         </div>
         <Button
           size="sm"
-          variant="gradient"
+          variant="primary"
           onClick={() => router.push('/claims/new')}
           leadingIcon={<Plus className="w-3.5 h-3.5" />}
         >
@@ -61,8 +62,8 @@ export default function ClaimsPage() {
       {/* ── Stats bar ── */}
       {!loading && claims.length > 0 && (
         <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-card p-4 flex flex-col gap-1">
-            <div className="flex items-center gap-1.5 text-slate-400">
+          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4 flex flex-col gap-1">
+            <div className="flex items-center gap-1.5 text-neutral-400">
               <Activity className="w-3.5 h-3.5" />
               <p className="text-[11px] font-medium uppercase tracking-wide">Total</p>
             </div>
@@ -70,8 +71,8 @@ export default function ClaimsPage() {
               {formatCurrency(totalSubmitted)}
             </p>
           </div>
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-card p-4 flex flex-col gap-1">
-            <div className="flex items-center gap-1.5 text-slate-400">
+          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4 flex flex-col gap-1">
+            <div className="flex items-center gap-1.5 text-neutral-400">
               <CreditCard className="w-3.5 h-3.5" />
               <p className="text-[11px] font-medium uppercase tracking-wide">Paid</p>
             </div>
@@ -79,8 +80,8 @@ export default function ClaimsPage() {
               {formatCurrency(totalPaid)}
             </p>
           </div>
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-card p-4 flex flex-col gap-1">
-            <div className="flex items-center gap-1.5 text-slate-400">
+          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4 flex flex-col gap-1">
+            <div className="flex items-center gap-1.5 text-neutral-400">
               <Clock className="w-3.5 h-3.5" />
               <p className="text-[11px] font-medium uppercase tracking-wide">Pending</p>
             </div>
@@ -94,7 +95,7 @@ export default function ClaimsPage() {
       {loading && (
         <div className="grid grid-cols-3 gap-3 mb-6">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="bg-white rounded-2xl border border-slate-100 shadow-card p-4 space-y-2">
+            <div key={i} className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4 space-y-2">
               <Skeleton className="h-3 w-14" />
               <Skeleton className="h-4 w-20" />
             </div>
@@ -115,7 +116,7 @@ export default function ClaimsPage() {
                 'whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-semibold border transition-all duration-150 shrink-0',
                 activeTab === tab.value
                   ? 'bg-primary-800 text-white border-primary-800 shadow-sm'
-                  : 'bg-white text-slate-500 border-slate-200 hover:border-primary-300 hover:text-primary-700',
+                  : 'bg-white text-neutral-500 border-neutral-200 hover:border-primary-300 hover:text-primary-700',
               )}
             >
               {tab.label}
@@ -134,21 +135,21 @@ export default function ClaimsPage() {
         <ListSkeleton count={4} />
       ) : claims.length === 0 ? (
         <Card padding="none" className="overflow-hidden">
-          <div className="h-1.5 w-full bg-gradient-to-r from-accent-400 via-primary-600 to-accent-500" />
+          <div className="h-1.5 w-full bg-accent-500" />
           <div className="flex flex-col items-center py-14 text-center gap-4 px-6">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 flex items-center justify-center">
-              <FileText className="w-9 h-9 text-slate-300" />
+            <div className="w-20 h-20 rounded-2xl bg-neutral-100 border border-neutral-200 flex items-center justify-center">
+              <FileText className="w-9 h-9 text-neutral-300" />
             </div>
             <div>
-              <p className="font-display font-bold text-slate-700 text-lg mb-1">
+              <p className="font-display font-bold text-neutral-700 text-lg mb-1">
                 No claims yet
               </p>
-              <p className="text-sm text-slate-400 max-w-[220px] mx-auto leading-snug">
+              <p className="text-sm text-neutral-400 max-w-[220px] mx-auto leading-snug">
                 Submit a claim for consultations, medications or lab tests.
               </p>
             </div>
             <Button
-              variant="gradient"
+              variant="primary"
               onClick={() => router.push('/claims/new')}
               leadingIcon={<Plus className="w-4 h-4" />}
             >
@@ -158,11 +159,11 @@ export default function ClaimsPage() {
         </Card>
       ) : filtered.length === 0 ? (
         <Card padding="lg" className="text-center py-10">
-          <p className="text-slate-400 font-medium">No {activeTab} claims</p>
-          <p className="text-sm text-slate-300 mt-1">Try a different filter</p>
+          <p className="text-neutral-400 font-medium">No {activeTab} claims</p>
+          <p className="text-sm text-neutral-300 mt-1">Try a different filter</p>
         </Card>
       ) : (
-        <div className="space-y-2.5">
+        <div className="space-y-2.5 md:space-y-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-3">
           {filtered.map((claim) => (
             <ClaimCard
               key={claim.id}
@@ -172,6 +173,7 @@ export default function ClaimsPage() {
           ))}
         </div>
       )}
+      </div>
     </AppShell>
   );
 }

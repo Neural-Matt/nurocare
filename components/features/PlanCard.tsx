@@ -45,34 +45,30 @@ function featureIcon(text: string): typeof Stethoscope {
 // old hardcoded mock data and silently stop working once wired to Supabase.
 const POPULAR_PLAN_NAME = 'Standard Health';
 
-// Colour scheme per plan
+// Colour scheme per plan — flat solid headers, no gradient wash
 const PLAN_THEMES: Record<string, {
   header: string;
-  glow: string;
   priceColor: string;
   iconBg: string;
   iconColor: string;
   borderHighlight: string;
 }> = {
   'Basic Care': {
-    header: 'from-primary-900 to-primary-800',
-    glow: 'bg-accent-500/15',
+    header: 'bg-primary-800',
     priceColor: 'text-accent-400',
     iconBg: 'bg-primary-50',
     iconColor: 'text-primary-700',
     borderHighlight: 'border-primary-100',
   },
   'Standard Health': {
-    header: 'from-accent-700 to-accent-600',
-    glow: 'bg-white/10',
+    header: 'bg-accent-600',
     priceColor: 'text-white',
     iconBg: 'bg-accent-50',
     iconColor: 'text-accent-700',
     borderHighlight: 'border-accent-200',
   },
   'Premium Plus': {
-    header: 'from-warning-600 to-warning-500',
-    glow: 'bg-primary-900/20',
+    header: 'bg-warning-600',
     priceColor: 'text-white',
     iconBg: 'bg-warning-50',
     iconColor: 'text-warning-700',
@@ -96,11 +92,11 @@ export function PlanCard({ plan, isActive, onSelect, onViewDetails }: PlanCardPr
   return (
     <div
       className={cn(
-        'relative bg-white rounded-3xl overflow-hidden border transition-all duration-300 hover:shadow-card-hover hover:-translate-y-0.5',
-        isPopular ? 'border-accent-300 shadow-md shadow-accent-500/10' : 'border-slate-100 shadow-card',
+        'relative bg-white rounded-3xl border transition-shadow duration-300 hover:shadow-card-hover',
+        isPopular ? 'border-accent-300 shadow-card-hover' : 'border-neutral-150 shadow-card',
       )}
     >
-      {/* Popular badge — floats above the card top edge */}
+      {/* Popular badge — floats above the card top edge, outside the clipped inner wrapper */}
       {isPopular && (
         <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
           <div className="inline-flex items-center gap-1.5 bg-accent-500 text-white text-[11px] font-bold uppercase tracking-wide px-3 py-1 rounded-full shadow-lg shadow-accent-500/30">
@@ -110,23 +106,13 @@ export function PlanCard({ plan, isActive, onSelect, onViewDetails }: PlanCardPr
         </div>
       )}
 
+      <div className="rounded-3xl overflow-hidden">
       {/* ── Plan header ── */}
       <div className={cn(
-        'bg-gradient-to-br p-5 relative overflow-hidden',
+        'p-5 relative',
         isPopular ? 'pt-7' : '',
         theme.header,
       )}>
-        {/* Glow blob */}
-        <div className={cn('absolute -bottom-10 -right-10 w-36 h-36 rounded-full blur-2xl pointer-events-none', theme.glow)} />
-        {/* Grid texture */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(255,255,255,.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.8) 1px, transparent 1px)',
-            backgroundSize: '20px 20px',
-          }}
-        />
-
         <div className="relative flex items-start justify-between mb-3">
           <div>
             <p className="text-white/50 text-[11px] font-semibold uppercase tracking-widest mb-1">NuroCare</p>
@@ -142,7 +128,7 @@ export function PlanCard({ plan, isActive, onSelect, onViewDetails }: PlanCardPr
 
         {/* Price */}
         <div className="relative flex items-baseline gap-1.5">
-          <span className={cn('font-display font-extrabold text-4xl leading-none', theme.priceColor)}>
+          <span className={cn('font-display font-semibold text-4xl leading-none', theme.priceColor)}>
             {formatCurrency(plan.price)}
           </span>
           <span className="text-white/40 text-sm font-medium">/month</span>
@@ -153,13 +139,13 @@ export function PlanCard({ plan, isActive, onSelect, onViewDetails }: PlanCardPr
 
       {/* ── Features ── */}
       <div className="p-5">
-        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">What&apos;s included</p>
+        <p className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-3">What&apos;s included</p>
         <ul className="space-y-2.5 mb-5">
           {plan.features.map((feature) => {
             const FeatureIcon = featureIcon(feature);
             const isCheckIcon = FeatureIcon === Check;
             return (
-              <li key={feature} className="flex items-center gap-3 text-sm text-slate-700">
+              <li key={feature} className="flex items-center gap-3 text-sm text-neutral-700">
                 <div className={cn(
                   'w-7 h-7 rounded-xl flex items-center justify-center shrink-0',
                   theme.iconBg,
@@ -178,7 +164,7 @@ export function PlanCard({ plan, isActive, onSelect, onViewDetails }: PlanCardPr
         {/* ── Actions ── */}
         <div className="flex gap-2.5">
           <Button
-            variant={isActive ? 'teal' : isPopular ? 'gradient' : 'primary'}
+            variant={isActive ? 'teal' : 'primary'}
             onClick={() => onSelect(plan)}
             fullWidth
             size="lg"
@@ -190,14 +176,15 @@ export function PlanCard({ plan, isActive, onSelect, onViewDetails }: PlanCardPr
           <button
             onClick={() => onViewDetails(plan)}
             className={cn(
-              'shrink-0 w-12 h-12 rounded-xl border flex items-center justify-center transition-all duration-200 hover:bg-slate-50 active:scale-95',
+              'shrink-0 w-12 h-12 rounded-xl border flex items-center justify-center transition-colors duration-200 hover:bg-neutral-50 active:scale-95',
               theme.borderHighlight,
             )}
             aria-label="View plan details"
           >
-            <ChevronRight className="w-4 h-4 text-slate-400" />
+            <ChevronRight className="w-4 h-4 text-neutral-400" />
           </button>
         </div>
+      </div>
       </div>
     </div>
   );

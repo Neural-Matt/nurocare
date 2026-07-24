@@ -7,6 +7,7 @@ import { ClaimTimeline } from '@/components/features/ClaimTimeline';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { IconChip } from '@/components/ui/IconChip';
 import { useClaims } from '@/hooks/useClaims';
 import { useFamilyMembers } from '@/hooks/useFamilyMembers';
 import { CLAIM_STATUS_STYLES, CLAIM_LABELS } from '@/components/features/ClaimCard';
@@ -29,12 +30,12 @@ const CLAIM_ICONS = {
 function DetailRow({ icon: Icon, label, value }: { icon: React.ComponentType<{ className?: string }>; label: string; value: string }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="w-8 h-8 rounded-xl bg-slate-50 flex items-center justify-center shrink-0">
-        <Icon className="w-4 h-4 text-slate-400" />
+      <div className="w-8 h-8 rounded-xl bg-neutral-50 flex items-center justify-center shrink-0">
+        <Icon className="w-4 h-4 text-neutral-400" />
       </div>
       <div>
-        <p className="text-xs text-slate-400 font-medium">{label}</p>
-        <p className="text-sm font-semibold text-slate-900">{value}</p>
+        <p className="text-xs text-neutral-400 font-medium">{label}</p>
+        <p className="text-sm font-semibold text-neutral-900">{value}</p>
       </div>
     </div>
   );
@@ -43,7 +44,7 @@ function DetailRow({ icon: Icon, label, value }: { icon: React.ComponentType<{ c
 function ClaimDetailSkeleton() {
   return (
     <div className="space-y-4">
-      <div className="bg-white rounded-2xl p-5 shadow-card border border-slate-100 space-y-4">
+      <div className="bg-white rounded-2xl p-5 shadow-card border border-neutral-100 space-y-4">
         <div className="flex justify-between">
           <div className="space-y-2">
             <Skeleton className="h-3 w-16" />
@@ -56,7 +57,7 @@ function ClaimDetailSkeleton() {
           <Skeleton className="h-16 rounded-xl" />
         </div>
       </div>
-      <div className="bg-white rounded-2xl p-5 shadow-card border border-slate-100 space-y-4">
+      <div className="bg-white rounded-2xl p-5 shadow-card border border-neutral-100 space-y-4">
         <Skeleton className="h-4 w-32" />
         <Skeleton className="h-40 w-full rounded-xl" />
       </div>
@@ -94,9 +95,10 @@ export default function ClaimDetailPage() {
 
   return (
     <AppShell title="Claim Details">
+      <div className="max-w-lg md:max-w-2xl mx-auto">
       <button
         onClick={() => router.back()}
-        className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-primary-800 font-medium mb-5 transition-colors"
+        className="flex items-center gap-1.5 text-sm text-neutral-400 hover:text-primary-800 font-medium mb-5 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" /> Back to claims
       </button>
@@ -104,8 +106,8 @@ export default function ClaimDetailPage() {
       {loading || !claim ? (
         claim === null && !loading ? (
           <Card padding="lg" className="flex flex-col items-center py-12 text-center gap-3">
-            <FileText className="w-12 h-12 text-slate-200" />
-            <p className="font-semibold text-slate-500">Claim not found</p>
+            <FileText className="w-12 h-12 text-neutral-200" />
+            <p className="font-semibold text-neutral-500">Claim not found</p>
             <Button variant="outline" size="sm" onClick={() => router.replace('/claims')}>
               View all claims
             </Button>
@@ -121,12 +123,15 @@ export default function ClaimDetailPage() {
             {/* Type + Status */}
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-3">
-                <div className={cn('w-12 h-12 rounded-2xl flex items-center justify-center', statusStyle!.iconBg)}>
-                  <ClaimIcon className={cn('w-6 h-6', statusStyle!.iconColor)} />
-                </div>
+                <IconChip
+                  icon={<ClaimIcon className="w-6 h-6" />}
+                  color={statusStyle!.chip}
+                  size="lg"
+                  className={cn('rounded-2xl', statusStyle!.chip === 'primary' && 'bg-blue-50 text-blue-600')}
+                />
                 <div>
-                  <p className="text-xs text-slate-400 font-medium uppercase tracking-wide">Claim Type</p>
-                  <p className="font-display font-bold text-slate-900">
+                  <p className="text-xs text-neutral-400 font-medium uppercase tracking-wide">Claim Type</p>
+                  <p className="font-display font-bold text-neutral-900">
                     {CLAIM_LABELS[claim.type] ?? claim.type}
                   </p>
                   {claimMember && (
@@ -147,7 +152,7 @@ export default function ClaimDetailPage() {
             </div>
 
             {/* Amount highlight */}
-            <div className="bg-gradient-to-br from-primary-800 to-primary-700 rounded-2xl p-4 mb-4 text-white">
+            <div className="bg-primary-800 rounded-2xl p-4 mb-4 text-white">
               <p className="text-white/50 text-xs font-medium uppercase tracking-wide mb-1">
                 Claim Amount
               </p>
@@ -165,9 +170,9 @@ export default function ClaimDetailPage() {
 
             {/* Notes */}
             {claim.notes && (
-              <div className="mt-4 bg-slate-50 rounded-xl p-3.5 border border-slate-100">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Notes</p>
-                <p className="text-sm text-slate-700 leading-relaxed">{claim.notes}</p>
+              <div className="mt-4 bg-neutral-50 rounded-xl p-3.5 border border-neutral-100">
+                <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wide mb-1.5">Notes</p>
+                <p className="text-sm text-neutral-700 leading-relaxed">{claim.notes}</p>
               </div>
             )}
 
@@ -262,8 +267,8 @@ export default function ClaimDetailPage() {
           {/* ── Timeline card ── */}
           <Card padding="lg">
             <div className="flex items-center justify-between mb-5">
-              <p className="font-display font-bold text-slate-800">Claim Progress</p>
-              <span className="text-xs text-slate-400 font-medium">
+              <p className="font-display font-bold text-neutral-800">Claim Progress</p>
+              <span className="text-xs text-neutral-400 font-medium">
                 {claim.status === 'paid' ? 'Completed' : 'In progress'}
               </span>
             </div>
@@ -282,6 +287,7 @@ export default function ClaimDetailPage() {
           )}
         </div>
       )}
+      </div>
     </AppShell>
   );
 }

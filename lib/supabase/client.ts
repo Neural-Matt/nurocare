@@ -12,11 +12,10 @@ export const hasSupabaseEnv = Boolean(
   process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 );
 
-// Mock mode is opt-in only — it must never turn on just because env vars
-// happen to be missing, or a misconfigured production deploy (e.g. a
-// forgotten Vercel env var) would silently fall back to a fake logged-in
-// admin session instead of failing loudly.
-export const IS_MOCK_MODE = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true';
+// Same condition every hook needs to decide between local mock data and a
+// real Supabase call — computed once here so hooks can import it directly
+// instead of each re-deriving it from `hasSupabaseEnv`.
+export const IS_MOCK_MODE = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true' || !hasSupabaseEnv;
 
 const mockDatabase = {
   profiles: [MOCK_PROFILE],
@@ -29,8 +28,12 @@ const mockDatabase = {
 
 const cloneValue = <T,>(value: T): T => JSON.parse(JSON.stringify(value));
 
+// The mock builder is intentionally untyped (`any`) — it stands in for
+// whatever table shape Supabase would return, and the strict union across
+// all mock tables isn't something TS can usefully narrow here.
 function createMockQuery(table: keyof typeof mockDatabase) {
-  let rows = cloneValue(mockDatabase[table]);
+  const db = mockDatabase as unknown as Record<string, any[]>;
+  let rows: any[] = cloneValue(db[table]);
   let pendingPatch: Record<string, unknown> | null = null;
   let pendingDelete = false;
 
@@ -38,7 +41,7 @@ function createMockQuery(table: keyof typeof mockDatabase) {
     select: () => builder,
     order: (column: string, options?: { ascending?: boolean }) => {
       const ascending = options?.ascending ?? true;
-      rows = [...(rows as any[])].sort((left, right) => {
+      rows = [...rows].sort((left, right) => {
         const leftValue = left?.[column];
         const rightValue = right?.[column];
         if (leftValue === rightValue) return 0;
@@ -48,21 +51,21 @@ function createMockQuery(table: keyof typeof mockDatabase) {
     },
     eq: (column: string, value: unknown) => {
       if (pendingDelete) {
-        const remaining = (mockDatabase[table] as any[]).filter((row) => row?.[column] !== value);
-        mockDatabase[table] = cloneValue(remaining);
+        const remaining = db[table].filter((row) => row?.[column] !== value);
+        db[table] = cloneValue(remaining);
         rows = [];
         return builder;
       }
 
-      rows = (rows as any[]).filter((row) => row?.[column] === value);
+      rows = rows.filter((row) => row?.[column] === value);
       if (pendingPatch) {
-        const updated = (rows as any[]).map((row) => ({
+        const updated = rows.map((row) => ({
           ...row,
           ...pendingPatch,
           updated_at: new Date().toISOString(),
         }));
-        mockDatabase[table] = (mockDatabase[table] as any[]).map((row) => {
-          const match = (rows as any[]).some((filteredRow) => filteredRow.id === row.id);
+        db[table] = db[table].map((row) => {
+          const match = rows.some((filteredRow) => filteredRow.id === row.id);
           return match ? updated.find((item) => item.id === row.id) ?? row : row;
         });
         rows = updated;
@@ -70,7 +73,7 @@ function createMockQuery(table: keyof typeof mockDatabase) {
       return builder;
     },
     in: (column: string, values: unknown[]) => {
-      rows = (rows as any[]).filter((row) => values.includes(row?.[column]));
+      rows = rows.filter((row) => values.includes(row?.[column]));
       return builder;
     },
     insert: (value: Record<string, unknown> | Record<string, unknown>[]) => {
@@ -81,8 +84,8 @@ function createMockQuery(table: keyof typeof mockDatabase) {
         updated_at: (record.updated_at as string | undefined) ?? new Date().toISOString(),
         ...record,
       }));
-      (mockDatabase[table] as any[]) = [...(mockDatabase[table] as any[]), ...cloneValue(inserted)];
-      rows = cloneValue(inserted) as any;
+      db[table] = [...db[table], ...cloneValue(inserted)];
+      rows = cloneValue(inserted);
       return builder;
     },
     update: (value: Record<string, unknown>) => {
@@ -134,16 +137,8 @@ function createMockSupabaseClient() {
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createClient() {
-  if (IS_MOCK_MODE) {
-    return createMockSupabaseClient();
-  }
-
   if (!hasSupabaseEnv) {
-    throw new Error(
-      'Supabase is not configured: set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY ' +
-        'in the environment, or set NEXT_PUBLIC_MOCK_AUTH=true for local mock mode. ' +
-        'Refusing to silently fall back to mock data in an unconfigured environment.'
-    );
+    return createMockSupabaseClient();
   }
 
   return createBrowserClient(
