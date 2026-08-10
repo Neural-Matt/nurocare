@@ -1,7 +1,8 @@
 'use client';
 
-import { Star } from 'lucide-react';
-import { Card, Heading, Text, Caption, Overline, Stagger, Reveal } from '@/components/ui';
+import { Star, Quote } from 'lucide-react';
+import { Text, Caption, Overline, Heading, Stagger, Reveal } from '@/components/ui';
+import { MetricNumber } from '@/components/ui/MetricNumber';
 
 const partners = ['Zambia State Insurance', 'Madison General', 'Professional Life', 'Indo Zambia Bank'];
 
@@ -13,6 +14,7 @@ const testimonials = [
     rating: 5,
     avatar: 'CM',
     avatarClass: 'bg-primary-800 text-white',
+    featured: true,
   },
   {
     name: 'Mwila K.',
@@ -21,82 +23,102 @@ const testimonials = [
     rating: 5,
     avatar: 'MK',
     avatarClass: 'bg-accent-100 text-accent-700',
+    featured: false,
   },
   {
     name: 'Brian T.',
     role: 'Freelancer, Kitwe',
-    text: "I searched for a drug online on NuroCare and found covered alternatives. That feature alone saves me monthly.",
+    text: 'I searched for a drug online on NuroCare and found covered alternatives. That feature alone saves me monthly.',
     rating: 5,
     avatar: 'BT',
     avatarClass: 'bg-neutral-800 text-white',
+    featured: false,
   },
 ];
 
 const stats = [
-  { value: '2,500+', label: 'Members covered' },
-  { value: '98%', label: 'Claims approved' },
-  { value: '< 24h', label: 'Avg claim time' },
-  { value: '4.9 ★', label: 'App rating' },
+  { value: '2,500+', unit: 'members covered' },
+  { value: '98', unit: '% claims approved' },
+  { value: '<24', unit: 'hr avg claim time' },
+  { value: '4.9', unit: '★ app rating' },
 ];
 
 export function TrustSection() {
+  const [featured, ...rest] = testimonials;
+
   return (
-    <section className="bg-neutral-50 py-20 sm:py-28 px-5 sm:px-8">
+    <section className="bg-neutral-50 py-24 sm:py-32 px-5 sm:px-8">
       <div className="max-w-6xl mx-auto">
 
-        {/* Partner logos */}
-        <div className="text-center mb-16">
-          <Caption uppercase className="block mb-8">Trusted partners &amp; insurers</Caption>
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-            {partners.map((p) => (
-              <div
-                key={p}
-                className="px-5 py-3 bg-white border border-neutral-150 rounded-xl shadow-card"
-              >
-                <Text size="sm" weight="semibold" color="secondary">{p}</Text>
-              </div>
+        {/* Partner wordmarks — plain, dot-separated, not boxed pills */}
+        <div className="mb-20">
+          <Caption uppercase className="block mb-6 text-center">Trusted partners &amp; insurers</Caption>
+          <div className="flex flex-wrap justify-center items-center gap-x-3 gap-y-3">
+            {partners.map((p, i) => (
+              <span key={p} className="flex items-center gap-3">
+                <Text size="lg" weight="semibold" color="muted" className="whitespace-nowrap">{p}</Text>
+                {i < partners.length - 1 && <span className="w-1 h-1 rounded-full bg-neutral-300" />}
+              </span>
             ))}
           </div>
         </div>
 
-        {/* Stats row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-20">
+        {/* Stats — large tabular numerals, asymmetric wrap, no card framing */}
+        <div className="flex flex-wrap justify-center gap-x-16 gap-y-8 mb-24 pb-24 border-b border-neutral-150">
           {stats.map((s) => (
-            <div key={s.label} className="text-center">
-              <Heading as="p" size="h2" color="primary">{s.value}</Heading>
-              <Text size="sm" color="secondary" className="mt-1">{s.label}</Text>
-            </div>
+            <MetricNumber key={s.unit} value={s.value} unit={s.unit} size="xl" color="primary" />
           ))}
         </div>
 
-        {/* Testimonials */}
-        <div className="text-center mb-10">
+        {/* Testimonials — one featured quote, two smaller supporting ones */}
+        <div className="mb-12">
           <Overline color="accent" className="mb-3">Member stories</Overline>
           <Heading as="h2" size="h1">Loved by our members</Heading>
         </div>
-        <Stagger className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {testimonials.map((t) => (
-            <Reveal key={t.name}>
-              <Card variant="default" padding="lg" hover className="h-full">
-                <div className="flex gap-1 mb-4">
-                  {Array(t.rating).fill(0).map((_, j) => (
-                    <Star key={j} size={14} className="fill-amber-400 text-amber-400" />
+
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-14">
+          <Reveal>
+            <div className="relative h-full flex flex-col">
+              <Quote className="w-10 h-10 text-accent-200 mb-4" strokeWidth={1.5} />
+              <Text as="p" size="xl" className="font-display leading-snug text-neutral-900 mb-6 flex-1">
+                &ldquo;{featured.text}&rdquo;
+              </Text>
+              <div className="flex items-center gap-3">
+                <div className={`w-11 h-11 rounded-full flex items-center justify-center shrink-0 ${featured.avatarClass}`}>
+                  <span className="text-sm font-bold">{featured.avatar}</span>
+                </div>
+                <div>
+                  <Text size="sm" weight="semibold">{featured.name}</Text>
+                  <Caption color="muted">{featured.role}</Caption>
+                </div>
+                <div className="flex gap-0.5 ml-auto">
+                  {Array(featured.rating).fill(0).map((_, j) => (
+                    <Star key={j} size={13} className="fill-amber-400 text-amber-400" />
                   ))}
                 </div>
-                <Text size="sm" color="secondary" className="mb-5">&ldquo;{t.text}&rdquo;</Text>
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${t.avatarClass}`}>
-                    <span className="text-xs font-bold">{t.avatar}</span>
-                  </div>
-                  <div>
-                    <Text size="sm" weight="semibold">{t.name}</Text>
-                    <Caption color="muted">{t.role}</Caption>
+              </div>
+            </div>
+          </Reveal>
+
+          <Stagger className="flex flex-col gap-6">
+            {rest.map((t) => (
+              <Reveal key={t.name}>
+                <div className="border-t border-neutral-200 pt-6">
+                  <Text size="base" color="secondary" className="mb-4 leading-relaxed">&ldquo;{t.text}&rdquo;</Text>
+                  <div className="flex items-center gap-3">
+                    <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${t.avatarClass}`}>
+                      <span className="text-xs font-bold">{t.avatar}</span>
+                    </div>
+                    <div>
+                      <Text size="sm" weight="semibold">{t.name}</Text>
+                      <Caption color="muted">{t.role}</Caption>
+                    </div>
                   </div>
                 </div>
-              </Card>
-            </Reveal>
-          ))}
-        </Stagger>
+              </Reveal>
+            ))}
+          </Stagger>
+        </div>
       </div>
     </section>
   );

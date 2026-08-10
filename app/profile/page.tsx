@@ -68,16 +68,16 @@ export default function ProfilePage() {
       {/* Avatar + name */}
       <Card className="flex flex-col items-center pt-8 pb-6 mb-5">
         {/* Initials avatar with ring */}
-        <div className="relative mb-4">
-          <div className="w-20 h-20 rounded-full bg-primary-800 flex items-center justify-center shadow-md">
-            <span className="text-white text-2xl font-black tracking-tight">
+        <div className="relative mb-5">
+          <div className="w-24 h-24 rounded-full bg-primary-900 flex items-center justify-center shadow-md">
+            <span className="text-white text-3xl font-display font-medium tracking-tight">
               {profile?.full_name ? getInitials(profile.full_name) : '?'}
             </span>
           </div>
           <div className="absolute inset-0 rounded-full ring-4 ring-white" />
         </div>
-        <p className="font-display font-bold text-neutral-900 text-xl">{profile?.full_name ?? 'Set your name'}</p>
-        <p className="text-sm text-neutral-400 mt-0.5">{user?.email}</p>
+        <p className="font-display font-medium text-neutral-900 text-2xl tracking-[-0.01em]">{profile?.full_name ?? 'Set your name'}</p>
+        <p className="text-sm text-neutral-400 mt-1">{user?.email}</p>
         <div className="flex flex-wrap justify-center gap-2 mt-3">
           <Badge variant={profile?.role === 'admin' ? 'warning' : 'info'}>
             <Shield className="w-3 h-3" />

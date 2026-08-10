@@ -52,17 +52,17 @@ export default function PlansPage() {
     <AppShell title="Health Plans">
       <div className="max-w-lg md:max-w-6xl mx-auto">
       {/* ── Intro ── */}
-      <div className="mb-5">
-        <h1 className="font-display font-bold text-xl text-primary-800 mb-1">
+      <div className="mb-6">
+        <h1 className="font-display font-medium text-4xl text-neutral-900 tracking-[-0.02em] mb-2">
           Find your perfect plan
         </h1>
-        <p className="text-neutral-500 text-sm leading-relaxed">
+        <p className="text-neutral-500 text-base leading-relaxed">
           Simple, affordable cover — pick what fits your life and budget.
         </p>
       </div>
 
       {/* ── Trust signals ── */}
-      <div className="flex gap-2 mb-5 overflow-x-auto pb-1 scrollbar-none">
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-1 scrollbar-none">
         {TRUST_PILLS.map(({ icon: Icon, label }) => (
           <div
             key={label}

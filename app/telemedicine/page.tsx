@@ -157,20 +157,23 @@ export default function TelemedicinePage() {
       <div className="space-y-5 pb-4 max-w-lg md:max-w-5xl mx-auto">
 
         {/* Hero banner */}
-        <div className="relative overflow-hidden rounded-2xl bg-primary-800 p-5 text-white">
-          <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-accent-500/20 blur-3xl pointer-events-none" />
+        <div className="relative overflow-hidden rounded-3xl bg-primary-900 p-6 md:p-8 text-white">
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: 'radial-gradient(500px 260px at 100% 0%, rgba(20,184,166,0.18), transparent 60%)' }}
+          />
           <div className="relative">
-            <div className="flex items-center gap-1.5 mb-2">
+            <div className="flex items-center gap-1.5 mb-3">
               <span className="w-2 h-2 rounded-full bg-accent-400 animate-pulse" />
               <span className="text-[11px] font-semibold text-white/60 uppercase tracking-wider">{availableCount} doctors online now</span>
             </div>
-            <h2 className="text-xl font-display font-bold mb-1">Speak to a doctor</h2>
-            <p className="text-white/60 text-sm leading-snug mb-4">
+            <h2 className="text-3xl md:text-4xl font-display font-medium mb-2 tracking-[-0.02em]">Speak to a doctor</h2>
+            <p className="text-white/55 text-base leading-relaxed mb-6 max-w-sm">
               Get expert medical advice from the comfort of your home via WhatsApp.
             </p>
-            <div className="flex items-center gap-3 text-[11px] text-white/50">
-              <div className="flex items-center gap-1"><ShieldCheck className="w-3 h-3 text-accent-400" /> Covered by plan</div>
-              <div className="flex items-center gap-1"><Clock className="w-3 h-3 text-accent-400" /> Avg response &lt;10 min</div>
+            <div className="flex items-center gap-4 text-xs text-white/50">
+              <div className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-accent-400" /> Covered by plan</div>
+              <div className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-accent-400" /> Avg response &lt;10 min</div>
             </div>
           </div>
         </div>

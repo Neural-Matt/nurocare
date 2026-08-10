@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Modal } from '@/components/ui/Modal';
 import { Badge } from '@/components/ui/Badge';
+import { MetricNumber } from '@/components/ui/MetricNumber';
 import { useFamilyMembers } from '@/hooks/useFamilyMembers';
 import { FamilyMember, Relationship, Gender } from '@/types';
 import { formatDate, getInitials, cn } from '@/lib/utils';
@@ -189,13 +190,8 @@ export default function FamilyPage() {
     <AppShell title="My Family">
       <div className="max-w-lg md:max-w-5xl mx-auto">
       {/* Header row */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="font-display font-bold text-xl text-primary-800">My Family</h1>
-          <p className="text-neutral-400 text-xs font-medium mt-0.5">
-            {loading ? '…' : `${members.length} member${members.length !== 1 ? 's' : ''} covered`}
-          </p>
-        </div>
+      <div className="flex items-end justify-between mb-8 gap-4">
+        <h1 className="font-display font-medium text-4xl text-neutral-900 tracking-[-0.02em]">My Family</h1>
         <Button
           size="sm"
           variant="primary"
@@ -206,18 +202,16 @@ export default function FamilyPage() {
         </Button>
       </div>
 
-      {/* Coverage summary bar */}
+      {/* Coverage summary — one bordered bar, dividers instead of two separate cards */}
       {!loading && members.length > 0 && (
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4">
-            <p className="text-[11px] text-neutral-400 font-medium uppercase tracking-wide mb-1">Total Members</p>
-            <p className="text-2xl font-display font-bold text-primary-800">{members.length}</p>
+        <div className="grid grid-cols-2 rounded-2xl border border-neutral-150 bg-white shadow-card mb-8 overflow-hidden">
+          <div className="p-5">
+            <p className="text-[11px] text-neutral-400 font-medium uppercase tracking-wide mb-2">Total Members</p>
+            <MetricNumber value={members.length} size="md" />
           </div>
-          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4">
-            <p className="text-[11px] text-accent-600 font-medium uppercase tracking-wide mb-1">Covered</p>
-            <p className="text-2xl font-display font-bold text-accent-600">
-              {members.filter((m) => m.plan_id).length}
-            </p>
+          <div className="p-5 border-l border-neutral-150">
+            <p className="text-[11px] text-accent-600 font-medium uppercase tracking-wide mb-2">Covered</p>
+            <MetricNumber value={members.filter((m) => m.plan_id).length} size="md" color="accent" />
           </div>
         </div>
       )}

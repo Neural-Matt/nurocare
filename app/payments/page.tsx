@@ -4,6 +4,7 @@ import { AppShell } from '@/components/layout/AppShell';
 import { Card } from '@/components/ui/Card';
 import { IconChip } from '@/components/ui/IconChip';
 import { Badge } from '@/components/ui/Badge';
+import { CurrencyDisplay, MetricNumber } from '@/components/ui/MetricNumber';
 import { usePayments } from '@/hooks/usePayments';
 import { useSubscriptions } from '@/hooks/useSubscriptions';
 import { PaymentRecord, PaymentStatus, PaymentMethod } from '@/types';
@@ -88,8 +89,8 @@ function SubscriptionManageCard() {
   const isActive = activeSubscription.status === 'active';
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-primary-800 p-5 text-white shadow-xl mb-6">
-      {/* Subtle grid */}
+    <div className="relative overflow-hidden rounded-3xl bg-primary-900 p-6 md:p-8 text-white mb-6">
+      {/* Subtle grid + glow — same textured-navy language used across the app */}
       <div
         className="absolute inset-0 opacity-[0.04]"
         style={{
@@ -98,19 +99,19 @@ function SubscriptionManageCard() {
           backgroundSize: '24px 24px',
         }}
       />
-      <div className="absolute -top-10 -right-10 w-36 h-36 rounded-full bg-accent-500/20 blur-2xl pointer-events-none" />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(500px 260px at 100% 0%, rgba(20,184,166,0.16), transparent 60%)' }}
+      />
 
       <div className="relative">
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <div className="flex items-center gap-1.5 mb-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-accent-400" />
-              <p className="text-white/50 text-xs font-semibold uppercase tracking-widest">Active Plan</p>
-            </div>
-            <p className="text-xl font-display font-bold">{plan?.name}</p>
+        <div className="flex items-start justify-between mb-8">
+          <div className="flex items-center gap-1.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-accent-400" />
+            <p className="text-white/50 text-xs font-semibold uppercase tracking-widest">Active Plan</p>
           </div>
           <span className={cn(
-            'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold border backdrop-blur-sm',
+            'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold border backdrop-blur-sm shrink-0',
             isActive
               ? 'bg-accent-500/20 border-accent-400/30 text-accent-300'
               : 'bg-danger-500/20 border-danger-400/30 text-danger-300',
@@ -120,14 +121,16 @@ function SubscriptionManageCard() {
           </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          <div className="bg-white/10 rounded-xl p-3 border border-white/10">
-            <p className="text-white/40 text-[11px] mb-1">Next billing</p>
-            <p className="text-sm font-semibold">{formatDate(activeSubscription.end_date)}</p>
+        <p className="font-display font-medium text-3xl md:text-4xl mb-8">{plan?.name}</p>
+
+        <div className="flex flex-wrap items-end gap-x-10 gap-y-6 pt-6 border-t border-white/10 mb-6">
+          <div>
+            <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1.5">Monthly</p>
+            <CurrencyDisplay amount={plan?.price ?? 0} size="lg" color="inverse" />
           </div>
-          <div className="bg-white/10 rounded-xl p-3 border border-white/10">
-            <p className="text-white/40 text-[11px] mb-1">Monthly</p>
-            <p className="text-sm font-bold text-accent-400">{formatCurrency(plan?.price ?? 0)}</p>
+          <div>
+            <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1.5">Next billing</p>
+            <p className="text-sm font-semibold text-white/80">{formatDate(activeSubscription.end_date)}</p>
           </div>
         </div>
 
@@ -168,29 +171,29 @@ export default function PaymentsPage() {
       <div className="max-w-lg md:max-w-5xl mx-auto">
       {/* Page header */}
       <div className="mb-6">
-        <h1 className="font-display font-bold text-xl text-primary-800">Payments</h1>
-        <p className="text-neutral-400 text-xs font-medium mt-0.5">
-          Subscription billing & history
+        <h1 className="font-display font-medium text-4xl text-neutral-900 tracking-[-0.02em] mb-1.5">Payments</h1>
+        <p className="text-neutral-500 text-base">
+          Subscription billing &amp; history
         </p>
       </div>
 
       {/* Subscription card */}
       <SubscriptionManageCard />
 
-      {/* Stats */}
+      {/* Stats — one bordered bar, dividers instead of three separate cards */}
       {!loading && payments.length > 0 && (
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4">
-            <p className="text-[11px] text-neutral-400 uppercase tracking-wide font-medium mb-1">Total paid</p>
-            <p className="font-display font-bold text-sm text-primary-800">{formatCurrency(totalPaid)}</p>
+        <div className="grid grid-cols-3 rounded-2xl border border-neutral-150 bg-white shadow-card mb-6 overflow-hidden">
+          <div className="p-5">
+            <p className="text-[11px] text-neutral-400 uppercase tracking-wide font-medium mb-2">Total paid</p>
+            <CurrencyDisplay amount={totalPaid} size="md" />
           </div>
-          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4">
-            <p className="text-[11px] text-accent-600 uppercase tracking-wide font-medium mb-1">Success</p>
-            <p className="font-display font-bold text-sm text-accent-700">{successCount}</p>
+          <div className="p-5 border-l border-neutral-150">
+            <p className="text-[11px] text-accent-600 uppercase tracking-wide font-medium mb-2">Success</p>
+            <MetricNumber value={successCount} size="md" color="accent" />
           </div>
-          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4">
-            <p className="text-[11px] text-danger-500 uppercase tracking-wide font-medium mb-1">Failed</p>
-            <p className="font-display font-bold text-sm text-danger-600">{failedCount}</p>
+          <div className="p-5 border-l border-neutral-150">
+            <p className="text-[11px] text-danger-500 uppercase tracking-wide font-medium mb-2">Failed</p>
+            <MetricNumber value={failedCount} size="md" className="text-danger-600" />
           </div>
         </div>
       )}

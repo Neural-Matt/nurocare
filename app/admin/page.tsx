@@ -5,7 +5,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { createClient } from '@/lib/supabase/client';
 const supabase = createClient();
 import { AdminShell } from '@/components/layout/AdminShell';
-import { Card } from '@/components/ui/Card';
 import { Badge, claimStatusBadge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { ListSkeleton } from '@/components/ui/Skeleton';
@@ -14,6 +13,7 @@ import { EmptyState } from '@/components/ui/EmptyState';
 import { springs, fadeUp } from '@/components/ui/motion';
 import { motion } from 'framer-motion';
 import { formatCurrency, formatDate } from '@/lib/utils';
+import { MetricNumber } from '@/components/ui/MetricNumber';
 import { Claim, Profile, Subscription } from '@/types';
 import toast from 'react-hot-toast';
 import { Users, FileText, ShieldCheck, CheckCircle, XCircle } from 'lucide-react';
@@ -85,16 +85,20 @@ export default function AdminPage() {
     <AdminShell>
       <div className="max-w-5xl mx-auto">
 
-        {/* Stats row — informational only, does not control the tab */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          {TABS.map(({ key, label, icon: Icon, color, count }) => (
-            <Card key={key} padding="md" className="flex items-center gap-3">
+        <h1 className="font-display font-medium text-3xl text-neutral-900 tracking-[-0.02em] mb-6">
+          Operations
+        </h1>
+
+        {/* Stats — one bordered bar, dividers instead of three separate cards */}
+        <div className="grid grid-cols-3 rounded-2xl border border-neutral-150 bg-white shadow-card mb-6 overflow-hidden">
+          {TABS.map(({ key, label, icon: Icon, color, count }, i) => (
+            <div key={key} className={`flex items-center gap-3 p-4 ${i > 0 ? 'border-l border-neutral-150' : ''}`}>
               <IconChip icon={<Icon className="w-[18px] h-[18px]" />} color={color} />
               <div className="min-w-0">
-                <p className="text-xl font-bold text-neutral-900 leading-tight">{count}</p>
-                <p className="text-xs text-neutral-400 truncate">{label}</p>
+                <MetricNumber value={count} size="sm" />
+                <p className="text-xs text-neutral-400 truncate mt-0.5">{label}</p>
               </div>
-            </Card>
+            </div>
           ))}
         </div>
 

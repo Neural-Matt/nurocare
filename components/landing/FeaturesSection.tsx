@@ -184,15 +184,15 @@ export function FeaturesSection() {
     <section id="features" className="bg-white py-20 sm:py-28 px-5 sm:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <RevealOnScroll className="text-center mb-20">
+        <RevealOnScroll className="max-w-2xl mb-24">
           <Overline color="accent" className="mb-3 inline-flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-accent-500" />
             Core Features
           </Overline>
-          <Heading as="h2" size="h2" color="primary" className="mb-4">
-            Everything you need for smarter healthcare
+          <Heading as="h2" size="hero" color="primary" className="text-[2.75rem] sm:text-6xl leading-[1.02] mb-4">
+            Built for how healthcare actually happens.
           </Heading>
-          <Text size="lg" color="secondary" className="max-w-2xl mx-auto">
+          <Text size="lg" color="secondary">
             Every feature designed with one goal: make healthcare simple, accessible, and human.
           </Text>
         </RevealOnScroll>

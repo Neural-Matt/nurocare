@@ -77,11 +77,11 @@ function FacilitiesPage() {
     <AppShell title="Find Facilities">
       <div className="max-w-lg md:max-w-5xl mx-auto">
         {/* ── Intro ── */}
-        <div className="mb-4">
-          <h1 className="font-display font-bold text-xl text-primary-800 mb-0.5">
+        <div className="mb-6">
+          <h1 className="font-display font-medium text-4xl text-neutral-900 tracking-[-0.02em] mb-2">
             Hospitals &amp; Pharmacies
           </h1>
-          <p className="text-neutral-500 text-sm">
+          <p className="text-neutral-500 text-base">
             Find covered hospitals, clinics and pharmacies near you.
           </p>
         </div>

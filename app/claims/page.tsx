@@ -10,8 +10,8 @@ import { useClaims } from '@/hooks/useClaims';
 import { useRouter } from 'next/navigation';
 import { ClaimStatus } from '@/types';
 import { Plus, FileText, Activity, CreditCard, Clock } from 'lucide-react';
-import { formatCurrency } from '@/lib/utils';
 import { cn } from '@/lib/utils';
+import { CurrencyDisplay, MetricNumber } from '@/components/ui/MetricNumber';
 
 const STATUS_TABS: { label: string; value: ClaimStatus | 'all' }[] = [
   { label: 'All', value: 'all' },
@@ -42,13 +42,8 @@ export default function ClaimsPage() {
     <AppShell title="My Claims">
       <div className="max-w-lg md:max-w-5xl mx-auto">
       {/* ── Header ── */}
-      <div className="flex items-center justify-between mb-5">
-        <div>
-          <h1 className="font-display font-bold text-xl text-primary-800">My Claims</h1>
-          <p className="text-neutral-400 text-xs font-medium mt-0.5">
-            {loading ? '...' : `${claims.length} total claim${claims.length !== 1 ? 's' : ''}`}
-          </p>
-        </div>
+      <div className="flex items-end justify-between mb-8 gap-4">
+        <h1 className="font-display font-medium text-4xl text-neutral-900 tracking-[-0.02em]">My Claims</h1>
         <Button
           size="sm"
           variant="primary"
@@ -59,43 +54,37 @@ export default function ClaimsPage() {
         </Button>
       </div>
 
-      {/* ── Stats bar ── */}
+      {/* ── Stats — one bordered bar, dividers instead of three separate cards ── */}
       {!loading && claims.length > 0 && (
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4 flex flex-col gap-1">
+        <div className="grid grid-cols-3 rounded-2xl border border-neutral-150 bg-white shadow-card mb-8 overflow-hidden">
+          <div className="p-5 flex flex-col gap-2">
             <div className="flex items-center gap-1.5 text-neutral-400">
               <Activity className="w-3.5 h-3.5" />
               <p className="text-[11px] font-medium uppercase tracking-wide">Total</p>
             </div>
-            <p className="font-display font-bold text-sm text-primary-800">
-              {formatCurrency(totalSubmitted)}
-            </p>
+            <CurrencyDisplay amount={totalSubmitted} size="md" />
           </div>
-          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4 flex flex-col gap-1">
+          <div className="p-5 flex flex-col gap-2 border-l border-neutral-150">
             <div className="flex items-center gap-1.5 text-neutral-400">
               <CreditCard className="w-3.5 h-3.5" />
               <p className="text-[11px] font-medium uppercase tracking-wide">Paid</p>
             </div>
-            <p className="font-display font-bold text-sm text-accent-600">
-              {formatCurrency(totalPaid)}
-            </p>
+            <CurrencyDisplay amount={totalPaid} size="md" color="accent" />
           </div>
-          <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4 flex flex-col gap-1">
+          <div className="p-5 flex flex-col gap-2 border-l border-neutral-150">
             <div className="flex items-center gap-1.5 text-neutral-400">
               <Clock className="w-3.5 h-3.5" />
               <p className="text-[11px] font-medium uppercase tracking-wide">Pending</p>
             </div>
-            <p className="font-display font-bold text-sm text-warning-600">
-              {pending}
-            </p>
+            <MetricNumber value={pending} size="md" color="default" className="text-warning-600" />
           </div>
         </div>
       )}
 
       {loading && (
-        <div className="grid grid-cols-3 gap-3 mb-6">
+        <div className="grid grid-cols-3 rounded-2xl border border-neutral-150 bg-white shadow-card mb-8 overflow-hidden">
           {[0, 1, 2].map((i) => (
-            <div key={i} className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4 space-y-2">
+            <div key={i} className={cn('p-5 space-y-2', i > 0 && 'border-l border-neutral-150')}>
               <Skeleton className="h-3 w-14" />
               <Skeleton className="h-4 w-20" />
             </div>

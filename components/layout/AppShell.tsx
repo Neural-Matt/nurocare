@@ -58,7 +58,10 @@ export function AppShell({ children, title }: AppShellProps) {
       <Sidebar />
       <div className="md:pl-20 lg:pl-60">
         <Header title={title} />
-        <main className="px-4 md:px-8 pt-20 md:pt-8 pb-24 md:pb-12 scroll-smooth">
+        {/* pt-24 clears the fixed Header in both its states — plain title bar
+            (~56-64px) and title bar + breadcrumb stripe (~79-87px) — so page
+            content never renders underneath it. */}
+        <main className="px-4 md:px-8 pt-24 pb-24 md:pb-12 scroll-smooth">
           {children}
         </main>
       </div>

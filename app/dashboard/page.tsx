@@ -16,6 +16,7 @@ import { HealthInsightCard } from '@/components/ui/HealthInsightCard';
 import { IconChip } from '@/components/ui/IconChip';
 import { DonutChart } from '@/components/ui/DonutChart';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { CurrencyDisplay, MetricNumber } from '@/components/ui/MetricNumber';
 import { Stagger, Reveal, RevealOnScroll, springs } from '@/components/ui/motion';
 import { formatDate, formatCurrency, getInitials } from '@/lib/utils';
 import { cn } from '@/lib/utils';
@@ -25,12 +26,10 @@ import {
   ChevronRight,
   ShieldCheck,
   Calendar,
-  Hash,
   Activity,
   ArrowUpRight,
   CreditCard,
   AlertCircle,
-  Sparkles,
   MessageCircle,
   Pill,
   Users,
@@ -57,13 +56,15 @@ function GreetingHeader({ firstName }: { firstName: string }) {
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={springs.gentle}
-      className="mb-6"
+      className="mb-8 md:mb-10 flex items-end justify-between gap-4"
     >
-      <p className="text-neutral-400 text-sm font-medium">{greeting},</p>
-      <h1 className="text-3xl font-display font-bold text-primary-800 mt-1 leading-tight">
-        {firstName} <span className="inline-block">👋</span>
-      </h1>
-      <p className="text-neutral-400 text-sm mt-1">Here's your health overview</p>
+      <div>
+        <p className="text-neutral-400 text-xs font-semibold uppercase tracking-[0.16em] mb-1.5">{greeting}</p>
+        <h1 className="text-[2.25rem] md:text-5xl font-display font-medium text-neutral-900 leading-[0.98] tracking-[-0.02em]">
+          {firstName}
+        </h1>
+      </div>
+      <span className="text-3xl md:text-4xl mb-0.5 hidden sm:block">👋</span>
     </motion.div>
   );
 }
@@ -96,57 +97,74 @@ function ActivePolicyCard({
   const daysLeft = subscription.end_date ? Math.ceil((new Date(subscription.end_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24)) : 0;
 
   return (
-    <Card variant="navy" padding="lg">
-      <div className="flex items-start justify-between mb-5">
-        <div>
-          <div className="flex items-center gap-1.5 mb-2">
-            <ShieldCheck className="w-4 h-4 text-accent-400" />
-            <p className="text-white/60 text-xs font-semibold uppercase tracking-widest">Active Policy</p>
+    <div className="relative overflow-hidden rounded-3xl bg-primary-900 text-white p-6 md:p-8">
+      {/* Textured depth — same grain/glow language as the marketing hero, so the app doesn't feel like a different product */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(600px 320px at 100% 0%, rgba(20,184,166,0.16), transparent 60%)',
+        }}
+      />
+      <div className="relative">
+        <div className="flex items-start justify-between mb-8">
+          <div className="flex items-center gap-1.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-accent-400" />
+            <p className="text-white/50 text-xs font-semibold uppercase tracking-widest">Active Policy</p>
           </div>
-          <p className="text-2xl font-display font-semibold">{plan?.name ?? 'Health Plan'}</p>
+          <span className={cn('inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border shrink-0', isExpired ? 'bg-danger-500/15 border-danger-400/25 text-danger-300' : 'bg-accent-500/15 border-accent-400/25 text-accent-300')}>
+            <span className={cn('w-1.5 h-1.5 rounded-full', isExpired ? 'bg-danger-400' : 'bg-accent-400')} />
+            {isExpired ? 'Expired' : 'Active'}
+          </span>
         </div>
-        <span className={cn('inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border', isExpired ? 'bg-danger-500/15 border-danger-400/25 text-danger-300' : 'bg-accent-500/15 border-accent-400/25 text-accent-300')}>
-          <span className={cn('w-1.5 h-1.5 rounded-full', isExpired ? 'bg-danger-400' : 'bg-accent-400')} />
-          {isExpired ? 'Expired' : 'Active'}
-        </span>
-      </div>
 
-      <div className="grid grid-cols-3 gap-3 mb-5">
-        <div className="bg-white/[0.07] rounded-xl p-3 border border-white/10">
-          <div className="flex items-center gap-1 text-white/45 text-xs mb-2"><Hash className="w-3 h-3" />No.</div>
-          <p className="font-mono text-xs font-semibold text-white/90 truncate">{subscription.policy_number}</p>
-        </div>
-        <div className="bg-white/[0.07] rounded-xl p-3 border border-white/10">
-          <div className="flex items-center gap-1 text-white/45 text-xs mb-2"><Calendar className="w-3 h-3" />Expires</div>
-          <p className="text-xs font-semibold text-white/90">{formatDate(subscription.end_date)}</p>
-        </div>
-        <div className="bg-white/[0.07] rounded-xl p-3 border border-white/10">
-          <div className="flex items-center gap-1 text-white/45 text-xs mb-2"><Clock className="w-3 h-3" />Days</div>
-          <p className="text-xs font-semibold text-accent-300">{Math.max(daysLeft, 0)}</p>
-        </div>
-      </div>
+        <p className="font-display font-medium text-3xl md:text-4xl mb-8 leading-tight">{plan?.name ?? 'Health Plan'}</p>
 
-      <div className="pt-4 border-t border-white/10 flex justify-between items-center">
-        <p className="text-white/50 text-xs">Monthly Premium</p>
-        <p className="font-display font-semibold text-lg text-accent-300">{formatCurrency(plan?.price ?? 0)}</p>
+        <div className="flex flex-wrap items-end justify-between gap-6 pt-6 border-t border-white/10">
+          <div>
+            <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1.5">Monthly Premium</p>
+            <CurrencyDisplay amount={plan?.price ?? 0} size="lg" color="inverse" />
+          </div>
+          <div>
+            <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1.5">Renews In</p>
+            <MetricNumber value={Math.max(daysLeft, 0)} unit="days" size="lg" color="inverse" />
+          </div>
+          <div className="text-right ml-auto">
+            <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1.5">Policy No.</p>
+            <p className="font-mono text-sm font-medium text-white/80">{subscription.policy_number}</p>
+            <p className="text-white/40 text-xs mt-0.5">Expires {formatDate(subscription.end_date)}</p>
+          </div>
+        </div>
       </div>
-    </Card>
+    </div>
   );
 }
 
 function QuickActionsGrid({ onNavigate }: { onNavigate: (href: string) => void }) {
   return (
-    <section className="mb-6">
-      <Stagger className="grid grid-cols-4 gap-2" gap={0.05}>
-        {QUICK_ACTIONS.map(({ label, icon: Icon, color, href }) => (
+    <section className="mb-8">
+      <Stagger
+        className="grid grid-cols-4 rounded-2xl border border-neutral-150 bg-white overflow-hidden shadow-card"
+        gap={0.05}
+      >
+        {QUICK_ACTIONS.map(({ label, icon: Icon, color, href }, i) => (
           <Reveal key={label}>
             <button
               onClick={() => onNavigate(href)}
-              className="group w-full flex flex-col items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-800 rounded-2xl"
+              className={cn(
+                'group w-full flex flex-col items-center gap-2 py-5 transition-colors duration-150 hover:bg-neutral-25 focus:outline-none focus-visible:relative focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-800',
+                i > 0 && 'border-l border-neutral-150',
+              )}
             >
-              <div className="w-full aspect-square rounded-2xl bg-white border border-neutral-150 flex items-center justify-center shadow-card transition-shadow duration-200 group-hover:shadow-card-hover">
-                <IconChip icon={<Icon className="w-5 h-5" strokeWidth={1.75} />} color={color} size="lg" className="bg-transparent" />
-              </div>
+              <Icon
+                className={cn(
+                  'w-5 h-5 transition-transform duration-150 group-hover:-translate-y-0.5',
+                  color === 'warning' ? 'text-warning-500' :
+                  color === 'accent'  ? 'text-accent-500' :
+                  color === 'primary' ? 'text-primary-700' : 'text-neutral-500',
+                )}
+                strokeWidth={1.75}
+              />
               <p className="text-[10px] font-semibold text-neutral-600 text-center leading-tight">{label}</p>
             </button>
           </Reveal>
@@ -488,22 +506,6 @@ export default function DashboardPage() {
             {claims.length > 0 && <MetricsGrid claims={claims} loading={claimsLoading} />}
 
             <InsightsSection subscription={activeSubscription} claims={claims} />
-
-            <div className="mb-2 md:mb-0">
-              <Card variant="default" padding="md" className="text-center">
-                <p className="text-xs text-neutral-600 mb-2">Ready to take control?</p>
-                <p className="text-sm font-semibold text-primary-800 mb-3">Explore all your health benefits</p>
-                <Button
-                  variant="teal"
-                  size="sm"
-                  fullWidth
-                  onClick={() => router.push('/plans')}
-                  leadingIcon={<Sparkles className="w-4 h-4" />}
-                >
-                  Discover More
-                </Button>
-              </Card>
-            </div>
           </div>
 
           {/* ── Side rail (desktop) ── */}

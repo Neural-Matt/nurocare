@@ -81,14 +81,14 @@ export function PricingSection() {
     <section id="pricing" className="bg-white py-20 sm:py-28 px-5 sm:px-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="max-w-2xl mb-16">
           <Overline color="accent" className="mb-3">
             Transparent Pricing
           </Overline>
-          <Heading as="h2" size="h2" color="primary" className="mb-4">
-            Plans for every family
+          <Heading as="h2" size="hero" color="primary" className="text-[2.75rem] sm:text-6xl leading-[1.02] mb-4">
+            Plans for every family.
           </Heading>
-          <Text color="secondary" size="lg" className="max-w-2xl mx-auto">
+          <Text color="secondary" size="lg">
             No hidden fees. Cancel anytime. Coverage starts immediately upon purchase.
           </Text>
         </div>
