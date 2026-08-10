@@ -135,7 +135,7 @@ export default function DrugsPage() {
             </div>
 
             {/* Usage */}
-            <div className="bg-blue-50 rounded-xl p-3">
+            <div className="bg-primary-50 rounded-xl p-3">
               <div className="flex items-center gap-1.5 text-primary-700 text-xs font-semibold mb-1">
                 <Stethoscope className="w-3.5 h-3.5" />
                 USAGE
@@ -153,8 +153,8 @@ export default function DrugsPage() {
             </div>
 
             {/* Side effects */}
-            <div className="bg-red-50 rounded-xl p-3">
-              <div className="flex items-center gap-1.5 text-red-600 text-xs font-semibold mb-2">
+            <div className="bg-warning-50 rounded-xl p-3">
+              <div className="flex items-center gap-1.5 text-warning-700 text-xs font-semibold mb-2">
                 <AlertTriangle className="w-3.5 h-3.5" />
                 POSSIBLE SIDE EFFECTS
               </div>
@@ -162,7 +162,7 @@ export default function DrugsPage() {
                 {selected.side_effects.map((effect) => (
                   <span
                     key={effect}
-                    className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full"
+                    className="text-xs bg-warning-100 text-warning-700 px-2 py-0.5 rounded-full"
                   >
                     {effect}
                   </span>

@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { RevealOnScroll } from '@/components/ui/motion';
+import { RevealOnScroll, ParallaxLayer } from '@/components/ui/motion';
+import { NetworkMotif } from '@/components/ui/NetworkMotif';
 
 const STATS = [
   { value: '2,500+', label: 'Active Members' },
@@ -20,6 +21,12 @@ const RECENT_ACTIVITY = [
 export function HeroSection() {
   return (
     <section className="relative bg-primary-800 overflow-hidden">
+      {/* Spatial backdrop — abstract infrastructure network standing in for a literal 3D scene */}
+      <div className="absolute -top-10 right-0 w-[560px] h-[480px] pointer-events-none opacity-60">
+        <NetworkMotif tone="teal" />
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-b from-primary-900/40 via-transparent to-primary-800 pointer-events-none" />
+
       <div className="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 pt-32 pb-20 lg:pb-28">
         <div className="flex flex-col lg:flex-row items-center gap-14 lg:gap-20">
 
@@ -37,8 +44,8 @@ export function HeroSection() {
             </h1>
 
             <p className="text-white/60 text-lg sm:text-xl leading-relaxed max-w-lg mx-auto lg:mx-0 mb-10">
-              Affordable, digital health cover for every Zambian family. One app.
-              Instant cover. Total peace of mind.
+              The digital infrastructure connecting your family to cover, care,
+              and claims — in one app, with nothing lost in the paperwork.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start mb-10">
@@ -71,7 +78,8 @@ export function HeroSection() {
 
           {/* ── Right: Policy preview, built from real primitives — not a fake device mockup ── */}
           <RevealOnScroll className="flex-shrink-0 w-full max-w-sm mx-auto" delay={0.1}>
-            <div className="rounded-3xl bg-white/[0.06] border border-white/10 p-5">
+          <ParallaxLayer offset={16}>
+            <div className="rounded-3xl bg-white/[0.06] border border-white/10 p-5 shadow-elevated backdrop-blur-sm">
               <div className="flex items-center justify-between mb-5">
                 <div>
                   <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1">Active Policy</p>
@@ -107,6 +115,7 @@ export function HeroSection() {
                 ))}
               </div>
             </div>
+          </ParallaxLayer>
           </RevealOnScroll>
         </div>
 

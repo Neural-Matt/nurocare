@@ -93,7 +93,7 @@ export function FacilityCard({ facility, compact = false, className }: FacilityC
           </span>
           <span className={cn(
             'text-[11px] font-semibold px-2 py-0.5 rounded-full',
-            facility.open_now ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600',
+            facility.open_now ? 'bg-accent-50 text-accent-700' : 'bg-danger-50 text-danger-600',
           )}>
             {facility.open_now ? 'Open' : 'Closed'}
           </span>
@@ -150,12 +150,12 @@ export function FacilityCard({ facility, compact = false, className }: FacilityC
               <span className={cn(
                 'inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full',
                 facility.open_now
-                  ? 'bg-emerald-50 text-emerald-700'
-                  : 'bg-red-50 text-red-600',
+                  ? 'bg-accent-50 text-accent-700'
+                  : 'bg-danger-50 text-danger-600',
               )}>
                 <span className={cn(
                   'w-1.5 h-1.5 rounded-full',
-                  facility.open_now ? 'bg-emerald-500' : 'bg-red-400',
+                  facility.open_now ? 'bg-accent-500' : 'bg-danger-400',
                 )} />
                 {facility.open_now ? 'Open now' : 'Closed'}
               </span>

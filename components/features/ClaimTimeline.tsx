@@ -99,7 +99,7 @@ export function ClaimTimeline({ claim }: { claim: Claim }) {
           done: 'bg-accent-500 border-accent-500 text-white',
           current:
             stageStatus === 'rejected'
-              ? 'bg-red-500 border-red-400 text-white ring-4 ring-red-50'
+              ? 'bg-danger-500 border-danger-400 text-white ring-4 ring-danger-50'
               : 'bg-primary-800 border-primary-800 text-white ring-4 ring-primary-50',
           pending: 'bg-white border-neutral-200 text-neutral-300',
           unreachable: 'bg-neutral-50 border-neutral-150 text-neutral-200',
@@ -110,7 +110,7 @@ export function ClaimTimeline({ claim }: { claim: Claim }) {
         const labelColor = cn(
           'font-display font-semibold text-sm leading-tight',
           nodeState === 'done' && 'text-neutral-700',
-          nodeState === 'current' && stageStatus === 'rejected' && 'text-red-600',
+          nodeState === 'current' && stageStatus === 'rejected' && 'text-danger-600',
           nodeState === 'current' && stageStatus !== 'rejected' && 'text-neutral-900',
           nodeState === 'pending' && 'text-neutral-400',
           nodeState === 'unreachable' && 'text-neutral-300',
@@ -167,7 +167,7 @@ export function ClaimTimeline({ claim }: { claim: Claim }) {
                     className={cn(
                       'inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full border',
                       stageStatus === 'rejected'
-                        ? 'bg-red-50 text-red-500 border-red-100'
+                        ? 'bg-danger-50 text-danger-500 border-danger-100'
                         : 'bg-primary-50 text-primary-700 border-primary-100',
                     )}
                   >
@@ -175,7 +175,7 @@ export function ClaimTimeline({ claim }: { claim: Claim }) {
                       className={cn(
                         'w-1 h-1 rounded-full',
                         stageStatus === 'rejected'
-                          ? 'bg-red-500'
+                          ? 'bg-danger-500'
                           : 'bg-primary-700 animate-pulse',
                       )}
                     />

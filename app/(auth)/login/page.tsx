@@ -77,18 +77,23 @@ export default function LoginPage() {
                 autoComplete="current-password"
                 leftIcon={<Lock className="w-4 h-4" />}
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="mt-1.5 text-xs text-accent-600 flex items-center gap-1 hover:text-accent-700"
-              >
-                {showPassword ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
-                {showPassword ? 'Hide' : 'Show'} password
-              </button>
+              <div className="flex items-center justify-between mt-1.5">
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="text-xs text-accent-600 flex items-center gap-1 hover:text-accent-700"
+                >
+                  {showPassword ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+                  {showPassword ? 'Hide' : 'Show'} password
+                </button>
+                <Link href="/forgot-password" className="text-xs text-neutral-500 hover:text-neutral-700 font-medium">
+                  Forgot password?
+                </Link>
+              </div>
             </div>
 
             {error && (
-              <div className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
+              <div className="rounded-xl bg-danger-50 border border-danger-200 px-4 py-3 text-sm text-danger-600">
                 {error}
               </div>
             )}

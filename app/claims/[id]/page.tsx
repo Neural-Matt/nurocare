@@ -127,7 +127,7 @@ export default function ClaimDetailPage() {
                   icon={<ClaimIcon className="w-6 h-6" />}
                   color={statusStyle!.chip}
                   size="lg"
-                  className={cn('rounded-2xl', statusStyle!.chip === 'primary' && 'bg-blue-50 text-blue-600')}
+                  className="rounded-2xl"
                 />
                 <div>
                   <p className="text-xs text-neutral-400 font-medium uppercase tracking-wide">Claim Type</p>
@@ -135,7 +135,7 @@ export default function ClaimDetailPage() {
                     {CLAIM_LABELS[claim.type] ?? claim.type}
                   </p>
                   {claimMember && (
-                    <span className="inline-flex items-center gap-1 mt-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">
+                    <span className="inline-flex items-center gap-1 mt-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-primary-50 text-primary-700">
                       <UserRound className="w-3 h-3" />
                       {claimMember.name}
                     </span>
@@ -193,14 +193,14 @@ export default function ClaimDetailPage() {
 
           {/* ── What this status means ── */}
           {claim.status === 'rejected' && (
-            <div className="rounded-2xl p-4 bg-red-50 border border-red-100 space-y-3">
+            <div className="rounded-2xl p-4 bg-danger-50 border border-danger-100 space-y-3">
               <div className="flex items-start gap-3">
-                <div className="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center shrink-0">
-                  <Info className="w-4 h-4 text-red-500" />
+                <div className="w-9 h-9 rounded-xl bg-danger-100 flex items-center justify-center shrink-0">
+                  <Info className="w-4 h-4 text-danger-500" />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-red-700 mb-1">Claim Not Approved</p>
-                  <p className="text-xs text-red-600 leading-snug">
+                  <p className="text-sm font-bold text-danger-700 mb-1">Claim Not Approved</p>
+                  <p className="text-xs text-danger-600 leading-snug">
                     This claim could not be approved after review. If you believe this is an error,
                     you can resubmit it for a second review or contact support with your reference ID.
                   </p>
@@ -220,13 +220,13 @@ export default function ClaimDetailPage() {
           )}
 
           {claim.status === 'reviewing' && (
-            <div className="flex items-start gap-3 rounded-2xl p-4 bg-blue-50 border border-blue-100">
-              <div className="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center shrink-0">
-                <Info className="w-4 h-4 text-blue-500" />
+            <div className="flex items-start gap-3 rounded-2xl p-4 bg-warning-50 border border-warning-100">
+              <div className="w-9 h-9 rounded-xl bg-warning-100 flex items-center justify-center shrink-0">
+                <Info className="w-4 h-4 text-warning-600" />
               </div>
               <div>
-                <p className="text-sm font-bold text-blue-700 mb-1">Currently Under Review</p>
-                <p className="text-xs text-blue-600 leading-snug">
+                <p className="text-sm font-bold text-warning-800 mb-1">Currently Under Review</p>
+                <p className="text-xs text-warning-700 leading-snug">
                   Our team is reviewing your claim. This usually takes 1–2 business days.
                   You will be notified as soon as there is an update.
                 </p>
@@ -235,13 +235,13 @@ export default function ClaimDetailPage() {
           )}
 
           {claim.status === 'approved' && (
-            <div className="flex items-start gap-3 rounded-2xl p-4 bg-emerald-50 border border-emerald-100">
-              <div className="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0">
-                <Info className="w-4 h-4 text-emerald-600" />
+            <div className="flex items-start gap-3 rounded-2xl p-4 bg-primary-50 border border-primary-100">
+              <div className="w-9 h-9 rounded-xl bg-primary-100 flex items-center justify-center shrink-0">
+                <Info className="w-4 h-4 text-primary-600" />
               </div>
               <div>
-                <p className="text-sm font-bold text-emerald-700 mb-1">Approved — Payment Processing</p>
-                <p className="text-xs text-emerald-600 leading-snug">
+                <p className="text-sm font-bold text-primary-800 mb-1">Approved — Payment Processing</p>
+                <p className="text-xs text-primary-700 leading-snug">
                   Great news! Your claim has been approved. Payment will be sent to your
                   registered account within 1–3 business days.
                 </p>

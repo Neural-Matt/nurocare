@@ -22,22 +22,25 @@ export const CLAIM_LABELS: Record<string, string> = {
   dental:          'Dental',
 };
 
-// submitted=gray, reviewing=blue, approved=green, rejected=red, paid=teal
+// Mirrors claimStatusBadge() in components/ui/Badge.tsx — one semantic
+// mapping per status, reused everywhere a claim's status is shown so the
+// same claim never renders in two different colors on different screens.
+// submitted=neutral, reviewing=warning, approved=primary(info), rejected=danger, paid=accent
 interface StatusStyle {
   badge: string;
   dot: string;
   label: string;
-  chip: 'neutral' | 'primary' | 'success' | 'error' | 'accent';
+  chip: 'neutral' | 'primary' | 'success' | 'error' | 'accent' | 'warning';
   /** Left border accent color — makes status scannable at a glance */
   borderAccent: string;
 }
 
 export const CLAIM_STATUS_STYLES: Record<ClaimStatus, StatusStyle> = {
-  submitted: { badge: 'bg-neutral-100 text-neutral-600 border-neutral-200',   dot: 'bg-neutral-400',            label: 'Submitted',    chip: 'neutral', borderAccent: 'border-l-neutral-300'  },
-  reviewing: { badge: 'bg-blue-50 text-blue-700 border-blue-200',             dot: 'bg-blue-500 animate-pulse', label: 'Under Review', chip: 'primary', borderAccent: 'border-l-blue-400'     },
-  approved:  { badge: 'bg-emerald-50 text-emerald-700 border-emerald-200',    dot: 'bg-emerald-500',            label: 'Approved',     chip: 'success', borderAccent: 'border-l-emerald-400'  },
-  rejected:  { badge: 'bg-red-50 text-red-600 border-red-200',               dot: 'bg-red-500',                label: 'Rejected',     chip: 'error',   borderAccent: 'border-l-red-400'      },
-  paid:      { badge: 'bg-accent-50 text-accent-700 border-accent-200',      dot: 'bg-accent-500',             label: 'Paid',         chip: 'accent',  borderAccent: 'border-l-accent-400'   },
+  submitted: { badge: 'bg-neutral-100 text-neutral-600 border-neutral-200',  dot: 'bg-neutral-400',             label: 'Submitted',    chip: 'neutral', borderAccent: 'border-l-neutral-300'  },
+  reviewing: { badge: 'bg-warning-50 text-warning-700 border-warning-200',   dot: 'bg-warning-500 animate-pulse', label: 'Under Review', chip: 'warning', borderAccent: 'border-l-warning-400'  },
+  approved:  { badge: 'bg-primary-50 text-primary-700 border-primary-200',  dot: 'bg-primary-500',             label: 'Approved',     chip: 'primary', borderAccent: 'border-l-primary-400'  },
+  rejected:  { badge: 'bg-danger-50 text-danger-600 border-danger-200',     dot: 'bg-danger-500',              label: 'Rejected',     chip: 'error',   borderAccent: 'border-l-danger-400'   },
+  paid:      { badge: 'bg-accent-50 text-accent-700 border-accent-200',     dot: 'bg-accent-500',              label: 'Paid',         chip: 'accent',  borderAccent: 'border-l-accent-400'   },
 };
 
 interface ClaimCardProps { claim: Claim; onClick?: () => void; }
@@ -62,7 +65,7 @@ export function ClaimCard({ claim, onClick }: ClaimCardProps) {
         icon={<Icon className="w-5 h-5" />}
         color={s.chip}
         size="lg"
-        className={cn('rounded-2xl', s.chip === 'primary' && 'bg-blue-50 text-blue-600')}
+        className="rounded-2xl"
       />
       <div className="flex-1 min-w-0">
         <p className="font-semibold text-sm text-neutral-900 truncate">{CLAIM_LABELS[claim.type] ?? claim.type}</p>

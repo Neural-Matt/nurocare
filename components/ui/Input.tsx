@@ -70,7 +70,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               'transition-colors duration-150',
               'focus:outline-none focus:ring-2 focus:ring-offset-1',
               error
-                ? 'border-red-400 focus:border-red-500 focus:ring-red-100'
+                ? 'border-danger-400 focus:border-danger-500 focus:ring-danger-100'
                 : success
                   ? 'border-accent-500 focus:border-accent-500 focus:ring-accent-500/20'
                   : 'border-neutral-200 focus:border-accent-500 focus:ring-accent-500/20 hover:border-neutral-300',
@@ -87,7 +87,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             </div>
           )}
         </div>
-        {error && <p className="text-xs text-red-500">{error}</p>}
+        {error && <p className="text-xs text-danger-500">{error}</p>}
         {hint && !error && <p className="text-xs text-neutral-400">{hint}</p>}
       </div>
     );

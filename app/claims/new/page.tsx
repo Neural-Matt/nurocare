@@ -129,7 +129,7 @@ function FileUploadZone({
           <button
             type="button"
             onClick={onRemove}
-            className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-400 hover:text-red-600 hover:bg-red-100 transition-colors"
+            className="w-8 h-8 rounded-full bg-danger-50 flex items-center justify-center text-danger-400 hover:text-danger-600 hover:bg-danger-100 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -172,7 +172,7 @@ function FileUploadZone({
           if (picked) validateAndSet(picked);
         }}
       />
-      {error && <p className="text-xs text-red-500 mt-1.5">{error}</p>}
+      {error && <p className="text-xs text-danger-500 mt-1.5">{error}</p>}
     </div>
   );
 }

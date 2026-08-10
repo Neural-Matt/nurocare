@@ -41,7 +41,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         'text-neutral-600 hover:bg-neutral-100 focus-visible:ring-neutral-400',
       // Danger
       danger:
-        'bg-red-500 text-white hover:bg-red-600 focus-visible:ring-red-400',
+        'bg-danger-500 text-white hover:bg-danger-600 focus-visible:ring-danger-400',
     };
 
     const sizes = {

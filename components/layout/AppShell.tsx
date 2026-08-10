@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import { Header } from '@/components/layout/Header';
 import { BottomNav } from '@/components/layout/BottomNav';
@@ -14,9 +14,19 @@ interface AppShellProps {
   title?: string;
 }
 
+// Pages where the floating WhatsApp button collides with page content on
+// mobile — it sits on top of an active form field (claims/new), a full-width
+// destructive action (profile's Sign out), or the page already centers on
+// its own WhatsApp CTAs (telemedicine's per-doctor "Chat on WhatsApp", and
+// profile already links to telemedicine as "See a Doctor"). Support is
+// still one tap away from the header/profile on every other page.
+const WHATSAPP_FAB_HIDDEN_ON = ['/claims/new', '/telemedicine', '/profile'];
+
 export function AppShell({ children, title }: AppShellProps) {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
+  const showWhatsAppFab = !WHATSAPP_FAB_HIDDEN_ON.includes(pathname);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -52,7 +62,7 @@ export function AppShell({ children, title }: AppShellProps) {
           {children}
         </main>
       </div>
-      <WhatsAppButton />
+      {showWhatsAppFab && <WhatsAppButton />}
       <BottomNav />
     </div>
   );

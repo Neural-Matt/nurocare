@@ -9,7 +9,7 @@
        scale live in tailwind.config.ts; duplicating them here as unused
        CSS vars was dead weight. */
     --font-sans: 'Inter', system-ui, sans-serif;
-    --font-display: 'Inter Tight', 'Inter', system-ui, sans-serif;
+    --font-display: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
   }
 
   html {

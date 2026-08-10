@@ -9,16 +9,15 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { IconChip } from '@/components/ui/IconChip';
 import { useAuth } from '@/hooks/useAuth';
-import { createClient } from '@/lib/supabase/client';
-const supabase = createClient();
 import { formatDate } from '@/lib/utils';
 import toast from 'react-hot-toast';
 import { LogOut, Shield, PencilLine, X, Users, CreditCard, MessageCircle, ChevronRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { getInitials } from '@/lib/utils';
+import type { Profile } from '@/types';
 
 export default function ProfilePage() {
-  const { profile, user, refreshProfile, signOut } = useAuth();
+  const { profile, user, updateProfile, signOut } = useAuth();
   const router = useRouter();
 
   const [editing, setEditing] = useState(false);
@@ -34,20 +33,15 @@ export default function ProfilePage() {
   const handleSave = async () => {
     if (!user) return;
     setLoading(true);
-    const { error } = await supabase
-      .from('profiles')
-      .update({
-        full_name: form.full_name || null,
-        nrc: form.nrc || null,
-        date_of_birth: form.date_of_birth || null,
-        gender: form.gender || null,
-        phone: form.phone || null,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', user.id);
+    const { error } = await updateProfile({
+      full_name: form.full_name || null,
+      nrc: form.nrc || null,
+      date_of_birth: form.date_of_birth || null,
+      gender: (form.gender || null) as Profile['gender'],
+      phone: form.phone || null,
+    });
 
     if (!error) {
-      await refreshProfile();
       toast.success('Profile updated!');
       setEditing(false);
     } else {
@@ -181,7 +175,7 @@ export default function ProfilePage() {
           <p className="text-[13px] font-bold text-neutral-400 uppercase tracking-widest">Account</p>
         </div>
         {[
-          { label: 'My Family', sub: 'Manage covered family members', icon: Users, color: 'bg-rose-50 text-rose-500', href: '/family' },
+          { label: 'My Family', sub: 'Manage covered family members', icon: Users, color: undefined, href: '/family' },
           { label: 'Payment History', sub: 'View invoices and receipts', icon: CreditCard, color: undefined, href: '/payments' },
           { label: 'See a Doctor', sub: 'WhatsApp teleconsultation', icon: MessageCircle, color: undefined, href: '/telemedicine' },
         ].map(({ label, sub, icon: Icon, color, href }) => (
@@ -207,7 +201,7 @@ export default function ProfilePage() {
       {/* Sign out */}
       <button
         onClick={handleSignOut}
-        className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border border-red-100 text-red-500 text-sm font-semibold hover:bg-red-50 transition-colors mt-1"
+        className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border border-danger-100 text-danger-500 text-sm font-semibold hover:bg-danger-50 transition-colors mt-1"
       >
         <LogOut className="w-4 h-4" />
         Sign out

@@ -121,11 +121,11 @@ export default function FacilityDetailPage() {
                   </span>
                   <span className={cn(
                     'inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full',
-                    facility.open_now ? 'bg-emerald-500/30 text-white' : 'bg-black/20 text-white/70',
+                    facility.open_now ? 'bg-accent-500/30 text-white' : 'bg-black/20 text-white/70',
                   )}>
                     <span className={cn(
                       'w-1.5 h-1.5 rounded-full',
-                      facility.open_now ? 'bg-emerald-400' : 'bg-white/40',
+                      facility.open_now ? 'bg-accent-400' : 'bg-white/40',
                     )} />
                     {facility.open_now ? 'Open now' : 'Currently closed'}
                   </span>

@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { FamilyMemberSwitcher } from '@/components/features/FamilyMemberSwitcher';
 import { NotificationBell } from '@/components/features/NotificationBell';
 import { LogoMark } from '@/components/ui/Logo';
+import { Breadcrumbs } from '@/components/ui/Breadcrumbs';
 
 // Map routes to human-readable breadcrumb parents
 const ROUTE_PARENT: Record<string, { label: string; href: string }> = {
@@ -100,15 +101,12 @@ export function Header({ title }: HeaderProps) {
       </div>
 
       {/* Breadcrumb stripe for pages with a clear parent */}
-      {parent && !isDeepPage && (
+      {parent && !isDeepPage && title && (
         <div className="px-4 md:px-8 pb-2 -mt-0.5">
-          <div className="flex items-center gap-1.5 text-[11px] text-neutral-400">
-            <Link href={parent.href} className="hover:text-accent-600 transition-colors font-medium">
-              {parent.label}
-            </Link>
-            <span className="text-neutral-200">/</span>
-            <span className="text-neutral-500 font-semibold">{title}</span>
-          </div>
+          <Breadcrumbs
+            items={[{ label: parent.label, href: parent.href }, { label: title }]}
+            className="text-[11px]"
+          />
         </div>
       )}
     </header>

@@ -86,7 +86,7 @@ const textColors: Record<TextColor, string> = {
   primary:   'text-primary-800',
   accent:    'text-accent-600',
   inverse:   'text-white',
-  error:     'text-red-500',
+  error:     'text-danger-500',
 };
 
 const textWeights: Record<NonNullable<TextProps['weight']>, string> = {
@@ -143,7 +143,7 @@ const captionColors: Record<NonNullable<CaptionProps['color']>, string> = {
   muted:   'text-neutral-400',
   primary: 'text-primary-800',
   accent:  'text-accent-600',
-  error:   'text-red-500',
+  error:   'text-danger-500',
   inverse: 'text-white/60',
 };
 
@@ -185,7 +185,7 @@ export function Label({ htmlFor, required, className, children, ...props }: Labe
       {...props}
     >
       {children}
-      {required && <span className="ml-0.5 text-red-500" aria-hidden="true">*</span>}
+      {required && <span className="ml-0.5 text-danger-500" aria-hidden="true">*</span>}
     </label>
   );
 }

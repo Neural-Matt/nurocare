@@ -132,13 +132,19 @@ function createMockSupabaseClient() {
 
 /**
  * Creates a Supabase client for use in browser/client components.
- * Generic types can be generated via `supabase gen types typescript` once 
+ * Generic types can be generated via `supabase gen types typescript` once
  * a project is linked. Using `any` here for MVP compatibility.
+ *
+ * Return type is pinned to the real client shape — the mock client only
+ * covers the subset of the API mock-mode hooks actually call, so it's cast
+ * rather than structurally matched. Calling a method the mock doesn't
+ * implement is a mock-layer gap to fix, not something the type system
+ * should block; every real call site is already guarded by IS_MOCK_MODE.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function createClient() {
-  if (!hasSupabaseEnv) {
-    return createMockSupabaseClient();
+export function createClient(): ReturnType<typeof createBrowserClient> {
+  if (IS_MOCK_MODE) {
+    return createMockSupabaseClient() as unknown as ReturnType<typeof createBrowserClient>;
   }
 
   return createBrowserClient(

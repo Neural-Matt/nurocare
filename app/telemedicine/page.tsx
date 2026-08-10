@@ -36,7 +36,7 @@ const SPECIALTY_CONFIG: Record<DoctorSpecialty, { label: string; icon: React.Ele
 };
 
 const AVAILABILITY_CONFIG: Record<DoctorAvailability, { label: string; color: string; dot: string }> = {
-  available: { label: 'Available now', color: 'text-emerald-700', dot: 'bg-emerald-500' },
+  available: { label: 'Available now', color: 'text-accent-700',  dot: 'bg-accent-500'  },
   busy:      { label: 'Busy',          color: 'text-warning-700', dot: 'bg-warning-500' },
   offline:   { label: 'Offline',       color: 'text-neutral-500',   dot: 'bg-neutral-400'   },
 };
@@ -161,7 +161,7 @@ export default function TelemedicinePage() {
           <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-accent-500/20 blur-3xl pointer-events-none" />
           <div className="relative">
             <div className="flex items-center gap-1.5 mb-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-accent-400 animate-pulse" />
               <span className="text-[11px] font-semibold text-white/60 uppercase tracking-wider">{availableCount} doctors online now</span>
             </div>
             <h2 className="text-xl font-display font-bold mb-1">Speak to a doctor</h2>
@@ -241,14 +241,14 @@ export default function TelemedicinePage() {
         </div>
 
         {/* Emergency note */}
-        <Card padding="lg" className="border-red-100 bg-red-50">
+        <Card padding="lg" className="border-danger-100 bg-danger-50">
           <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-xl bg-red-100 flex items-center justify-center shrink-0">
-              <Phone className="w-4 h-4 text-red-600" />
+            <div className="w-9 h-9 rounded-xl bg-danger-100 flex items-center justify-center shrink-0">
+              <Phone className="w-4 h-4 text-danger-600" />
             </div>
             <div>
-              <p className="text-sm font-bold text-red-800 mb-0.5">Emergency?</p>
-              <p className="text-xs text-red-600 leading-snug">
+              <p className="text-sm font-bold text-danger-800 mb-0.5">Emergency?</p>
+              <p className="text-xs text-danger-600 leading-snug">
                 For life-threatening emergencies, call <span className="font-bold">991</span> or go to your nearest A&E. Telemedicine is for non-emergency consultations only.
               </p>
             </div>

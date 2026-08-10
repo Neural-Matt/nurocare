@@ -13,8 +13,13 @@ const PROTECTED_PREFIXES = [
   '/profile',
   '/admin',
   '/notifications',
+  '/onboarding',
 ];
-const AUTH_PREFIXES = ['/login', '/signup'];
+// Pages that don't make sense for an already-signed-in user — redirect them
+// to /dashboard instead. Deliberately excludes /reset-password: that page is
+// reached via a Supabase recovery link which establishes a session, and it
+// must stay reachable in that authenticated-but-mid-flow state.
+const AUTH_PREFIXES = ['/login', '/signup', '/forgot-password', '/verify'];
 
 function matchesPrefix(pathname: string, prefixes: string[]) {
   return prefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));

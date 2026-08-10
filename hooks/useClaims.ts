@@ -1,14 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createClient, hasSupabaseEnv } from '@/lib/supabase/client';
+import { createClient, IS_MOCK_MODE as IS_MOCK } from '@/lib/supabase/client';
 const supabase = createClient();
 import { Claim } from '@/types';
 import { useAuth } from './useAuth';
 import { MOCK_CLAIMS } from '@/lib/mock-data';
 import toast from 'react-hot-toast';
-
-const IS_MOCK = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true' || !hasSupabaseEnv;
 
 export function useClaims() {
   const { user } = useAuth();

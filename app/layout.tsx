@@ -1,6 +1,6 @@
 
 import type { Metadata, Viewport } from 'next';
-import { Inter, Inter_Tight } from 'next/font/google';
+import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from '@/hooks/useAuth';
 import { FamilyProvider } from '@/hooks/useFamilyContext';
@@ -8,7 +8,7 @@ import './globals.css';
 import 'leaflet/dist/leaflet.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
-const interTight = Inter_Tight({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-display',
   weight: ['500', '600', '700', '800'],
@@ -29,7 +29,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${interTight.variable}`}>
+    <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
       <body>
         <AuthProvider>
           <FamilyProvider>
@@ -40,8 +40,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 duration: 3500,
                 style: {
                   borderRadius: '12px',
-                  background: '#1e293b',
-                  color: '#f8fafc',
+                  background: '#1D1D1F',
+                  color: '#FBFBFC',
                   fontSize: '14px',
                 },
               }}

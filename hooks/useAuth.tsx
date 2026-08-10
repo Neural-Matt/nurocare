@@ -2,13 +2,10 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
-import { createClient, hasSupabaseEnv } from '@/lib/supabase/client';
+import { createClient, IS_MOCK_MODE as IS_MOCK } from '@/lib/supabase/client';
 const supabase = createClient();
 import { Profile } from '@/types';
 import { MOCK_PROFILE } from '@/lib/mock-data';
-
-// When NEXT_PUBLIC_MOCK_AUTH=true, skip all Supabase calls and use local mock data
-const IS_MOCK = process.env.NEXT_PUBLIC_MOCK_AUTH === 'true' || !hasSupabaseEnv;
 
 // Fake User object for mock mode
 const MOCK_USER = {
@@ -25,10 +22,14 @@ interface AuthContextType {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
-  signUp: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signUp: (email: string, password: string) => Promise<{ error: Error | null; needsVerification: boolean }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  resetPassword: (email: string) => Promise<{ error: Error | null }>;
+  updatePassword: (newPassword: string) => Promise<{ error: Error | null }>;
+  updateProfile: (patch: Partial<Profile>) => Promise<{ error: Error | null }>;
+  resendVerification: (email: string) => Promise<{ error: Error | null }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -82,12 +83,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signUp = async (email: string, password: string) => {
-    if (IS_MOCK) return { error: null };
+    if (IS_MOCK) return { error: null, needsVerification: false };
     const { data, error } = await supabase.auth.signUp({ email, password });
     if (data.user && !error) {
       await supabase.from('profiles').insert({ id: data.user.id, full_name: null, role: 'user' });
     }
-    return { error: error as Error | null };
+    // If email confirmation is required, Supabase returns a user but no
+    // session yet — the caller should route to the "check your email" flow.
+    return { error: error as Error | null, needsVerification: !error && !data.session };
   };
 
   const signIn = async (email: string, password: string) => {
@@ -101,8 +104,54 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut();
   };
 
+  const resetPassword = async (email: string) => {
+    if (IS_MOCK) return { error: null };
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    return { error: error as Error | null };
+  };
+
+  const updatePassword = async (newPassword: string) => {
+    if (IS_MOCK) return { error: null };
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    return { error: error as Error | null };
+  };
+
+  const updateProfile = async (patch: Partial<Profile>) => {
+    if (IS_MOCK) {
+      setProfile((prev) => (prev ? { ...prev, ...patch } : prev));
+      return { error: null };
+    }
+    if (!user) return { error: new Error('Not signed in') };
+    const { error } = await supabase.from('profiles').update(patch).eq('id', user.id);
+    if (!error) await fetchProfile(user.id);
+    return { error: error as Error | null };
+  };
+
+  const resendVerification = async (email: string) => {
+    if (IS_MOCK) return { error: null };
+    const { error } = await supabase.auth.resend({ type: 'signup', email });
+    return { error: error as Error | null };
+  };
+
   return (
-    <AuthContext.Provider value={{ user, session, profile, loading, signUp, signIn, signOut, refreshProfile }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        session,
+        profile,
+        loading,
+        signUp,
+        signIn,
+        signOut,
+        refreshProfile,
+        resetPassword,
+        updatePassword,
+        updateProfile,
+        resendVerification,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

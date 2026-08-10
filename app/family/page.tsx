@@ -19,12 +19,16 @@ import toast from 'react-hot-toast';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
+// Relationship pills are differentiated by icon + label, not color — every
+// hue in the palette already carries a status meaning elsewhere in the app
+// (accent = positive, warning/danger = attention), so reusing one here would
+// make "Parent" read like a warning. One flat neutral treatment for all.
 const RELATIONSHIP_CONFIG: Record<Relationship, { label: string; icon: typeof Heart; color: string; bg: string }> = {
-  spouse:  { label: 'Spouse',  icon: Heart,           color: 'text-rose-600',    bg: 'bg-rose-50'    },
-  child:   { label: 'Child',   icon: Baby,            color: 'text-blue-600',    bg: 'bg-blue-50'    },
-  parent:  { label: 'Parent',  icon: PersonStanding,  color: 'text-amber-600',   bg: 'bg-amber-50'   },
-  sibling: { label: 'Sibling', icon: UserRound,       color: 'text-violet-600',  bg: 'bg-violet-50'  },
-  other:   { label: 'Other',   icon: UserRound,       color: 'text-neutral-600',   bg: 'bg-neutral-100'  },
+  spouse:  { label: 'Spouse',  icon: Heart,           color: 'text-neutral-600', bg: 'bg-neutral-100' },
+  child:   { label: 'Child',   icon: Baby,            color: 'text-neutral-600', bg: 'bg-neutral-100' },
+  parent:  { label: 'Parent',  icon: PersonStanding,  color: 'text-neutral-600', bg: 'bg-neutral-100' },
+  sibling: { label: 'Sibling', icon: UserRound,       color: 'text-neutral-600', bg: 'bg-neutral-100' },
+  other:   { label: 'Other',   icon: UserRound,       color: 'text-neutral-600', bg: 'bg-neutral-100' },
 };
 
 function calcAge(dob: string): number {
@@ -52,7 +56,7 @@ function MemberCard({
     <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-5 flex items-start gap-4">
       {/* Avatar */}
       <div className={cn('w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-base text-white shadow-sm shrink-0',
-        member.gender === 'female' ? 'bg-rose-500' :
+        member.gender === 'female' ? 'bg-accent-500' :
         member.gender === 'male'   ? 'bg-primary-700' :
                                      'bg-neutral-500',
       )}>
@@ -91,7 +95,7 @@ function MemberCard({
             </button>
             <button
               onClick={() => onRemove(member)}
-              className="w-8 h-8 rounded-xl hover:bg-red-50 flex items-center justify-center text-neutral-400 hover:text-red-500 transition-colors"
+              className="w-8 h-8 rounded-xl hover:bg-danger-50 flex items-center justify-center text-neutral-400 hover:text-danger-500 transition-colors"
               aria-label="Remove"
             >
               <Trash2 className="w-3.5 h-3.5" />

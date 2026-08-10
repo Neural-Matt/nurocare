@@ -41,8 +41,8 @@ export function FamilyMemberSwitcher() {
           isOwner
             ? 'bg-primary-100 text-primary-800'
             : activeMember?.gender === 'female'
-              ? 'bg-pink-200 text-pink-800'
-              : 'bg-blue-200 text-blue-800',
+              ? 'bg-accent-100 text-accent-800'
+              : 'bg-primary-100 text-primary-700',
         )}>
           {isOwner ? 'Me' : getInitials(activeMember!.name)}
         </div>
@@ -81,7 +81,7 @@ export function FamilyMemberSwitcher() {
                       key={m.id}
                       label={m.name}
                       sublabel={m.relationship}
-                      color={m.gender === 'female' ? 'bg-rose-500' : 'bg-blue-600'}
+                      color={m.gender === 'female' ? 'bg-accent-500' : 'bg-primary-600'}
                       initials={getInitials(m.name)}
                       active={activeMember?.id === m.id}
                       onClick={() => { setActiveMember(m); setOpen(false); }}

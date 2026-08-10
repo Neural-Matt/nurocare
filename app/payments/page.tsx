@@ -23,8 +23,8 @@ const STATUS_CONFIG: Record<PaymentStatus, {
   chip: 'success' | 'error' | 'warning' | 'neutral';
   border: string;
 }> = {
-  success:  { label: 'Paid',      icon: CheckCircle2, chip: 'success', border: 'border-emerald-200' },
-  failed:   { label: 'Failed',    icon: XCircle,      chip: 'error',   border: 'border-red-200'     },
+  success:  { label: 'Paid',      icon: CheckCircle2, chip: 'success', border: 'border-accent-200'  },
+  failed:   { label: 'Failed',    icon: XCircle,      chip: 'error',   border: 'border-danger-200'  },
   pending:  { label: 'Pending',   icon: Clock,        chip: 'warning', border: 'border-warning-200' },
   refunded: { label: 'Refunded',  icon: RefreshCw,    chip: 'neutral', border: 'border-neutral-200'   },
 };
@@ -66,7 +66,7 @@ function PaymentRow({ payment }: { payment: PaymentRecord }) {
 
       {/* Amount + status */}
       <div className="flex flex-col items-end gap-1 shrink-0">
-        <p className={cn('font-bold text-[15px]', payment.status === 'failed' ? 'text-red-500 line-through' : 'text-neutral-900')}>
+        <p className={cn('font-bold text-[15px]', payment.status === 'failed' ? 'text-danger-500 line-through' : 'text-neutral-900')}>
           {formatCurrency(payment.amount)}
         </p>
         <Badge variant={st.chip === 'error' ? 'error' : st.chip === 'success' ? 'success' : st.chip === 'warning' ? 'warning' : 'neutral'}>
@@ -113,9 +113,9 @@ function SubscriptionManageCard() {
             'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold border backdrop-blur-sm',
             isActive
               ? 'bg-accent-500/20 border-accent-400/30 text-accent-300'
-              : 'bg-red-500/20 border-red-400/30 text-red-300',
+              : 'bg-danger-500/20 border-danger-400/30 text-danger-300',
           )}>
-            <span className={cn('w-1.5 h-1.5 rounded-full', isActive ? 'bg-accent-400 animate-pulse' : 'bg-red-400')} />
+            <span className={cn('w-1.5 h-1.5 rounded-full', isActive ? 'bg-accent-400 animate-pulse' : 'bg-danger-400')} />
             {isActive ? 'Active' : 'Expired'}
           </span>
         </div>
@@ -185,12 +185,12 @@ export default function PaymentsPage() {
             <p className="font-display font-bold text-sm text-primary-800">{formatCurrency(totalPaid)}</p>
           </div>
           <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4">
-            <p className="text-[11px] text-emerald-600 uppercase tracking-wide font-medium mb-1">Success</p>
-            <p className="font-display font-bold text-sm text-emerald-700">{successCount}</p>
+            <p className="text-[11px] text-accent-600 uppercase tracking-wide font-medium mb-1">Success</p>
+            <p className="font-display font-bold text-sm text-accent-700">{successCount}</p>
           </div>
           <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-4">
-            <p className="text-[11px] text-red-500 uppercase tracking-wide font-medium mb-1">Failed</p>
-            <p className="font-display font-bold text-sm text-red-600">{failedCount}</p>
+            <p className="text-[11px] text-danger-500 uppercase tracking-wide font-medium mb-1">Failed</p>
+            <p className="font-display font-bold text-sm text-danger-600">{failedCount}</p>
           </div>
         </div>
       )}
@@ -240,13 +240,13 @@ export default function PaymentsPage() {
 
       {/* Failed payment notice */}
       {failedCount > 0 && (
-        <div className="bg-red-50 border border-red-100 rounded-2xl p-4 flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+        <div className="bg-danger-50 border border-danger-100 rounded-2xl p-4 flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-danger-500 shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-semibold text-red-700">
+            <p className="text-sm font-semibold text-danger-700">
               {failedCount} payment{failedCount > 1 ? 's' : ''} failed
             </p>
-            <p className="text-xs text-red-500 mt-0.5 leading-snug">
+            <p className="text-xs text-danger-500 mt-0.5 leading-snug">
               Please update your payment method to avoid interruption to your coverage.
             </p>
           </div>

@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useSubscriptions } from '@/hooks/useSubscriptions';
 import { useClaims } from '@/hooks/useClaims';
 import { useFamilyMembers } from '@/hooks/useFamilyMembers';
+import { useFacilities } from '@/hooks/useFacilities';
 import { AppShell } from '@/components/layout/AppShell';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -18,7 +19,6 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { Stagger, Reveal, RevealOnScroll, springs } from '@/components/ui/motion';
 import { formatDate, formatCurrency, getInitials } from '@/lib/utils';
 import { cn } from '@/lib/utils';
-import { MOCK_FACILITIES } from '@/lib/mock-facilities';
 import {
   MapPin,
   Plus,
@@ -36,8 +36,6 @@ import {
   Users,
   Building2,
   Star,
-  Droplet,
-  Footprints,
   Clock,
 } from 'lucide-react';
 
@@ -107,8 +105,8 @@ function ActivePolicyCard({
           </div>
           <p className="text-2xl font-display font-semibold">{plan?.name ?? 'Health Plan'}</p>
         </div>
-        <span className={cn('inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border', isExpired ? 'bg-red-500/15 border-red-400/25 text-red-300' : 'bg-accent-500/15 border-accent-400/25 text-accent-300')}>
-          <span className={cn('w-1.5 h-1.5 rounded-full', isExpired ? 'bg-red-400' : 'bg-accent-400')} />
+        <span className={cn('inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border', isExpired ? 'bg-danger-500/15 border-danger-400/25 text-danger-300' : 'bg-accent-500/15 border-accent-400/25 text-accent-300')}>
+          <span className={cn('w-1.5 h-1.5 rounded-full', isExpired ? 'bg-danger-400' : 'bg-accent-400')} />
           {isExpired ? 'Expired' : 'Active'}
         </span>
       </div>
@@ -200,12 +198,14 @@ function MetricsGrid({ claims, loading }: { claims: ReturnType<typeof useClaims>
   );
 }
 
+// Colors mirror the semantic mapping in claimStatusBadge() so a claim's
+// color means the same thing everywhere in the app, not just on this chart.
 const CLAIM_STATUS_CHART: { key: 'submitted' | 'reviewing' | 'approved' | 'rejected' | 'paid'; label: string; stroke: string; dot: string }[] = [
   { key: 'paid',      label: 'Paid',        stroke: 'stroke-accent-500',  dot: 'bg-accent-500'  },
-  { key: 'approved',  label: 'Approved',    stroke: 'stroke-emerald-500', dot: 'bg-emerald-500' },
-  { key: 'reviewing', label: 'In Review',   stroke: 'stroke-blue-500',    dot: 'bg-blue-500'    },
+  { key: 'approved',  label: 'Approved',    stroke: 'stroke-primary-700', dot: 'bg-primary-700' },
+  { key: 'reviewing', label: 'In Review',   stroke: 'stroke-warning-500', dot: 'bg-warning-500' },
   { key: 'submitted', label: 'Submitted',   stroke: 'stroke-neutral-300', dot: 'bg-neutral-300' },
-  { key: 'rejected',  label: 'Rejected',    stroke: 'stroke-red-500',     dot: 'bg-red-500'     },
+  { key: 'rejected',  label: 'Rejected',    stroke: 'stroke-danger-500',  dot: 'bg-danger-500'  },
 ];
 
 function ClaimsBreakdownWidget({ claims }: { claims: ReturnType<typeof useClaims>['claims'] }) {
@@ -253,29 +253,92 @@ function ClaimsBreakdownWidget({ claims }: { claims: ReturnType<typeof useClaims
   );
 }
 
-function WellnessSection() {
+interface Insight {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  variant: 'info' | 'success' | 'warning' | 'tip';
+  action?: { label: string; href: string };
+}
+
+/**
+ * Real, data-driven insights — replaces a previous widget that showed
+ * hardcoded step/hydration numbers with no tracking behind them. Everything
+ * here is derived from the member's actual subscription and claims.
+ */
+function InsightsSection({
+  subscription,
+  claims,
+}: {
+  subscription: ReturnType<typeof useSubscriptions>['activeSubscription'];
+  claims: ReturnType<typeof useClaims>['claims'];
+}) {
+  const router = useRouter();
+  const insights: Insight[] = [];
+
+  if (subscription) {
+    const daysLeft = subscription.end_date
+      ? Math.ceil((new Date(subscription.end_date).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
+      : null;
+    const planName = subscription.plan?.name ?? 'plan';
+
+    if (daysLeft !== null && daysLeft >= 0 && daysLeft <= 30) {
+      insights.push({
+        icon: <Calendar className="w-4 h-4" />,
+        title: 'Renewal coming up',
+        description: `Your ${planName} renews in ${daysLeft} day${daysLeft === 1 ? '' : 's'}. Renew early to avoid a gap in cover.`,
+        variant: 'warning',
+        action: { label: 'View plan', href: '/plans' },
+      });
+    } else if (daysLeft !== null && daysLeft >= 0) {
+      insights.push({
+        icon: <ShieldCheck className="w-4 h-4" />,
+        title: "You're covered",
+        description: `Your ${planName} is active, with ${daysLeft} days left before renewal.`,
+        variant: 'tip',
+      });
+    }
+  }
+
+  const inReview = claims.filter((c) => c.status === 'submitted' || c.status === 'reviewing').length;
+  if (inReview > 0) {
+    insights.push({
+      icon: <Activity className="w-4 h-4" />,
+      title: inReview === 1 ? 'A claim is being reviewed' : `${inReview} claims are being reviewed`,
+      description: "We'll notify you the moment there's an update — no need to check back.",
+      variant: 'info',
+      action: { label: 'View claims', href: '/claims' },
+    });
+  }
+
+  const approved = claims.filter((c) => c.status === 'approved').length;
+  if (approved > 0) {
+    insights.push({
+      icon: <CreditCard className="w-4 h-4" />,
+      title: approved === 1 ? 'A claim was approved' : `${approved} claims were approved`,
+      description: 'Approved claims are queued for payout to your registered payment method.',
+      variant: 'success',
+      action: { label: 'View claims', href: '/claims' },
+    });
+  }
+
+  if (insights.length === 0) return null;
+
   return (
     <section className="mb-6">
-      <h2 className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-3">Today's Wellness</h2>
+      <h2 className="text-xs font-bold text-neutral-400 uppercase tracking-widest mb-3">NuroCare Insights</h2>
       <Stagger className="space-y-2">
-        <Reveal>
-          <HealthInsightCard
-            icon={<Footprints className="w-4 h-4" />}
-            title="Keep Moving"
-            description="You've walked 4,200 steps today. Aim for 8,000 to stay active."
-            action={{ label: 'View Goal', onClick: () => {} }}
-            variant="tip"
-          />
-        </Reveal>
-        <Reveal>
-          <HealthInsightCard
-            icon={<Droplet className="w-4 h-4" />}
-            title="Stay Hydrated"
-            description="Drink 2 more glasses of water to reach your daily goal."
-            action={{ label: 'Set Reminder', onClick: () => {} }}
-            variant="info"
-          />
-        </Reveal>
+        {insights.map((insight) => (
+          <Reveal key={insight.title}>
+            <HealthInsightCard
+              icon={insight.icon}
+              title={insight.title}
+              description={insight.description}
+              variant={insight.variant}
+              action={insight.action ? { label: insight.action.label, onClick: () => router.push(insight.action!.href) } : undefined}
+            />
+          </Reveal>
+        ))}
       </Stagger>
     </section>
   );
@@ -309,7 +372,7 @@ function FamilyOverviewSection() {
           <div className="flex gap-2 flex-wrap">
             {members.slice(0, 3).map((m) => (
               <div key={m.id} className="flex items-center gap-2 bg-accent-50 rounded-xl px-3 py-2 border border-accent-100">
-                <div className={cn('w-6 h-6 rounded-full flex items-center justify-center text-white text-[9px] font-bold', m.gender === 'female' ? 'bg-rose-400' : 'bg-blue-400')}>
+                <div className={cn('w-6 h-6 rounded-full flex items-center justify-center text-white text-[9px] font-bold', m.gender === 'female' ? 'bg-accent-400' : 'bg-primary-400')}>
                   {getInitials(m.name)}
                 </div>
                 <p className="text-xs font-semibold text-primary-800">{m.name.split(' ')[0]}</p>
@@ -329,7 +392,10 @@ function FamilyOverviewSection() {
 
 function NearbyFacilitiesSection() {
   const router = useRouter();
-  const nearby = MOCK_FACILITIES.filter((f) => f.open_now).slice(0, 2);
+  const { facilities, loading } = useFacilities();
+  const nearby = facilities.filter((f) => f.open_now).slice(0, 2);
+
+  if (!loading && nearby.length === 0) return null;
 
   return (
     <section className="mb-6">
@@ -342,32 +408,39 @@ function NearbyFacilitiesSection() {
           See all <ChevronRight className="w-3 h-3" />
         </button>
       </div>
-      <div className="space-y-2">
-        {nearby.map((f) => (
-          <button key={f.id} onClick={() => router.push(`/facilities/${f.id}`)} className="w-full text-left">
-            <Card padding="none" interactive hover>
-              <div className="flex items-center gap-3 p-3">
-                <IconChip
-                  icon={<Building2 className="w-5 h-5" />}
-                  color={f.type === 'hospital' ? 'primary' : f.type === 'pharmacy' ? 'success' : 'accent'}
-                  size="md"
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-primary-800 truncate">{f.name}</p>
-                  <div className="flex items-center gap-2 mt-0.5 text-[10px] text-neutral-500">
-                    <span className="flex items-center gap-0.5"><MapPin className="w-2.5 h-2.5" />{f.distance_km} km</span>
-                    <span className="flex items-center gap-0.5"><Star className="w-2.5 h-2.5 fill-warning-400 text-warning-400" />{f.rating}</span>
+      {loading ? (
+        <div className="space-y-2">
+          <Skeleton className="h-16 rounded-2xl" />
+          <Skeleton className="h-16 rounded-2xl" />
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {nearby.map((f) => (
+            <button key={f.id} onClick={() => router.push(`/facilities/${f.id}`)} className="w-full text-left">
+              <Card padding="none" interactive hover>
+                <div className="flex items-center gap-3 p-3">
+                  <IconChip
+                    icon={<Building2 className="w-5 h-5" />}
+                    color={f.type === 'hospital' ? 'primary' : f.type === 'pharmacy' ? 'success' : 'accent'}
+                    size="md"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-primary-800 truncate">{f.name}</p>
+                    <div className="flex items-center gap-2 mt-0.5 text-[10px] text-neutral-500">
+                      <span className="flex items-center gap-0.5"><MapPin className="w-2.5 h-2.5" />{f.distance_km} km</span>
+                      <span className="flex items-center gap-0.5"><Star className="w-2.5 h-2.5 fill-warning-400 text-warning-400" />{f.rating}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent-500" />
+                    <span className="text-[10px] font-semibold text-accent-600">Open</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-1 shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  <span className="text-[10px] font-semibold text-emerald-600">Open</span>
-                </div>
-              </div>
-            </Card>
-          </button>
-        ))}
-      </div>
+              </Card>
+            </button>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -414,7 +487,7 @@ export default function DashboardPage() {
 
             {claims.length > 0 && <MetricsGrid claims={claims} loading={claimsLoading} />}
 
-            <WellnessSection />
+            <InsightsSection subscription={activeSubscription} claims={claims} />
 
             <div className="mb-2 md:mb-0">
               <Card variant="default" padding="md" className="text-center">

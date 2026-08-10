@@ -105,7 +105,7 @@ export function PricingSection() {
         {/* Footer */}
         <div className="mt-12 text-center">
           <Text color="secondary" size="sm" className="mb-3">
-            14-day free trial for all new members • No credit card required
+            Instant cover on approval • Cancel anytime
           </Text>
           <Caption color="muted">
             Regulated by PIA • Trusted by 2,500+ families across Zambia

@@ -77,7 +77,7 @@ export function StatCard({
               <span
                 className={cn(
                   'text-xs font-semibold flex items-center gap-0.5 mb-0.5',
-                  trend.direction === 'up' ? 'text-emerald-600' : 'text-red-600'
+                  trend.direction === 'up' ? 'text-accent-600' : 'text-danger-600'
                 )}
               >
                 {trend.direction === 'up' ? '↑' : '↓'} {trend.value}

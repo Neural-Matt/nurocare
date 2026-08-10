@@ -3,11 +3,15 @@
 import Link from 'next/link';
 import { ArrowRight, Shield } from 'lucide-react';
 import { Button, Heading, RevealOnScroll } from '@/components/ui';
+import { NetworkMotif } from '@/components/ui/NetworkMotif';
 
 export function CtaSection() {
   return (
-    <section className="bg-primary-800 py-24 sm:py-32 px-5 sm:px-8">
-      <RevealOnScroll className="max-w-3xl mx-auto text-center">
+    <section className="relative bg-primary-800 py-24 sm:py-32 px-5 sm:px-8 overflow-hidden">
+      <div className="absolute -left-20 -bottom-20 w-[420px] h-[360px] pointer-events-none opacity-40">
+        <NetworkMotif tone="teal" animated={false} />
+      </div>
+      <RevealOnScroll className="relative max-w-3xl mx-auto text-center">
         <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/10 border border-white/15 mb-8">
           <Shield size={26} className="text-white" />
         </div>
@@ -41,7 +45,7 @@ export function CtaSection() {
         </div>
 
         <p className="text-white/50 text-sm mt-8">
-          14-day free trial · No credit card required · Cancel anytime
+          No paperwork · Instant cover · Cancel anytime
         </p>
       </RevealOnScroll>
     </section>

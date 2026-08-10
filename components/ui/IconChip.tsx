@@ -15,8 +15,8 @@ const colors: Record<IconChipColor, string> = {
   primary: 'bg-primary-50 text-primary-800',
   accent:  'bg-accent-100 text-accent-700',
   warning: 'bg-warning-100 text-warning-700',
-  success: 'bg-emerald-100 text-emerald-700',
-  error:   'bg-red-100 text-red-700',
+  success: 'bg-accent-100 text-accent-700',
+  error:   'bg-danger-100 text-danger-700',
   neutral: 'bg-neutral-100 text-neutral-700',
 };
 

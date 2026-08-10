@@ -36,8 +36,20 @@ export { IconChip } from './IconChip';
 
 export { LogoMark, LogoBadge } from './Logo';
 
+export { MetricNumber, CurrencyDisplay } from './MetricNumber';
+
+export { PageHeader } from './PageHeader';
+
+export { Breadcrumbs } from './Breadcrumbs';
+
+export { Tabs } from './Tabs';
+
+export { Tooltip } from './Tooltip';
+
+export { NetworkMotif } from './NetworkMotif';
+
 // Motion primitives
-export { Stagger, Reveal, RevealOnScroll, fadeUp, fadeIn, springs, tapScale, hoverLift } from './motion';
+export { Stagger, Reveal, RevealOnScroll, ParallaxLayer, PageTransition, fadeUp, fadeIn, springs, tapScale, hoverLift } from './motion';
 
 // Typography
 export {

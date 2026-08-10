@@ -1,7 +1,8 @@
 'use client';
 
-import { motion, type Transition, type Variants } from 'framer-motion';
-import { ReactNode } from 'react';
+import { motion, useReducedMotion, useScroll, useTransform, type Transition, type Variants } from 'framer-motion';
+import { ReactNode, useRef } from 'react';
+import { cn } from '@/lib/utils';
 
 /**
  * Shared spring configs. Apple-style motion is springy but never
@@ -70,6 +71,51 @@ export function Stagger({ children, className, gap = 0.08, repeat = false }: Sta
 export function Reveal({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <motion.div className={className} variants={fadeUp}>
+      {children}
+    </motion.div>
+  );
+}
+
+interface ParallaxLayerProps {
+  children: ReactNode;
+  className?: string;
+  /** Vertical travel in pixels as the layer crosses the viewport. Negative = moves up relative to scroll. */
+  offset?: number;
+}
+
+/**
+ * Subtle scroll-linked depth for landing/hero compositions — a layer drifts
+ * `offset` px over its own scroll-through of the viewport. This is the
+ * "spatial" primitive standing in for 3D: no new dependency, and it's a
+ * no-op transform (flat, static) under prefers-reduced-motion.
+ */
+export function ParallaxLayer({ children, className, offset = 40 }: ParallaxLayerProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
+  const y = useTransform(scrollYProgress, [0, 1], prefersReducedMotion ? [0, 0] : [-offset, offset]);
+
+  return (
+    <motion.div ref={ref} style={{ y }} className={className}>
+      {children}
+    </motion.div>
+  );
+}
+
+interface PageTransitionProps {
+  children: ReactNode;
+  className?: string;
+}
+
+/** Consistent page-entrance treatment — wrap a page's top-level content in this for a settled fade/rise on mount. */
+export function PageTransition({ children, className }: PageTransitionProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={springs.page}
+      className={cn(className)}
+    >
       {children}
     </motion.div>
   );

@@ -24,7 +24,7 @@ const iconColor = {
 
 const actionColor = {
   info: 'text-primary-800 hover:bg-primary-50',
-  success: 'text-emerald-700 hover:bg-emerald-50',
+  success: 'text-accent-700 hover:bg-accent-50',
   warning: 'text-warning-700 hover:bg-warning-50',
   tip: 'text-accent-700 hover:bg-accent-50',
 };

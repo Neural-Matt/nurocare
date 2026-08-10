@@ -22,8 +22,8 @@ const colorMap = {
     fill: 'text-warning-600',
   },
   success: {
-    stroke: 'stroke-emerald-500',
-    fill: 'text-emerald-600',
+    stroke: 'stroke-accent-500',
+    fill: 'text-accent-600',
   },
 };
 

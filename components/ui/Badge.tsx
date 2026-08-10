@@ -12,7 +12,7 @@ interface BadgeProps {
 const variantStyles: Record<BadgeVariant, string> = {
   success: 'bg-accent-50 text-accent-700 border-accent-200',
   warning: 'bg-warning-50 text-warning-600 border-warning-200',
-  error:   'bg-red-50 text-red-600 border-red-200',
+  error:   'bg-danger-50 text-danger-600 border-danger-200',
   info:    'bg-primary-50 text-primary-800 border-primary-100',
   neutral: 'bg-neutral-100 text-neutral-600 border-neutral-200',
 };
